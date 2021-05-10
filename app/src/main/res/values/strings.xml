@@ -3,4 +3,6 @@
     <string name="app_title">SMART TOMATO FARM</string>
     <string name="label_btn_login">Login</string>
     <string name="invalid_email_password">Username and Password cannot be blank.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

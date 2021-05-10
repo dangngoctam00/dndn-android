@@ -6,18 +6,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.WorkerThread;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.dadn.BR;
 import com.example.dadn.R;
 import com.example.dadn.databinding.ActivityLoginBinding;
 import com.example.dadn.di.component.ActivityComponent;
 import com.example.dadn.ui.base.BaseActivity;
 import com.example.dadn.ui.main.MainActivity;
-import com.example.dadn.utils.rx.AppSchedulerProvider;
 
 
-public class LoginActivity extends BaseActivity<LoginViewModel> implements LoginNavigator {
+public class LoginActivity extends BaseActivity<ActivityLoginBinding ,LoginViewModel> implements LoginNavigator {
 
 
     private ActivityLoginBinding mActivityLoginBinding;
@@ -32,12 +31,15 @@ public class LoginActivity extends BaseActivity<LoginViewModel> implements Login
     }
 
     @Override
+    public int getBindingVariable() {
+        return BR.viewModel;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        mActivityLoginBinding = DataBindingUtil.setContentView(this, getLayoutId());
+        mActivityLoginBinding = getViewDataBinding();
         mViewModel.setNavigator(this);
-        mActivityLoginBinding.setViewModel(mViewModel);
     }
 
     @Override
