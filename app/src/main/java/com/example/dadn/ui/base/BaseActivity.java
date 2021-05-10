@@ -1,7 +1,9 @@
 package com.example.dadn.ui.base;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -24,10 +26,14 @@ import dagger.internal.DaggerCollections;
 
 //import javax.inject.Inject;
 
-public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<T extends ViewDataBinding,V extends BaseViewModel> extends AppCompatActivity {
+
+    private T mViewDataBinding;
 
     @Inject
     protected V mViewModel;
+
+    public abstract int getBindingVariable();
 
     public abstract
     @LayoutRes
@@ -37,6 +43,7 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection(getBuildComponent());
         super.onCreate(savedInstanceState);
+        performDataBinding();
     }
 
     public abstract void performDependencyInjection(ActivityComponent buildComponent);
@@ -56,5 +63,22 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
                 .appComponent(((DadnApp)getApplication()).appComponent)
                 .activityModule(new ActivityModule(this))
                 .build();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void requestPermissionsSafely(String[] permissions, int requestCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(permissions, requestCode);
+        }
+    }
+
+    public T getViewDataBinding() {
+        return mViewDataBinding;
+    }
+
+    private void performDataBinding() {
+        mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
+        mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
+        mViewDataBinding.executePendingBindings();
     }
 }
