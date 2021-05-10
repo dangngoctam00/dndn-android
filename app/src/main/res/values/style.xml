@@ -34,4 +34,5 @@
         <item name="colorControlActivated">@color/black_effective</item>
         <item name="colorControlHighlight">@color/black_effective</item>
     </style>
+
 </resources>

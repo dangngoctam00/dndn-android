@@ -41,6 +41,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
         mViewModel.setNavigator(this);
     }
 
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
