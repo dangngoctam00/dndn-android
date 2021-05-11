@@ -10,7 +10,7 @@
         android:title="Dữ liệu" />
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/setting"
+        android:icon="@drawable/tomato_home"
         android:title="Vườn cà chua" />
     <item
         android:id="@+id/nav_instruction"
