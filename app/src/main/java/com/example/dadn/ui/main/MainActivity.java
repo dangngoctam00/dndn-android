@@ -15,6 +15,9 @@ import com.example.dadn.R;
 import com.example.dadn.databinding.ActivityMainBinding;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
+import com.example.dadn.ui.instruction.InstructionFragment;
+import com.example.dadn.ui.setting.SettingFragment;
+import com.example.dadn.ui.statistic.StatisticFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +50,16 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_device:
                         selectedFragment = new DeviceFragment();
                         break;
+                    case R.id.nav_instruction:
+                        selectedFragment = new InstructionFragment();
+                        break;
+                    case R.id.nav_setting:
+                        selectedFragment = new SettingFragment();
+                        break;
+                    case R.id.nav_data:
+                        selectedFragment = new StatisticFragment();
+                        break;
+
 //                        case R.id.nav_search:
 //                            selectedFragment = new SearchFragment();
 //                            break;

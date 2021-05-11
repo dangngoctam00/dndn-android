@@ -5,6 +5,10 @@ import com.example.dadn.di.module.FragmentModule;
 import com.example.dadn.di.scope.FragmentScope;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
+import com.example.dadn.ui.instruction.InstructionFragment;
+import com.example.dadn.ui.setting.SettingFragment;
+import com.example.dadn.ui.statistic.StatisticFragment;
+
 
 import dagger.Component;
 
@@ -17,4 +21,10 @@ public interface FragmentComponent {
     void inject(HomeFragment fragment);
 
     void inject(DeviceFragment fragment);
+
+    void inject(SettingFragment fragment);
+
+    void inject(InstructionFragment fragment);
+
+    void inject(StatisticFragment fragment);
 }
