@@ -16,13 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
         android:usesCleartextTraffic="true">
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@style/AppTheme" />
 
         <activity
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTop"
+            android:theme="@style/LoginTheme"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

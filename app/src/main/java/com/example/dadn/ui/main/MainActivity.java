@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,10 @@ import com.example.dadn.R;
 import com.example.dadn.databinding.ActivityMainBinding;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
         }
+
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(
+                task -> Log.d("FCM ", task.getResult())
+        );
 
     }
 
