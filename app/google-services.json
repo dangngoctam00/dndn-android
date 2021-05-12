@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1035968501628",
+    "project_id": "dadn-dnt00",
+    "storage_bucket": "dadn-dnt00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035968501628:android:0ec81c609fa91785b3f6f9",
+        "android_client_info": {
+          "package_name": "com.example.dadn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035968501628-rnf7bk7a0du902cn6but9bn6esr95r1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIxANbq6RuQOkWwBQmzjPUEAUOp6GM81o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035968501628-rnf7bk7a0du902cn6but9bn6esr95r1n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
