@@ -4,23 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.view.MenuItem;
+import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.dadn.R;
-import com.example.dadn.databinding.ActivityMainBinding;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
+
 import com.example.dadn.ui.instruction.InstructionFragment;
 import com.example.dadn.ui.setting.SettingFragment;
 import com.example.dadn.ui.statistic.StatisticFragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -28,17 +33,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_home);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
-        //I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
         }
+
+
+        //FirebaseMessaging.getInstance().getToken().addOnCompleteListener(
+        //        task -> Log.d("FCM ", task.getResult())
+        //);
+
+
+
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             item -> {

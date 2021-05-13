@@ -15,18 +15,151 @@
 
     </data>
 
-    <FrameLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background">
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello HOME"
-            android:textColor="@color/black_effective"/>
+        <ImageView
+            android:id="@+id/home_tomato_img"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="logo"
+            android:minHeight="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/tomato" />
 
-    </FrameLayout>
+
+        <ImageView
+            android:id="@+id/home_light"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="light"
+            app:layout_constraintEnd_toStartOf="@+id/et_light"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_tomato_img"
+            app:srcCompat="@drawable/light" />
+
+        <TextView
+            android:id="@+id/et_light"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.light}"
+            android:textColor="@color/black_effective"
+            android:textSize="@dimen/home_property_size"
+            app:layout_constraintBottom_toBottomOf="@+id/home_light"
+            app:layout_constraintEnd_toStartOf="@+id/home_temp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/home_light"
+            app:layout_constraintTop_toTopOf="@+id/home_light" />
+
+
+        <ImageView
+            android:id="@+id/home_temp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="temperature"
+            app:layout_constraintBottom_toBottomOf="@+id/et_light"
+            app:layout_constraintEnd_toStartOf="@+id/et_temperature"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/et_light"
+            app:layout_constraintTop_toTopOf="@+id/et_light"
+            app:srcCompat="@drawable/temperature" />
+
+        <TextView
+            android:id="@+id/et_temperature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.temperature}"
+            android:textColor="@color/black_effective"
+            android:textSize="@dimen/home_property_size"
+            app:layout_constraintBottom_toBottomOf="@+id/home_temp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/home_temp"
+            app:layout_constraintTop_toTopOf="@+id/home_temp" />
+
+        <ImageView
+            android:id="@+id/home_air_humidity"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="temperature"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/et_air_humidity"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_light"
+            app:srcCompat="@drawable/air_humidity" />
+
+        <TextView
+            android:id="@+id/et_air_humidity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.air_humidity}"
+            android:textColor="@color/black_effective"
+            android:textSize="@dimen/home_property_size"
+            app:layout_constraintBottom_toBottomOf="@+id/home_air_humidity"
+            app:layout_constraintEnd_toStartOf="@+id/home_soil_humidity"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/home_air_humidity"
+            app:layout_constraintTop_toTopOf="@+id/home_air_humidity" />
+
+
+        <ImageView
+            android:id="@+id/home_soil_humidity"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="temperature"
+            app:layout_constraintBottom_toBottomOf="@+id/et_air_humidity"
+            app:layout_constraintEnd_toStartOf="@+id/et_soil_humidity"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/et_air_humidity"
+            app:layout_constraintTop_toTopOf="@+id/et_air_humidity"
+            app:srcCompat="@drawable/soil_humidity" />
+
+        <TextView
+            android:id="@+id/et_soil_humidity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.soil_humidity}"
+            android:textColor="@color/black_effective"
+            android:textSize="@dimen/home_property_size"
+            app:layout_constraintBottom_toBottomOf="@+id/home_soil_humidity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/home_soil_humidity"
+            app:layout_constraintTop_toTopOf="@+id/home_soil_humidity" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
