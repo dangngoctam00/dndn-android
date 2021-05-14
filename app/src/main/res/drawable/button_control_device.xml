@@ -1,0 +1,30 @@
+<!-- drawable/btn_go_back.xml.xml -->
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="255dp"
+    android:height="60dp"
+    android:viewportWidth="255"
+    android:viewportHeight="60"
+    >
+
+    <group>
+
+        <clip-path
+            android:pathData="M30 0H225C241.569 0 255 13.4315 255 30C255 46.5685 241.569 60 225 60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z"
+            />
+
+        <path
+            android:pathData="M0 0V60H255V0"
+            android:fillColor="#599CABC2"
+            />
+
+        <path
+            android:pathData="M30 0H225C241.569 0 255 13.4315 255 30C255 46.5685 241.569 60 225 60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z"
+            android:strokeWidth="4"
+            android:strokeColor="#000000"
+            />
+
+    </group>
+
+</vector>
