@@ -49,6 +49,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
 
     private void startMqtt() {
+        mViewModel.setIsLoading(true);
         MqttCallbackExtended callbackExtended = new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
@@ -62,6 +63,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                mViewModel.setIsLoading(false);
                 Log.w("Debug", topic + "/:" + mqttMessage.toString());
                 JSONObject jsonObject = new JSONObject(mqttMessage.toString());
                 if (topic.equals(Constants.TOPICS[0])) {
@@ -75,7 +77,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
                 if (topic.equals(Constants.TOPICS[2])) {
                     String[] data = jsonObject.getString("data").split("-");
                     String[] unit = jsonObject.getString("unit").split("-");
-                    String temp = data[0] + unit[0];
+                    String temp = data[0] + "\u2103";
                     String humidity = data[1] + unit[1];
                     mFragmentHomeBinding.etTemperature.setText(temp);
                     mFragmentHomeBinding.etAirHumidity.setText(humidity);
