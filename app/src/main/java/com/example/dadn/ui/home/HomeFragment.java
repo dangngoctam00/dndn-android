@@ -12,7 +12,7 @@ import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentHomeBinding;
 import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.base.BaseFragment;
-import com.example.dadn.utils.mqtt.MqttHelper;
+import com.example.dadn.utils.mqtt.MqttService;
 import com.example.dadn.utils.Constants;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -23,7 +23,7 @@ import org.json.JSONObject;
 public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewModel> implements HomeNavigator {
 
     FragmentHomeBinding mFragmentHomeBinding;
-    MqttHelper mqttHelper;
+    MqttService mqttService;
 
     @Override
     public int getBindingVariable() {
@@ -89,7 +89,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
             }
         };
-        mqttHelper = new MqttHelper(getActivity().getApplicationContext(), callbackExtended);
+        mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended);
     }
 
 

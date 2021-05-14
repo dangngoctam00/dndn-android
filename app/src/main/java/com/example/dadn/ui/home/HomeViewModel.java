@@ -10,7 +10,6 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     private String temperature;
     private String air_humidity;
 
-
     public String getSoil_humidity() {
         return soil_humidity;
     }

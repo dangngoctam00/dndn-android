@@ -17,18 +17,17 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import static com.example.dadn.utils.Constants.TOPICS;
 
-public class MqttHelper {
+public class MqttService {
     public MqttAndroidClient mqttAndroidClient;
 
     final String serverUri = "tcp://io.adafruit.com:1883";
 
     final String clientId = "ExampleAndroidClient";
-//    final String subscriptionTopic = "dnt00/feeds/bk-iot-soil";
 
     final String username = "dnt00";
     final String password = "aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH";
 
-    public MqttHelper(Context context){
+    public MqttService(Context context){
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
@@ -54,7 +53,7 @@ public class MqttHelper {
         connect();
     }
 
-    public MqttHelper(Context context, MqttCallbackExtended callbackExtended) {
+    public MqttService(Context context, MqttCallbackExtended callbackExtended) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(callbackExtended);
         connect();

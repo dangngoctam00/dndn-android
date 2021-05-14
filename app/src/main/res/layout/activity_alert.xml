@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <ImageView
+        android:id="@+id/iv_alert"
+        android:layout_width="169dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="116dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/alert"
+        />
+
+    <TextView
+        android:id="@+id/tv_canhbao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cảnh báo"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_alert" />
+
+    <TextView
+        android:id="@+id/tv_alert_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"
+        android:text="Chúng tôi sẽ thực hiện các công tác để \n đưa khu vườn về trạng thái bình thường. \n
+        Nhấn “Hủy bỏ” nếu bạn không muốn công tác diễn ra."
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_huybo"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_dahieu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đã hiểu"
+        android:textAllCaps="false"
+        android:paddingHorizontal="30dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:background="@drawable/btn_dahieu_alert"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_huybo"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_huybo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hủy bỏ"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:paddingHorizontal="30dp"
+        android:background="@drawable/btn_cancel_alert"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_dahieu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_dahieu" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/tv_canhbao"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_alert_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/temperature_ic_alert"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:text="Nhiệt độ quá cao"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_alert_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/humidity_ic_alert"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:text="Độ ẩm quá cao"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_alert_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/light_ic_alert"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:text="Ánh sáng quá thấp"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/guideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
