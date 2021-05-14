@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import android.util.Log;
 
+import android.view.MenuItem;
+
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,9 +18,11 @@ import com.example.dadn.R;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
 
+
 import com.example.dadn.ui.instruction.InstructionFragment;
 import com.example.dadn.ui.setting.SettingFragment;
 import com.example.dadn.ui.statistic.StatisticFragment;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -46,13 +51,9 @@ public class MainActivity extends AppCompatActivity {
                     new HomeFragment()).commit();
         }
 
-
-        //FirebaseMessaging.getInstance().getToken().addOnCompleteListener(
-        //        task -> Log.d("FCM ", task.getResult())
-        //);
-
-
-
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(
+                task -> Log.d("FCM ", task.getResult())
+        );
     }
 
 
@@ -75,10 +76,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_data:
                         selectedFragment = new StatisticFragment();
                         break;
-
-//                        case R.id.nav_search:
-//                            selectedFragment = new SearchFragment();
-//                            break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         selectedFragment).commit();

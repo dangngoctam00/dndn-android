@@ -17,18 +17,17 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import static com.example.dadn.utils.Constants.TOPICS;
 
-public class MqttHelper {
+public class MqttService {
     public MqttAndroidClient mqttAndroidClient;
 
     final String serverUri = "tcp://io.adafruit.com:1883";
 
     final String clientId = "ExampleAndroidClient";
 
+    final String username = "dnt00";
+    final String password = "aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH";
 
-    final String username = "quanledinh";
-    final String password = "aio_Xcgz91hlc1rYkVxrm9YO2BXAYFvL";
-
-    public MqttHelper(Context context){
+    public MqttService(Context context){
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
@@ -54,7 +53,7 @@ public class MqttHelper {
         connect();
     }
 
-    public MqttHelper(Context context, MqttCallbackExtended callbackExtended) {
+    public MqttService(Context context, MqttCallbackExtended callbackExtended) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(callbackExtended);
         connect();
@@ -112,10 +111,10 @@ public class MqttHelper {
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                         Log.w("Mqtt", "Subscribed fail!");
-                        Log.w("Mqtt", topic);
                     }
                 });
-
+                // get retained message from Adafruit IO
+                publishDummyMessageToTopic(topic);
             }
 
         } catch (MqttException ex) {
@@ -124,5 +123,7 @@ public class MqttHelper {
         }
     }
 
-
+    private void publishDummyMessageToTopic(String topic) throws MqttException {
+        mqttAndroidClient.publish(topic + "/get", new MqttMessage());
+    }
 }

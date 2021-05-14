@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.dadn.utils.Constants;
-import com.example.dadn.utils.mqtt.MqttHelper;
+import com.example.dadn.utils.mqtt.MqttService;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -26,7 +26,7 @@ public class DeviceRepository {
     private MutableLiveData<List<DeviceConfig>> liveSolidHumidity = new MutableLiveData<>();
     private MutableLiveData<List<DeviceConfig>> liveLight = new MutableLiveData<>();
     private MutableLiveData<List<DeviceConfig>> liveTemperature = new MutableLiveData<>();
-    MqttHelper mqttHelper;
+    MqttService mqttService;
     private Application application;
 
     public DeviceRepository(Application application){
@@ -104,7 +104,7 @@ public class DeviceRepository {
 
             }
         };
-        mqttHelper = new MqttHelper(application, callbackExtended);
+        mqttService = new MqttService(application, callbackExtended);
     }
 
 

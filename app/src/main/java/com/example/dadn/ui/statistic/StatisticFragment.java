@@ -7,8 +7,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.library.baseAdapters.BR;
 
-import com.example.dadn.BR;
+
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentDeviceBinding;
 import com.example.dadn.databinding.FragmentStatisticBinding;

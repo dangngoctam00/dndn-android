@@ -3,6 +3,7 @@ package com.example.dadn.di.component;
 
 import com.example.dadn.di.module.FragmentModule;
 import com.example.dadn.di.scope.FragmentScope;
+import com.example.dadn.ui.controlDevice.ControlDeviceFragment;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
 import com.example.dadn.ui.instruction.InstructionFragment;
@@ -27,4 +28,5 @@ public interface FragmentComponent {
     void inject(InstructionFragment fragment);
 
     void inject(StatisticFragment fragment);
+//    void inject(ControlDeviceFragment fragment);
 }
