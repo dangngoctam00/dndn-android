@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dadn.BR;
@@ -20,6 +21,7 @@ import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.generated.callback.OnClickListener;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.ui.controlDevice.ControlDeviceFragment;
+import com.example.dadn.ui.home.HomeFragment;
 
 
 public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceViewModel> implements DeviceNavigator {
@@ -46,29 +48,35 @@ public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceVie
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
 
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentDeviceBinding = getViewDataBinding();
+
+        Button cont = getView().findViewById(R.id.controlDevice);
+        cont.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getChildFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ControlDeviceFragment()).commit();
+            }
+        });
+
     }
 
 //    @Override
 //    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View v = inflater.inflate(R.layout.fragment_device, container, false);
-////        mFragmentDeviceBinding = getViewDataBinding();
+//        View v = super.onCreateView(inflater, container, savedInstanceState);
+//        mFragmentDeviceBinding = getViewDataBinding();
 //
-//        Button cont = v.findViewById(R.id.controlDevice);
-//        cont.setOnClickListener(new View.OnClickListener(){
+//        Button control = getView().findViewById(R.id.controlDevice);
+//        control.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onClick(View v){
-//                ControlDeviceFragment control = new ControlDeviceFragment();
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.replace(R.id.fragment_container, control);
-//                transaction.commit();
-//
+//            public void onClick(View v) {
+//                getChildFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                        new ControlDeviceFragment()).commit();
 //            }
 //        });
 //        return v;
