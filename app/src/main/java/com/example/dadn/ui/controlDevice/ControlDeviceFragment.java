@@ -14,12 +14,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentControlDeviceBinding;
+<<<<<<< HEAD
 
 import com.example.dadn.di.component.FragmentComponent;
 
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.ui.selectDevice.SelectDeviceFragment;
 
+=======
+import com.example.dadn.di.component.FragmentComponent;
+import com.example.dadn.ui.base.BaseFragment;
+>>>>>>> master
 
 public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBinding, ControlDeviceViewModel> implements ControlDeviceNavigator {
 
@@ -69,7 +74,7 @@ public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBin
 
     @Override
     public void performDependencyInjection(FragmentComponent buildComponent) {
-
+        buildComponent.inject(this);
     }
 
     @Override

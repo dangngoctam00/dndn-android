@@ -2,11 +2,12 @@
 
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+
+
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewModel"
             type="com.example.dadn.ui.device.DeviceViewModel" />
@@ -23,8 +24,10 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/bottom_navigation" >
+            android:layout_height="match_parent">
+
+
+
 
 
             <TextView
@@ -50,7 +53,9 @@
                 android:background="@drawable/button_control_device"
                 android:text="Điều khiển thiết bị"
                 android:textColor="#100F0F"
-                android:onClick="@{() -> viewModel.goDeviceControl()}"/>/>
+
+                android:onClick="@{() -> viewModel.goDeviceControl()}"/>
+
 
             <Button
                 android:id="@+id/deviceParameters"
@@ -62,11 +67,12 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Thông số thiết bị"
-                android:textColor="#100F0F" />
+                android:textColor="#100F0F">
+
+            </Button>
+<!--                android:onClick="@{() -> viewModel.goSpecificationLimitation()}" -->
+
         </FrameLayout>
-
-
-
     </RelativeLayout>
 </layout>
 

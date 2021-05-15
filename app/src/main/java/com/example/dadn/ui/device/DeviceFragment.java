@@ -2,15 +2,11 @@ package com.example.dadn.ui.device;
 
 
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.view.LayoutInflater;
 import android.view.View;
 
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,23 +19,15 @@ import com.example.dadn.BR;
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentDeviceBinding;
 import com.example.dadn.di.component.FragmentComponent;
-import com.example.dadn.di.component.ActivityComponent;
-import com.example.dadn.generated.callback.OnClickListener;
-import com.example.dadn.ui.base.BaseActivity;
+
 import com.example.dadn.ui.base.BaseFragment;
 
-import com.example.dadn.ui.controlDevice.ControlDeviceFragment;
-import com.example.dadn.ui.login.LoginActivity;
-import com.example.dadn.ui.main.MainActivity;
+
 
 
 public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceViewModel> implements DeviceNavigator {
 
     FragmentDeviceBinding mFragmentDeviceBinding;
-
-    public static Intent newIntent(Context context) {
-        return new Intent(context, DeviceFragment.class);
-    }
 
     @Override
     public int getBindingVariable() {
@@ -87,6 +75,7 @@ public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceVie
 //        });
 //        return v;
 //    }
+
 
     public void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getParentFragmentManager();
