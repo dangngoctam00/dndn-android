@@ -1,5 +1,7 @@
 package com.example.dadn.ui.device;
 
-public interface DeviceNavigator {
+import androidx.fragment.app.Fragment;
 
+public interface DeviceNavigator {
+    void ReplaceFragment(Fragment fragment);
 }

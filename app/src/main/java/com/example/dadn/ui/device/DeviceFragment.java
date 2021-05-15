@@ -2,24 +2,21 @@ package com.example.dadn.ui.device;
 
 
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dadn.BR;
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentDeviceBinding;
 import com.example.dadn.di.component.FragmentComponent;
-import com.example.dadn.generated.callback.OnClickListener;
 import com.example.dadn.ui.base.BaseFragment;
-import com.example.dadn.ui.controlDevice.ControlDeviceFragment;
+
 
 
 public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceViewModel> implements DeviceNavigator {
@@ -73,5 +70,14 @@ public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceVie
 //        });
 //        return v;
 //    }
+
+
+    public void ReplaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.toString());
+        fragmentTransaction.addToBackStack(fragment.toString());
+        fragmentTransaction.commit();
+    }
 
 }

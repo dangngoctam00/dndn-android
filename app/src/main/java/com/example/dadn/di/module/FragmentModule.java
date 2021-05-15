@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.dadn.ViewModelProviderFactory;
 import com.example.dadn.ui.base.BaseFragment;
+import com.example.dadn.ui.controlDevice.ControlDeviceViewModel;
+import com.example.dadn.ui.device.spec_limitation.SpecificationLimitationViewModel;
 import com.example.dadn.ui.device.DeviceViewModel;
 import com.example.dadn.ui.home.HomeViewModel;
 import com.example.dadn.ui.instruction.InstructionViewModel;
 import com.example.dadn.ui.setting.SettingViewModel;
 import com.example.dadn.ui.statistic.StatisticViewModel;
 import com.example.dadn.utils.rx.SchedulerProvider;
-
-import java.util.ArrayList;
 
 import dagger.Module;
 import dagger.Provides;
@@ -67,5 +67,19 @@ public class FragmentModule {
         Supplier<StatisticViewModel> supplier = () -> new StatisticViewModel(schedulerProvider);
         ViewModelProviderFactory<StatisticViewModel> factory = new ViewModelProviderFactory<>(StatisticViewModel.class, supplier);
         return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(StatisticViewModel.class);
+    }
+
+    @Provides
+    SpecificationLimitationViewModel provideSpecificationLimitationViewModel(SchedulerProvider schedulerProvider) {
+        Supplier<SpecificationLimitationViewModel> supplier = () -> new SpecificationLimitationViewModel(schedulerProvider);
+        ViewModelProviderFactory<SpecificationLimitationViewModel> factory = new ViewModelProviderFactory<>(SpecificationLimitationViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(SpecificationLimitationViewModel.class);
+    }
+
+    @Provides
+    ControlDeviceViewModel provideControlDeviceViewModel(SchedulerProvider schedulerProvider) {
+        Supplier<ControlDeviceViewModel> supplier = () -> new ControlDeviceViewModel(schedulerProvider);
+        ViewModelProviderFactory<ControlDeviceViewModel> factory = new ViewModelProviderFactory<>(ControlDeviceViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(ControlDeviceViewModel.class);
     }
 }
