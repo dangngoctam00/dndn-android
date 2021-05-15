@@ -49,7 +49,8 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Điều khiển thiết bị"
-                android:textColor="#100F0F" />
+                android:textColor="#100F0F"
+                android:onClick="@{() -> viewModel.goDeviceControl()}"/>/>
 
             <Button
                 android:id="@+id/deviceParameters"

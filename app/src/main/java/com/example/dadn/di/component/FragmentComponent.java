@@ -28,5 +28,6 @@ public interface FragmentComponent {
     void inject(InstructionFragment fragment);
 
     void inject(StatisticFragment fragment);
-//    void inject(ControlDeviceFragment fragment);
+
+    void inject(ControlDeviceFragment fragment);
 }
