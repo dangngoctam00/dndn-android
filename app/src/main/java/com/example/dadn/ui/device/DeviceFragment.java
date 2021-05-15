@@ -2,31 +2,42 @@ package com.example.dadn.ui.device;
 
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.LayoutInflater;
 import android.view.View;
+
 import android.view.ViewGroup;
 import android.widget.Button;
-import androidx.fragment.app.Fragment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 
 import com.example.dadn.BR;
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentDeviceBinding;
 import com.example.dadn.di.component.FragmentComponent;
+import com.example.dadn.di.component.ActivityComponent;
 import com.example.dadn.generated.callback.OnClickListener;
+import com.example.dadn.ui.base.BaseActivity;
 import com.example.dadn.ui.base.BaseFragment;
+
 import com.example.dadn.ui.controlDevice.ControlDeviceFragment;
-import com.example.dadn.ui.home.HomeFragment;
+import com.example.dadn.ui.login.LoginActivity;
+import com.example.dadn.ui.main.MainActivity;
 
 
 public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceViewModel> implements DeviceNavigator {
 
     FragmentDeviceBinding mFragmentDeviceBinding;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, DeviceFragment.class);
+    }
 
     @Override
     public int getBindingVariable() {
@@ -55,31 +66,24 @@ public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceVie
         super.onViewCreated(view, savedInstanceState);
         mFragmentDeviceBinding = getViewDataBinding();
 
-        Button cont = getView().findViewById(R.id.controlDevice);
-        cont.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getChildFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ControlDeviceFragment()).commit();
-            }
-        });
-
     }
 
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View v = super.onCreateView(inflater, container, savedInstanceState);
-//        mFragmentDeviceBinding = getViewDataBinding();
-//
-//        Button control = getView().findViewById(R.id.controlDevice);
-//        control.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getChildFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new ControlDeviceFragment()).commit();
-//            }
-//        });
-//        return v;
-//    }
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        mFragmentDeviceBinding = getViewDataBinding();
+
+        Button control = v.findViewById(R.id.controlDevice);
+        control.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction tran = getChildFragmentManager().beginTransaction();
+                tran.replace(R.id.container_fragment, new ControlDeviceFragment());
+                tran.addToBackStack(tran.getClass().getSimpleName());
+                tran.commit();
+            }
+        });
+        return v;
+    }
 
 }
