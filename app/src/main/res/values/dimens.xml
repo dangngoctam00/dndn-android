@@ -9,4 +9,8 @@
     <dimen name="card_padding">16dp</dimen>
     <dimen name="card_items_margin">8dp</dimen>
     <dimen name="margin_login">40dp</dimen>
+    <dimen name="home_mr_left_item">60dp</dimen>
+    <dimen name="home_mr_top_item">20dp</dimen>
+    <dimen name="logo_size">50dp</dimen>
+    <dimen name="home_property_size">25sp</dimen>
 </resources>

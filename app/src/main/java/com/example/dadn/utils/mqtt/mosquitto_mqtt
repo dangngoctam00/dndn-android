@@ -1,0 +1,10 @@
+mosquitto_pub -h io.adafruit.com -p 1883 -u dnt00 -P aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH -t dnt00/feeds/bk-iot-soil -m '{"id": "1", "name": "SOIL" ,"data": "30", "unit": "%"}'
+
+
+mosquitto_pub -h io.adafruit.com -p 1883 -u dnt00 -P aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH -t dnt00/feeds/bk-iot-light -m '{"id": "1", "name": "LIGHT" ,"data": "50", "unit": ""}'
+
+mosquitto_pub -h io.adafruit.com -p 1883 -u dnt00 -P aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH -t dnt00/feeds/bk-iot-temp-humid -m '{"id": "1", "name": "TEMP-HUMID" ,"data": "27-40", "unit": "C-%"}'
+
+
+mosquitto_sub -h io.adafruit.com -p 1883 -u dnt00 -P aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH -t dnt00/feeds/bk-iot-soil
+
