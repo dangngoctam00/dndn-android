@@ -24,8 +24,10 @@ public class MqttService {
 
     final String clientId = "ExampleAndroidClient";
 
-    final String username = "dnt00";
-    final String password = "aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH";
+//    final String username = "dnt00";
+//    final String password = "aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH";
+    final String username = "pdt95";
+    final String password = "aio_bZKz517UwHOVpuYiCtZgaO17Qxz5";
 
     public MqttService(Context context){
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);

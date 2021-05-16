@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBinding, SelectDeviceViewModel> implements SelectDeviceNavigator{
     FragmentSelectDeviceBinding mFragmentSelectDeviceBinding;
-
+    MqttService mqttService;
     @Override
     public int getBindingVariable() {
         return BR.viewModel;
@@ -42,12 +42,37 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
-
+        startMqtt();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentSelectDeviceBinding = getViewDataBinding();
+    }
+
+    private void startMqtt(){
+        MqttCallbackExtended callbackExtended = new MqttCallbackExtended() {
+            @Override
+            public void connectComplete(boolean b, String s) {
+
+            }
+
+            @Override
+            public void connectionLost(Throwable throwable) {
+
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                Log.w("Debug", topic + "/:" + mqttMessage.toString());
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+
+            }
+        };
+        mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended);
     }
 }
