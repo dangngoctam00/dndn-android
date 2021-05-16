@@ -7,4 +7,3 @@ mosquitto_pub -h io.adafruit.com -p 1883 -u dnt00 -P aio_ALzQ68XDjPTHvKSSBM4o6cz
 
 
 mosquitto_sub -h io.adafruit.com -p 1883 -u dnt00 -P aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH -t dnt00/feeds/bk-iot-soil
-
