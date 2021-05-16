@@ -6,13 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewModel"
             type="com.example.dadn.ui.device.spec_limitation.SpecificationLimitationViewModel" />
-
     </data>
 
 
@@ -27,9 +24,39 @@
             android:layout_height="wrap_content"
             android:background="@color/background"
             android:minHeight="?attr/actionBarSize"
+            android:paddingStart="20dp"
+            android:paddingTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="@color/black_effective"/>
+            app:title=""
+
+            app:titleTextColor="@color/black_effective">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/toolbarTitle"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                tools:text="THIẾT LẬP THÔNG SỐ"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSpecs"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spec_limitation_toolbar" />
 
 
 
