@@ -6,6 +6,7 @@ import com.example.dadn.di.scope.FragmentScope;
 import com.example.dadn.ui.controlDevice.ControlDeviceFragment;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.device.spec_limitation.SpecificationLimitationFragment;
+import com.example.dadn.ui.device.spec_limitation.spec_limitation_detail.SpecificationLimitationDetailFragment;
 import com.example.dadn.ui.home.HomeFragment;
 import com.example.dadn.ui.instruction.InstructionFragment;
 import com.example.dadn.ui.setting.SettingFragment;
@@ -32,4 +33,6 @@ public interface FragmentComponent {
     void inject(SpecificationLimitationFragment fragment);
 
     void inject(ControlDeviceFragment fragment);
+
+    void inject(SpecificationLimitationDetailFragment fragment);
 }

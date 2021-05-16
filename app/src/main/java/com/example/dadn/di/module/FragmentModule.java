@@ -10,11 +10,15 @@ import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.ui.controlDevice.ControlDeviceViewModel;
 import com.example.dadn.ui.device.spec_limitation.SpecificationLimitationViewModel;
 import com.example.dadn.ui.device.DeviceViewModel;
+import com.example.dadn.ui.device.spec_limitation.SpecificationsAdapter;
+import com.example.dadn.ui.device.spec_limitation.spec_limitation_detail.SpecificationLimitationDetailViewModel;
 import com.example.dadn.ui.home.HomeViewModel;
 import com.example.dadn.ui.instruction.InstructionViewModel;
 import com.example.dadn.ui.setting.SettingViewModel;
 import com.example.dadn.ui.statistic.StatisticViewModel;
 import com.example.dadn.utils.rx.SchedulerProvider;
+
+import java.util.ArrayList;
 
 import dagger.Module;
 import dagger.Provides;
@@ -81,5 +85,17 @@ public class FragmentModule {
         Supplier<ControlDeviceViewModel> supplier = () -> new ControlDeviceViewModel(schedulerProvider);
         ViewModelProviderFactory<ControlDeviceViewModel> factory = new ViewModelProviderFactory<>(ControlDeviceViewModel.class, supplier);
         return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(ControlDeviceViewModel.class);
+    }
+
+    @Provides
+    SpecificationsAdapter provideSpecification() {
+        return new SpecificationsAdapter(new ArrayList<>());
+    }
+
+    @Provides
+    SpecificationLimitationDetailViewModel provideSpecificationLimitationDetailViewModel(SchedulerProvider schedulerProvider) {
+        Supplier<SpecificationLimitationDetailViewModel> supplier = () -> new SpecificationLimitationDetailViewModel(schedulerProvider);
+        ViewModelProviderFactory<SpecificationLimitationDetailViewModel> factory = new ViewModelProviderFactory<>(SpecificationLimitationDetailViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(SpecificationLimitationDetailViewModel.class);
     }
 }
