@@ -58,24 +58,6 @@ public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceVie
 
     }
 
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View v = super.onCreateView(inflater, container, savedInstanceState);
-//        mFragmentDeviceBinding = getViewDataBinding();
-//
-//        Button control = v.findViewById(R.id.controlDevice);
-//        control.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FragmentTransaction tran = getChildFragmentManager().beginTransaction();
-//                tran.replace(R.id.container_fragment, new ControlDeviceFragment());
-//                tran.addToBackStack(tran.getClass().getSimpleName());
-//                tran.commit();
-//            }
-//        });
-//        return v;
-//    }
-
 
     public void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getParentFragmentManager();

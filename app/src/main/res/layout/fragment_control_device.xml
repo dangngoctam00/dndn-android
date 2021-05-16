@@ -24,7 +24,7 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottom_navigation" >>
+            >
 
             <Button
                 android:id="@+id/goBack"
@@ -68,7 +68,8 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Tắt tất cả thiết bị"
-                android:textColor="#100F0F" />
+                android:textColor="#100F0F"
+                android:onClick="@{() -> viewModel.goTurnOffAll()}"/>
 
             <Button
                 android:id="@+id/selectDevice"
@@ -80,7 +81,8 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Chọn thiết bị"
-                android:textColor="#100F0F" />
+                android:textColor="#100F0F"
+                android:onClick="@{() -> viewModel.goSelectDevice()}"/>
 
             <Button
                 android:id="@+id/turnOnAllDevice"
@@ -92,7 +94,8 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Bật tất cả thiết bị"
-                android:textColor="#100F0F" />
+                android:textColor="#100F0F"
+                android:onClick="@{() -> viewModel.goTurnOnAll()}"/>
         </FrameLayout>
 
 

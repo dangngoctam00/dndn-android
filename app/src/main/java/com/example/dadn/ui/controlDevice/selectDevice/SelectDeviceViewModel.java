@@ -1,4 +1,4 @@
-package com.example.dadn.ui.selectDevice;
+package com.example.dadn.ui.controlDevice.selectDevice;
 
 import com.example.dadn.ui.base.BaseViewModel;
 import com.example.dadn.utils.rx.SchedulerProvider;

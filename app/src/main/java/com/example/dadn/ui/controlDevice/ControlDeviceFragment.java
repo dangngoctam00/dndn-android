@@ -10,21 +10,16 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentControlDeviceBinding;
-<<<<<<< HEAD
 
 import com.example.dadn.di.component.FragmentComponent;
-
 import com.example.dadn.ui.base.BaseFragment;
-import com.example.dadn.ui.selectDevice.SelectDeviceFragment;
 
-=======
-import com.example.dadn.di.component.FragmentComponent;
-import com.example.dadn.ui.base.BaseFragment;
->>>>>>> master
 
 public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBinding, ControlDeviceViewModel> implements ControlDeviceNavigator {
 
@@ -45,7 +40,7 @@ public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBin
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mViewModel.setNavigator(this);
+        mViewModel.setNavigator(this);
     }
 
     @Override
@@ -55,32 +50,20 @@ public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBin
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
-        mFragmentControlDeviceBinding = getViewDataBinding();
-
-        Button control = v.findViewById(R.id.selectDevice);
-        control.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction tran = getChildFragmentManager().beginTransaction();
-                tran.replace(R.id.container_fragment, new SelectDeviceFragment());
-                tran.addToBackStack(null);
-                tran.commit();
-            }
-        });
-        return v;
-    }
-
-    @Override
     public void performDependencyInjection(FragmentComponent buildComponent) {
         buildComponent.inject(this);
     }
 
     @Override
-    public void selectDevice() {
-
+    public void ReplaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, fragment.toString());
+        transaction.addToBackStack(fragment.toString());
+        transaction.commit();
     }
+
+
 
     @Override
     public void turnOnAllDevice() {

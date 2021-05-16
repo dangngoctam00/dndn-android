@@ -1,8 +1,9 @@
 package com.example.dadn.ui.controlDevice;
 
-public interface ControlDeviceNavigator {
+import androidx.fragment.app.Fragment;
 
-    void selectDevice();
+public interface ControlDeviceNavigator {
+    void ReplaceFragment(Fragment fragment);
 
     void turnOnAllDevice();
 
