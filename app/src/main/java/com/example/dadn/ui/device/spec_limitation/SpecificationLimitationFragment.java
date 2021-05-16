@@ -9,13 +9,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentSpecificationLimitationBinding;
 import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.network.APIClient;
 import com.example.dadn.ui.base.BaseFragment;
+import com.example.dadn.ui.device.spec_limitation.spec_limitation_detail.SpecificationLimitationDetailFragment;
+import com.example.dadn.utils.ItemClickSupport;
 
 import javax.inject.Inject;
 
@@ -83,11 +89,28 @@ public class SpecificationLimitationFragment extends BaseFragment<FragmentSpecif
                     mViewModel.setIsLoading(false);
                 });
 
+        ItemClickSupport.addTo(mFragmentSpecificationLimitationBinding.rvSpecs).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        Fragment fragment = SpecificationLimitationDetailFragment.newInstance(getIdSpecs(position));
+                        FragmentManager fragmentManager = getParentFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.toString());
+                        fragmentTransaction.addToBackStack(fragment.toString());
+                        fragmentTransaction.commit();
+                    }
+                });
+
     }
 
     public void setup() {
         mFragmentSpecificationLimitationBinding.rvSpecs.setLayoutManager(new LinearLayoutManager(getContext()));
         mFragmentSpecificationLimitationBinding.rvSpecs.setAdapter(mSpecificationsAdapter);
 
+    }
+
+    private int getIdSpecs(int pos) {
+        return mSpecificationsAdapter.getSpecs().get(pos).getId();
     }
 }

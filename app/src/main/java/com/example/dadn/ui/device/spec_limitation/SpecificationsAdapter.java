@@ -25,6 +25,10 @@ public class SpecificationsAdapter extends RecyclerView.Adapter<SpecificationsAd
         notifyDataSetChanged();
     }
 
+    public List<SpecificationResponse> getSpecs() {
+        return this.specs;
+    }
+
     public SpecificationsAdapter(List<SpecificationResponse> specs) {
         this.specs = specs;
     }

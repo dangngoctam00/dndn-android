@@ -11,6 +11,7 @@ import com.example.dadn.ui.controlDevice.ControlDeviceViewModel;
 import com.example.dadn.ui.device.spec_limitation.SpecificationLimitationViewModel;
 import com.example.dadn.ui.device.DeviceViewModel;
 import com.example.dadn.ui.device.spec_limitation.SpecificationsAdapter;
+import com.example.dadn.ui.device.spec_limitation.spec_limitation_detail.SpecificationLimitationDetailViewModel;
 import com.example.dadn.ui.home.HomeViewModel;
 import com.example.dadn.ui.instruction.InstructionViewModel;
 import com.example.dadn.ui.setting.SettingViewModel;
@@ -89,5 +90,12 @@ public class FragmentModule {
     @Provides
     SpecificationsAdapter provideSpecification() {
         return new SpecificationsAdapter(new ArrayList<>());
+    }
+
+    @Provides
+    SpecificationLimitationDetailViewModel provideSpecificationLimitationDetailViewModel(SchedulerProvider schedulerProvider) {
+        Supplier<SpecificationLimitationDetailViewModel> supplier = () -> new SpecificationLimitationDetailViewModel(schedulerProvider);
+        ViewModelProviderFactory<SpecificationLimitationDetailViewModel> factory = new ViewModelProviderFactory<>(SpecificationLimitationDetailViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(SpecificationLimitationDetailViewModel.class);
     }
 }
