@@ -66,6 +66,9 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", topic + "/:" + mqttMessage.toString());
+//                JSONObject jsonObject = new JSONObject(mqttMessage.toString());
+                String status = mqttMessage.toString();
+                mFragmentSelectDeviceBinding.textView3.setText(status);
             }
 
             @Override
