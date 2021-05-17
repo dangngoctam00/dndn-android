@@ -13,4 +13,5 @@
     <dimen name="home_mr_top_item">20dp</dimen>
     <dimen name="logo_size">50dp</dimen>
     <dimen name="home_property_size">25sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
 </resources>
