@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     private ArrayList<SelectDeviceItem> deviceItemArrayList = new ArrayList<SelectDeviceItem>();
     private RecyclerView mRecyclerView;
     private SelectDeviceAdapter mAdapter;
+    View viewForSwitch;
 
     @Override
     public int getBindingVariable() {
@@ -60,6 +62,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         mFragmentSelectDeviceBinding = getViewDataBinding();
         setmRecyclerView(view);
         onButtonBack(view);
+        viewForSwitch = view;
     }
 
     private void startMqtt(){
@@ -76,8 +79,19 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.w("Debug", topic + "/:" + mqttMessage.toString());
-//                JSONObject jsonObject = new JSONObject(mqttMessage.toString());
+                Log.w("Debug", "on SelectDeviceFragment" + topic + "/:" + mqttMessage.toString());
+                try {
+                    JSONObject jsonObject = new JSONObject(mqttMessage.toString());
+                    if (topic.equals(Constants.TOPICS[0])){
+                        String data = jsonObject.getString("data");
+                        String id = jsonObject.getString("id");
+                        String name = jsonObject.getString("name");
+                        updateDeviceItemArrayList(data, id, name);
+                    }
+                } catch (Exception e){
+                    Log.w("exception", e.toString());
+                }
+
 
             }
 
@@ -94,7 +108,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         deviceItemArrayList.add(new SelectDeviceItem("2", "RELAY", "0", ""));
         deviceItemArrayList.add(new SelectDeviceItem("3", "RELAY", "0", ""));
         deviceItemArrayList.add(new SelectDeviceItem("4", "RELAY", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("5", "RELAY", "0", ""));
+
         deviceItemArrayList.add(new SelectDeviceItem("1", "LED", "0", ""));
         deviceItemArrayList.add(new SelectDeviceItem("2", "LED", "0", ""));
         deviceItemArrayList.add(new SelectDeviceItem("3", "LED", "0", ""));
@@ -107,8 +121,10 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         setDeviceItemArrayList();
         mAdapter = new SelectDeviceAdapter(getContext());
         mAdapter.setData(deviceItemArrayList);
+        mAdapter.setMqttService(this.mqttService);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
 
     }
     public void onButtonBack(@NonNull View view){
@@ -122,4 +138,17 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
             }
         });
     }
+    public void updateDeviceItemArrayList(String data, String id, String name){
+        for (SelectDeviceItem device: deviceItemArrayList) {
+            if (device.getName().equals(name) & device.getId().equals(id)){
+                device.setData(data);
+                Switch switchDevice = (Switch) viewForSwitch.findViewById(deviceItemArrayList.indexOf(device));
+                switchDevice.setChecked(data.equals("1") ? true : false);
+                Log.w("Switch", "update finish id " + switchDevice.getId() + deviceItemArrayList.indexOf(device));
+                break;
+            }
+        }
+
+    }
+
 }
