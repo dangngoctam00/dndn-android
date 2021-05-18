@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginHorizontal="30dp"
+    android:layout_marginBottom="30dp"
+    app:cardBackgroundColor="@color/background"
     app:cardCornerRadius="20dp"
-    app:cardBackgroundColor="@color/white"
+
 
     >
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <Button
+
+        <TextView
             android:id="@+id/nameDevice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_control_device"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="28dp"
+            android:layout_marginLeft="28dp"
             android:text="nameDevice"
             android:textColor="#100F0F"
-            android:layout_marginLeft="28dp"/>
-
-        <Switch
-            android:id="@+id/switchDevice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/nameDevice"
-
-            android:paddingStart="50dp"
-            />
+            android:textSize="20dp"/>
 
     </RelativeLayout>
 
+    <Switch
+        android:id="@+id/switchDevice"
+        android:layout_width="59dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+
+        android:layout_marginLeft="230dp" />
 
 
 </androidx.cardview.widget.CardView>

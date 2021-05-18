@@ -3,10 +3,13 @@ package com.example.dadn.ui.controlDevice.selectDevice;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentSelectDeviceBinding;
@@ -20,9 +23,15 @@ import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBinding, SelectDeviceViewModel> implements SelectDeviceNavigator{
     FragmentSelectDeviceBinding mFragmentSelectDeviceBinding;
     MqttService mqttService;
+    private ArrayList<SelectDeviceItem> deviceItemArrayList = new ArrayList<SelectDeviceItem>();
+    private RecyclerView mRecyclerView;
+    private SelectDeviceAdapter mAdapter;
+
     @Override
     public int getBindingVariable() {
         return BR.viewModel;
@@ -49,6 +58,8 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentSelectDeviceBinding = getViewDataBinding();
+        setmRecyclerView(view);
+        onButtonBack(view);
     }
 
     private void startMqtt(){
@@ -67,8 +78,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", topic + "/:" + mqttMessage.toString());
 //                JSONObject jsonObject = new JSONObject(mqttMessage.toString());
-                String status = mqttMessage.toString();
-                mFragmentSelectDeviceBinding.textView3.setText(status);
+
             }
 
             @Override
@@ -77,5 +87,39 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
             }
         };
         mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended);
+
+    }
+    public void setDeviceItemArrayList() {
+        deviceItemArrayList.add(new SelectDeviceItem("1", "RELAY", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("2", "RELAY", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("3", "RELAY", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("4", "RELAY", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("5", "RELAY", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("1", "LED", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("2", "LED", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("3", "LED", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("4", "LED", "0", ""));
+    }
+    public void setmRecyclerView(@NonNull View view){
+        mRecyclerView = view.findViewById(R.id.recyclerView_SelectDeviceFragment);
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        setDeviceItemArrayList();
+        mAdapter = new SelectDeviceAdapter(getContext());
+        mAdapter.setData(deviceItemArrayList);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
+    public void onButtonBack(@NonNull View view){
+        Button back = (Button) view.findViewById(R.id.goBack);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getParentFragmentManager().getBackStackEntryCount() > 0){
+                    boolean done = getParentFragmentManager().popBackStackImmediate();
+                }
+            }
+        });
     }
 }

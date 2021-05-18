@@ -2,6 +2,7 @@ package com.example.dadn.ui.controlDevice;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBin
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentControlDeviceBinding = getViewDataBinding();
+        onButtonBack(view);
     }
 
     @Override
@@ -78,5 +80,17 @@ public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBin
     @Override
     public void goBack() {
 
+    }
+    public void onButtonBack(@NonNull View view){
+        Button back = (Button) view.findViewById(R.id.goBack);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getParentFragmentManager().getBackStackEntryCount() > 0){
+                    boolean done = getParentFragmentManager().popBackStackImmediate();
+                    Log.w("Button back", "/:" + done);
+                }
+            }
+        });
     }
 }
