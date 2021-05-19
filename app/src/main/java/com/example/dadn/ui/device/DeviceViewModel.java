@@ -15,9 +15,9 @@ public class DeviceViewModel  extends BaseViewModel<DeviceNavigator> {
     }
 
 
-//    public void goSpecificationLimitation() {
-//        getNavigator().ReplaceFragment(new SpecificationLimitationFragment());
-//    }
+    public void goSpecificationLimitation() {
+        getNavigator().ReplaceFragment(new SpecificationLimitationFragment());
+    }
 
 
 
