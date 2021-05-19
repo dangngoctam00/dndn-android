@@ -1,5 +1,6 @@
 package com.example.dadn.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,9 @@ import androidx.databinding.library.baseAdapters.BR;
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentHomeBinding;
 import com.example.dadn.di.component.FragmentComponent;
+import com.example.dadn.ui.alert.AlertActivity;
 import com.example.dadn.ui.base.BaseFragment;
+import com.example.dadn.ui.main.MainActivity;
 import com.example.dadn.utils.mqtt.MqttService;
 import com.example.dadn.utils.Constants;
 
@@ -50,7 +53,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
 
     private void startMqtt() {
-        mViewModel.setIsLoading(true);
+        //mViewModel.setIsLoading(true);
         MqttCallbackExtended callbackExtended = new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
@@ -99,5 +102,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentHomeBinding = getViewDataBinding();
+    }
+
+    @Override
+    public void openAlertActivity() {
+        startActivity(AlertActivity.newIntent(this.getActivity()));
+
     }
 }

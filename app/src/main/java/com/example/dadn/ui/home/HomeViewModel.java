@@ -30,4 +30,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
         super(mSchedulerProvider);
     }
 
+    public void onIconAlertClick(){getNavigator().openAlertActivity(); }
+
+
 }

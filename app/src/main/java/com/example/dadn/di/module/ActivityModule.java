@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.dadn.ViewModelProviderFactory;
+import com.example.dadn.ui.alert.AlertViewModel;
 import com.example.dadn.ui.base.BaseActivity;
 import com.example.dadn.ui.login.LoginViewModel;
 import com.example.dadn.utils.rx.SchedulerProvider;
@@ -28,6 +29,12 @@ public class ActivityModule {
         return new ViewModelProvider((ViewModelStoreOwner) activity, factory).get(LoginViewModel.class);
     }
 
+    @Provides
+    AlertViewModel provideAlertViewModel(SchedulerProvider schedulerProvider) {
+        Supplier<AlertViewModel> supplier = () -> new AlertViewModel(schedulerProvider);
+        ViewModelProviderFactory<AlertViewModel> factory = new ViewModelProviderFactory<>(AlertViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) activity, factory).get(AlertViewModel.class);
+    }
 //    @Provides
 //    MainViewModel provideMainViewModel(SchedulerProvider schedulerProvider) {
 //        Supplier<MainViewModel> supplier = () -> new MainViewModel( schedulerProvider);

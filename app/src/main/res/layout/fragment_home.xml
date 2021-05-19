@@ -207,6 +207,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageButton
+            android:id="@+id/ic_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="22dp"
+            android:onClick="@{() -> viewModel.onIconAlertClick()}"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_exclamationmark1" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
