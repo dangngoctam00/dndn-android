@@ -42,6 +42,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("HOME FRAGMENT", "onCreate function");
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
         startMqtt();
@@ -65,23 +66,23 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 mViewModel.setIsLoading(false);
                 Log.w("Debug", topic + "/:" + mqttMessage.toString());
-//                JSONObject jsonObject = new JSONObject(mqttMessage.toString());
-//                if (topic.equals(Constants.TOPICS[0])) {
-//                    String soil = jsonObject.getString("data") + jsonObject.getString("unit");
-//                    mFragmentHomeBinding.etSoilHumidity.setText(soil);
-//                }
-//                if (topic.equals(Constants.TOPICS[1])) {
-//                    String light = jsonObject.getString("data")  + jsonObject.getString("unit");
-//                    mFragmentHomeBinding.etLight.setText(light);
-//                }
-//                if (topic.equals(Constants.TOPICS[2])) {
-//                    String[] data = jsonObject.getString("data").split("-");
-//                    String[] unit = jsonObject.getString("unit").split("-");
-//                    String temp = data[0] + "\u2103";
-//                    String humidity = data[1] + unit[1];
-//                    mFragmentHomeBinding.etTemperature.setText(temp);
-//                    mFragmentHomeBinding.etAirHumidity.setText(humidity);
-//                }
+                JSONObject jsonObject = new JSONObject(mqttMessage.toString());
+                if (topic.equals(Constants.TOPICS[0])) {
+                    String soil = jsonObject.getString("data") + jsonObject.getString("unit");
+                    mFragmentHomeBinding.etSoilHumidity.setText(soil);
+                }
+                if (topic.equals(Constants.TOPICS[1])) {
+                    String light = jsonObject.getString("data")  + jsonObject.getString("unit");
+                    mFragmentHomeBinding.etLight.setText(light);
+                }
+                if (topic.equals(Constants.TOPICS[2])) {
+                    String[] data = jsonObject.getString("data").split("-");
+                    String[] unit = jsonObject.getString("unit").split("-");
+                    String temp = data[0] + "\u2103";
+                    String humidity = data[1] + unit[1];
+                    mFragmentHomeBinding.etTemperature.setText(temp);
+                    mFragmentHomeBinding.etAirHumidity.setText(humidity);
+                }
             }
 
             @Override
