@@ -10,6 +10,7 @@ import com.example.dadn.ui.controlDevice.turnOnAll.TurnOnAllFragment;
 import com.example.dadn.ui.controlDevice.turnOnAll.TurnOnAllViewModel;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.device.spec_limitation.SpecificationLimitationFragment;
+import com.example.dadn.ui.device.spec_limitation.spec_limitation_detail.SpecificationLimitationDetailFragment;
 import com.example.dadn.ui.home.HomeFragment;
 import com.example.dadn.ui.instruction.InstructionFragment;
 import com.example.dadn.ui.setting.SettingFragment;
@@ -43,4 +44,5 @@ public interface FragmentComponent {
 
     void inject(TurnOffAllFragment fragment);
 
+    void inject(SpecificationLimitationDetailFragment fragment);
 }

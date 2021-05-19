@@ -48,16 +48,13 @@ public class DeviceFragment extends BaseFragment<FragmentDeviceBinding,DeviceVie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentDeviceBinding = getViewDataBinding();
-
     }
-
 
     public void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getParentFragmentManager();
