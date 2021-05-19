@@ -67,10 +67,11 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Thông số thiết bị"
+                android:onClick="@{() -> viewModel.goSpecificationLimitation()}"
                 android:textColor="#100F0F">
 
             </Button>
-<!--                android:onClick="@{() -> viewModel.goSpecificationLimitation()}" -->
+
 
         </FrameLayout>
     </RelativeLayout>

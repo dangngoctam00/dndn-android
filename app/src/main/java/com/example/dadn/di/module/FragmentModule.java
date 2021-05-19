@@ -8,12 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.dadn.ViewModelProviderFactory;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.ui.controlDevice.ControlDeviceViewModel;
-import com.example.dadn.ui.controlDevice.selectDevice.SelectDeviceFragment;
 import com.example.dadn.ui.controlDevice.selectDevice.SelectDeviceViewModel;
 import com.example.dadn.ui.controlDevice.turnOffAll.TurnOffAllViewModel;
 import com.example.dadn.ui.controlDevice.turnOnAll.TurnOnAllViewModel;
-import com.example.dadn.ui.device.spec_limitation.SpecificationLimitationViewModel;
 import com.example.dadn.ui.device.DeviceViewModel;
+import com.example.dadn.ui.device.spec_limitation.SpecificationLimitationViewModel;
 import com.example.dadn.ui.device.spec_limitation.SpecificationsAdapter;
 import com.example.dadn.ui.device.spec_limitation.spec_limitation_detail.SpecificationLimitationDetailViewModel;
 import com.example.dadn.ui.home.HomeViewModel;
@@ -112,6 +111,7 @@ public class FragmentModule {
         return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(TurnOffAllViewModel.class);
     }
 
+    @Provides
     SpecificationsAdapter provideSpecification() {
         return new SpecificationsAdapter(new ArrayList<>());
     }
