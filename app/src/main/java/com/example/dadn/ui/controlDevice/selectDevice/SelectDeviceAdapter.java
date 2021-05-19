@@ -53,7 +53,7 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
     public void onBindViewHolder(@NonNull SelectDeviceViewHolder holder, int position) {
         SelectDeviceItem selectDeviceItem = deviceItemArrayList.get(position);
         holder.nameDevice.setText(selectDeviceItem.getName() + " " + selectDeviceItem.getId());
-        holder.switchDevice.setChecked(selectDeviceItem.getData() == "0" ? false : true);
+        holder.switchDevice.setChecked(selectDeviceItem.getData().equals("0") ? false : true);
         holder.position = position;
         holder.switchDevice.setId(position);
         Log.w("Switch", "id : "+holder.switchDevice.getId());
