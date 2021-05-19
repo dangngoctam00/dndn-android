@@ -8,6 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.dadn.ViewModelProviderFactory;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.ui.controlDevice.ControlDeviceViewModel;
+import com.example.dadn.ui.controlDevice.selectDevice.SelectDeviceFragment;
+import com.example.dadn.ui.controlDevice.selectDevice.SelectDeviceViewModel;
+import com.example.dadn.ui.controlDevice.turnOffAll.TurnOffAllViewModel;
+import com.example.dadn.ui.controlDevice.turnOnAll.TurnOnAllViewModel;
 import com.example.dadn.ui.device.spec_limitation.SpecificationLimitationViewModel;
 import com.example.dadn.ui.device.DeviceViewModel;
 import com.example.dadn.ui.device.spec_limitation.SpecificationsAdapter;
@@ -88,6 +92,26 @@ public class FragmentModule {
     }
 
     @Provides
+    SelectDeviceViewModel provideSelectDeviceViewModel(SchedulerProvider schedulerProvider){
+        Supplier<SelectDeviceViewModel> supplier = () -> new SelectDeviceViewModel(schedulerProvider);
+        ViewModelProviderFactory<SelectDeviceViewModel> factory = new ViewModelProviderFactory<>(SelectDeviceViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(SelectDeviceViewModel.class);
+    }
+
+    @Provides
+    TurnOnAllViewModel provideTurnOnAllViewModel(SchedulerProvider schedulerProvider){
+        Supplier<TurnOnAllViewModel> supplier = () -> new TurnOnAllViewModel(schedulerProvider);
+        ViewModelProviderFactory<TurnOnAllViewModel> factory = new ViewModelProviderFactory<>(TurnOnAllViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(TurnOnAllViewModel.class);
+    }
+
+    @Provides
+    TurnOffAllViewModel provideTurnOffAllViewModel(SchedulerProvider schedulerProvider){
+        Supplier<TurnOffAllViewModel> supplier = () -> new TurnOffAllViewModel(schedulerProvider);
+        ViewModelProviderFactory<TurnOffAllViewModel> factory = new ViewModelProviderFactory<>(TurnOffAllViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(TurnOffAllViewModel.class);
+    }
+
     SpecificationsAdapter provideSpecification() {
         return new SpecificationsAdapter(new ArrayList<>());
     }
@@ -98,4 +122,5 @@ public class FragmentModule {
         ViewModelProviderFactory<SpecificationLimitationDetailViewModel> factory = new ViewModelProviderFactory<>(SpecificationLimitationDetailViewModel.class, supplier);
         return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(SpecificationLimitationDetailViewModel.class);
     }
+
 }

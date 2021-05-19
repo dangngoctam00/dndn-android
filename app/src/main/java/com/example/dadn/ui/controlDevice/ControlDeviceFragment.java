@@ -1,20 +1,31 @@
 package com.example.dadn.ui.controlDevice;
 
+
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentControlDeviceBinding;
+
 import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.base.BaseFragment;
+
 
 public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBinding, ControlDeviceViewModel> implements ControlDeviceNavigator {
 
     FragmentControlDeviceBinding mFragmentControlDeviceBinding;
+
 
     @Override
     public int getBindingVariable() {
@@ -37,6 +48,7 @@ public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBin
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentControlDeviceBinding = getViewDataBinding();
+        onButtonBack(view);
     }
 
     @Override
@@ -45,9 +57,15 @@ public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBin
     }
 
     @Override
-    public void selectDevice() {
-
+    public void ReplaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, fragment.toString());
+        transaction.addToBackStack(fragment.toString());
+        transaction.commit();
     }
+
+
 
     @Override
     public void turnOnAllDevice() {
@@ -62,5 +80,17 @@ public class ControlDeviceFragment extends BaseFragment<FragmentControlDeviceBin
     @Override
     public void goBack() {
 
+    }
+    public void onButtonBack(@NonNull View view){
+        Button back = (Button) view.findViewById(R.id.goBack);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getParentFragmentManager().getBackStackEntryCount() > 0){
+                    boolean done = getParentFragmentManager().popBackStackImmediate();
+                    Log.w("Button back", "/:" + done);
+                }
+            }
+        });
     }
 }

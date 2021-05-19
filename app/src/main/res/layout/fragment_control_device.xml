@@ -15,6 +15,7 @@
     </data>
 
     <RelativeLayout
+        android:id="@+id/container_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background">
@@ -23,7 +24,7 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottom_navigation" >>
+            >
 
             <Button
                 android:id="@+id/goBack"
@@ -61,49 +62,42 @@
                 android:id="@+id/turnOffAllDevice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
+                android:layout_marginStart="58dp"
                 android:layout_marginTop="320dp"
                 android:layout_marginEnd="0dp"
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Tắt tất cả thiết bị"
-                android:textColor="#100F0F" />
+                android:textColor="#100F0F"
+                android:onClick="@{() -> viewModel.goTurnOffAll()}"/>
 
             <Button
                 android:id="@+id/selectDevice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
+                android:layout_marginStart="58dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginEnd="0dp"
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Chọn thiết bị"
-                android:textColor="#100F0F" />
+                android:textColor="#100F0F"
+                android:onClick="@{() -> viewModel.goSelectDevice()}"/>
 
             <Button
                 android:id="@+id/turnOnAllDevice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
+                android:layout_marginStart="58dp"
                 android:layout_marginTop="210dp"
                 android:layout_marginEnd="0dp"
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/button_control_device"
                 android:text="Bật tất cả thiết bị"
-                android:textColor="#100F0F" />
+                android:textColor="#100F0F"
+                android:onClick="@{() -> viewModel.goTurnOnAll()}"/>
         </FrameLayout>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/background"
-            app:layout_constraintBottom_toBottomOf="@+id/fragment_container"
-            app:menu="@menu/bottom_navigation"
-            app:itemTextColor="@color/bottom_nav_color"
-            app:itemIconTint="@color/bottom_nav_color"/>
 
     </RelativeLayout>
 </layout>

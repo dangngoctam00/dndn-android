@@ -28,6 +28,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
 
         <activity
@@ -35,9 +37,8 @@
             android:launchMode="singleTop"
             android:theme="@style/DefaultAppTheme">
 
+
         </activity>
-
-
 
         <service android:name="org.eclipse.paho.android.service.MqttService"></service>
     </application>

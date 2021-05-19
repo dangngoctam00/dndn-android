@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.dadn.R;
@@ -76,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_data:
                         selectedFragment = new StatisticFragment();
                         break;
+                }
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    Log.w("backtrack", "pop all");
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         selectedFragment).commit();

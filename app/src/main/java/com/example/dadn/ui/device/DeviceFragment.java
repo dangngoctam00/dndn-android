@@ -2,8 +2,11 @@ package com.example.dadn.ui.device;
 
 
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,11 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+
 import com.example.dadn.BR;
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentDeviceBinding;
 import com.example.dadn.di.component.FragmentComponent;
+
 import com.example.dadn.ui.base.BaseFragment;
+
 
 
 
