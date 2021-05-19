@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(
                 task -> Log.d("FCM ", task.getResult())
         );
+
+
     }
 
 

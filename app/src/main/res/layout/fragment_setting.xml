@@ -78,6 +78,7 @@
                 android:layout_height="1dp"
                 android:background="#C4C4C4"/>
             <TextView
+                android:id="@+id/tv_settings_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_settings_user"
@@ -94,6 +95,7 @@
                 android:layout_height="1dp"
                 android:background="#C4C4C4"/>
             <TextView
+                android:id="@+id/tv_settings_help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_setting_help"
@@ -109,6 +111,7 @@
                 android:layout_height="1dp"
                 android:background="#C4C4C4"/>
             <TextView
+                android:id="@+id/tv_settings_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_settings_information"
@@ -124,6 +127,7 @@
                 android:layout_height="1dp"
                 android:background="#C4C4C4"/>
             <TextView
+                android:id="@+id/tv_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_setting_logout"
