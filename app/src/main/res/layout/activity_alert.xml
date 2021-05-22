@@ -12,7 +12,7 @@
 
         <variable
             name="alertViewModel"
-            type="com.example.dadn.ui.alert.AlertActivity" />
+            type="com.example.dadn.ui.alert.AlertViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -83,6 +83,7 @@
             android:background="@drawable/btn_cancel_alert"
             android:paddingHorizontal="30dp"
             android:text="Hủy bỏ"
+
             android:textAllCaps="false"
             android:textSize="20sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/btn_dahieu"
