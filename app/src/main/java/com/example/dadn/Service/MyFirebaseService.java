@@ -22,7 +22,11 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+
 import io.reactivex.rxjava3.internal.operators.parallel.ParallelRunOn;
+
+import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 public class MyFirebaseService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseService";
@@ -81,15 +85,17 @@ public class MyFirebaseService extends FirebaseMessagingService {
     }
 
 
-    public void clearAllNotifications() {
+    public static void clearAllNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager)
-                this.getSystemService(this.NOTIFICATION_SERVICE);
+                context.getSystemService(context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
 
     private void sendNotification(RemoteMessage remoteMessage) {
-        String title = remoteMessage.getNotification().getTitle();
-        String body = remoteMessage.getNotification().getBody();
+        Log.d(TAG, "sendNotification: " + remoteMessage.getData());
+        Map<String, String> dataPayload = remoteMessage.getData();
+        String title = dataPayload.get("title");
+        String body = dataPayload.get("body");
 
 
         Intent accept = new Intent(this, AlertActivity.class);
@@ -101,6 +107,10 @@ public class MyFirebaseService extends FirebaseMessagingService {
                     NOTIFICATION_CHANNEL_ID,
                     getString(R.string.main_notification_channel_name),
                     NotificationManager.IMPORTANCE_HIGH);
+            mChannel.enableLights(true);
+            mChannel.setVibrationPattern(new long[]{0,1000,500,1000});
+            mChannel.enableVibration(true);
+            mChannel.setLockscreenVisibility(VISIBILITY_PUBLIC);
             notificationManager.createNotificationChannel(mChannel);
         }
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this ,NOTIFICATION_CHANNEL_ID)
@@ -109,11 +119,12 @@ public class MyFirebaseService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(body)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
-                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(contentIntent(this))
                 .addAction(acceptAction(this))
                 .addAction(ignoreAction(this))
                 .setAutoCancel(true);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
                 && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {

@@ -12,7 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-public class fireBaseServiceUtils {
+public class FireBaseServiceUtils {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public static void checkToken(){
         FirebaseMessaging.getInstance().getToken()

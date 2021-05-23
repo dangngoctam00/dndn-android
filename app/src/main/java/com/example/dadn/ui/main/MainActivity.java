@@ -1,25 +1,19 @@
 package com.example.dadn.ui.main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
 
-import android.view.MenuItem;
-import android.widget.Toast;
 
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.dadn.R;
-import com.example.dadn.Service.fireBaseServiceUtils;
+import com.example.dadn.Service.FireBaseServiceUtils;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
 
@@ -29,12 +23,7 @@ import com.example.dadn.ui.setting.SettingFragment;
 import com.example.dadn.ui.statistic.StatisticFragment;
 
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -60,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     new HomeFragment()).commit();
         }
 
-        fireBaseServiceUtils.checkToken();
+        FireBaseServiceUtils.checkToken();
 
 
 
