@@ -48,7 +48,11 @@ public class MyFirebaseService extends FirebaseMessagingService {
         }
 
          */
-
+        String alert = remoteMessage.getData().get("alert");
+        if(alert.equals("true")){
+            //startActivity(AlertActivity.newIntent(this));
+            Log.d(TAG, "onMessageReceived: ok");
+        }
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         sendNotification(remoteMessage);
     }
@@ -135,9 +139,9 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
     private static NotificationCompat.Action ignoreAction(Context context) {
         Log.d(TAG, "ignoreAction");
-        Intent ignoreTaskIntent = new Intent(context, AlertIntentService.class);
+        Intent ignoreTaskIntent = new Intent(context, AlertReceiver.class);
         ignoreTaskIntent.setAction(AlertTasks.ACTION_REJECT);
-        PendingIntent ignoreReminderPendingIntent = PendingIntent.getService(
+        PendingIntent ignoreReminderPendingIntent = PendingIntent.getBroadcast(
                 context,
                 ACTION_IGNORE_TASK,
                 ignoreTaskIntent,
@@ -151,10 +155,10 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
     private static NotificationCompat.Action acceptAction(Context context) {
         Log.d(TAG, "acceptAction");
-        Intent acceptTaskIntent = new Intent(context, AlertIntentService.class);
+        Intent acceptTaskIntent = new Intent(context, AlertReceiver.class);
 
         acceptTaskIntent.setAction(AlertTasks.ACTION_ACCEPT);
-        PendingIntent incrementWaterPendingIntent = PendingIntent.getService(
+        PendingIntent incrementWaterPendingIntent = PendingIntent.getBroadcast(
                 context,
                 ACTION_ACCEPT_TASK,
                 acceptTaskIntent,

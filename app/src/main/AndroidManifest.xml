@@ -51,9 +51,14 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".Service.AlertReceiver"/>
+
         <service
             android:name=".Service.AlertIntentService"
-            android:exported="false"/>
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <service android:name="org.eclipse.paho.android.service.MqttService"></service>
 

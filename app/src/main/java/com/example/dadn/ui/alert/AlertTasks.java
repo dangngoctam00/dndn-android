@@ -18,6 +18,7 @@ public class AlertTasks {
             MyFirebaseService.clearAllNotifications(context);
             Log.d("action accept", "ok");
         } else if (ACTION_REJECT.equals(action)) {
+            MyFirebaseService.clearAllNotifications(context);
             Log.d("action reject", "ok");
         }
 
