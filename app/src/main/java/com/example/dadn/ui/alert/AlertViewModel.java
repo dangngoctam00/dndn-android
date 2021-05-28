@@ -9,5 +9,10 @@ public class AlertViewModel extends BaseViewModel<AlertNavigator>{
         super(mSchedulerProvider);
     }
 
-    public void testNotification(){getNavigator().testNotification();}
+    public void acceptTask(){
+        getNavigator().acceptTask();
+    }
+    public void cancelTask(){
+        getNavigator().cancelTask();
+    }
 }

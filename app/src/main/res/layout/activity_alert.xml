@@ -11,7 +11,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="alertViewModel"
+            name="viewModel"
             type="com.example.dadn.ui.alert.AlertViewModel" />
     </data>
 
@@ -24,7 +24,7 @@
             android:id="@+id/iv_alert"
             android:layout_width="169dp"
             android:layout_height="160dp"
-            android:layout_marginTop="116dp"
+            android:layout_marginTop="36dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -67,7 +67,8 @@
             android:layout_marginBottom="40dp"
             android:background="@drawable/btn_dahieu_alert"
             android:paddingHorizontal="30dp"
-            android:text="Đã hiểu"
+            android:text="Thực hiện"
+            android:onClick="@{()->viewModel.acceptTask()}"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -83,7 +84,7 @@
             android:background="@drawable/btn_cancel_alert"
             android:paddingHorizontal="30dp"
             android:text="Hủy bỏ"
-
+            android:onClick="@{()->viewModel.cancelTask()}"
             android:textAllCaps="false"
             android:textSize="20sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/btn_dahieu"

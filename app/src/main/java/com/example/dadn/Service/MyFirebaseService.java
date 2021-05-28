@@ -7,9 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.icu.text.UnicodeSetIterator;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -18,20 +15,17 @@ import androidx.core.app.NotificationCompat;
 import com.example.dadn.R;
 import com.example.dadn.ui.alert.AlertActivity;
 import com.example.dadn.ui.alert.AlertTasks;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
-
-import io.reactivex.rxjava3.internal.operators.parallel.ParallelRunOn;
 
 import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 public class MyFirebaseService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseService";
     private static final int ACTION_ACCEPT_TASK = 1;
-    private static final int ACTION_IGNORE_TASK = 14;
+    private static final int ACTION_CANCEL_TASK = 14;
     private static final int ALERT_PENDING_INTENT_ID = 3417;
     private static final int TASK_NOTIFICATION_ID = 1138;
     private static final String NOTIFICATION_CHANNEL_ID = "smarttomamtofarmchannel";
@@ -81,12 +75,6 @@ public class MyFirebaseService extends FirebaseMessagingService {
     }
 
      */
-    private Intent createIntent(String actionName) {
-        Intent intent = new Intent(this, AlertTasks.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setAction(actionName);
-        return intent;
-    }
 
 
     public static void clearAllNotifications(Context context) {
@@ -102,7 +90,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
         String body = dataPayload.get("body");
 
 
-        Intent accept = new Intent(this, AlertActivity.class);
+
         //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //.setSound(defaultSoundUri)
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -139,12 +127,12 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
     private static NotificationCompat.Action ignoreAction(Context context) {
         Log.d(TAG, "ignoreAction");
-        Intent ignoreTaskIntent = new Intent(context, AlertReceiver.class);
-        ignoreTaskIntent.setAction(AlertTasks.ACTION_REJECT);
+        Intent cancelTaskIntent = new Intent(context, AlertReceiver.class);
+        cancelTaskIntent.setAction(AlertTasks.ACTION_CANCEL);
         PendingIntent ignoreReminderPendingIntent = PendingIntent.getBroadcast(
                 context,
-                ACTION_IGNORE_TASK,
-                ignoreTaskIntent,
+                ACTION_CANCEL_TASK,
+                cancelTaskIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action ignoreTaskAction = new NotificationCompat.Action(R.drawable.ic_tomato,
                 "Hủy bỏ",

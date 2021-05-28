@@ -42,6 +42,11 @@
         <activity
             android:name=".ui.alert.AlertActivity"
             android:launchMode="singleTop"
+            android:parentActivityName=".ui.main.MainActivity"
+            >
+        </activity>
+        <activity
+            android:name=".ui.alert.alertprocessing.AlertProcessingActivity"
             >
         </activity>
 

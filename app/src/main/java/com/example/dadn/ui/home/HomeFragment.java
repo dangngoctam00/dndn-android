@@ -106,7 +106,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
     @Override
     public void openAlertActivity() {
-        startActivity(AlertActivity.newIntent(this.getActivity()));
+        Intent intent = new Intent(getContext(), AlertActivity.class);
+        getContext().startActivity(intent);
+        //startActivity(AlertActivity.newIntent(this.getActivity()));
 
     }
 }
