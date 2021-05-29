@@ -46,6 +46,8 @@ public class MyFirebaseService extends FirebaseMessagingService {
         String alert = remoteMessage.getData().get("alert");
         if(alert.equals("true")){
             Log.d(TAG, "onMessageReceived: ok");
+            PreferenceUtilities.SetAlertState(this,true);
+            Log.d(TAG, "onMessageReceived: " + PreferenceUtilities.getAlertState(this));
 
 
 
@@ -79,7 +81,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
         String body = dataPayload.get("body");
 
 
-        PreferenceUtilities.SetAlertState(this,true);
+
 
         //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //.setSound(defaultSoundUri)

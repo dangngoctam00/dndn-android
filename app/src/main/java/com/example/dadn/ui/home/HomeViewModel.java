@@ -1,8 +1,13 @@
 package com.example.dadn.ui.home;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.dadn.ui.base.BaseViewModel;
+import com.example.dadn.utils.PreferenceUtilities;
 import com.example.dadn.utils.rx.SchedulerProvider;
 
 public class HomeViewModel extends BaseViewModel<HomeNavigator> {
@@ -12,33 +17,26 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     private String temperature;
     private String air_humidity;
 
+    private final ObservableBoolean mIsAlertProcessing = new ObservableBoolean();
+    private final ObservableBoolean mAlert = new ObservableBoolean();
 
-    private MutableLiveData<Boolean>  mIsAlertProcessing = new MutableLiveData<Boolean>(false);
-    private MutableLiveData<Boolean>  mAlert = new MutableLiveData<Boolean>(false);
 
-    public MutableLiveData<Boolean> getmIsAlertProcessing(){
+    public ObservableBoolean getMIsAlertProcessing() {
         return mIsAlertProcessing;
     }
 
-    public MutableLiveData<Boolean> getmAlert(){
+    public void setMIsAlertProcessing(boolean b) {
+        mIsAlertProcessing.set(b);
+    }
+
+    public ObservableBoolean getMAlert() {
         return mAlert;
     }
 
-    public void setmIsAlertProcessing(Boolean b){
-        mIsAlertProcessing.setValue(b);
+    public void setMAlert(boolean b) {
+        mAlert.set(b);
     }
 
-    public void postmIsAlertProcessing(Boolean b){
-        mIsAlertProcessing.postValue(b);
-    }
-
-    public void setmAlert(Boolean b){
-        mAlert.setValue(b);
-    }
-
-    public void postmAlert(Boolean b){
-        mAlert.postValue(b);
-    }
 
 
 
@@ -63,7 +61,9 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
         super(mSchedulerProvider);
     }
 
-    public void onIconAlertClick(){getNavigator().openAlertActivity(); }
+    public void onIconAlertClick(){
+        getNavigator().onIconAlertClick();
+    }
 
 
 }

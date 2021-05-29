@@ -15,6 +15,7 @@ import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentHomeBinding;
 import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.alert.AlertActivity;
+import com.example.dadn.ui.alert.alertprocessing.AlertProcessingActivity;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.ui.main.MainActivity;
 import com.example.dadn.utils.PreferenceUtilities;
@@ -53,6 +54,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
         buildComponent.inject(this);
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("HOME FRAGMENT", "onCreate function");
@@ -61,7 +63,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
         startMqtt();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         prefs.registerOnSharedPreferenceChangeListener(this);
-
+        mViewModel.setMIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
+        mViewModel.setMAlert(PreferenceUtilities.getAlertState(this.getActivity()));
 
     }
 
@@ -119,19 +122,25 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
     }
 
     @Override
-    public void openAlertActivity() {
+    public void onIconAlertClick() {
+        if(mViewModel.getMIsAlertProcessing().get()){
+            Intent intent = new Intent(getContext(), AlertProcessingActivity.class);
+            getContext().startActivity(intent);
+        }
         Intent intent = new Intent(getContext(), AlertActivity.class);
         getContext().startActivity(intent);
 
+
     }
+
+
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PreferenceUtilities.KEY_ALERT.equals(key)) {
-            Log.d("onSharedPr", "onSharedPreferenceChanged: "+key);
-            mViewModel.setmAlert(PreferenceUtilities.getAlertState(this.getActivity()));
+            mViewModel.setMAlert(PreferenceUtilities.getAlertState(this.getActivity()));
         } else if (PreferenceUtilities.KEY_IS_ALERT_PROCESSING.equals(key)) {
-            mViewModel.setmIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
+            mViewModel.setMIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
         }
 
     }
