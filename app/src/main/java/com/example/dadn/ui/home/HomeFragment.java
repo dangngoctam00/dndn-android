@@ -123,12 +123,17 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
     @Override
     public void onIconAlertClick() {
-        if(mViewModel.getMIsAlertProcessing().get()){
+        Boolean b = mViewModel.getMIsAlertProcessing().get();
+        String a = b.toString();
+        if(b){
             Intent intent = new Intent(getContext(), AlertProcessingActivity.class);
             getContext().startActivity(intent);
         }
-        Intent intent = new Intent(getContext(), AlertActivity.class);
-        getContext().startActivity(intent);
+        else{
+            Intent intent = new Intent(getContext(), AlertActivity.class);
+            getContext().startActivity(intent);
+        }
+
 
 
     }
