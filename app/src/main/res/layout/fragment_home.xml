@@ -213,7 +213,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="22dp"
             android:onClick="@{() -> viewModel.onIconAlertClick()}"
-            android:visibility="visible"
+            android:visibility="@{viewModel.getmIsAlertProcessing() ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_exclamationmark1" />

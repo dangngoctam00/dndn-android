@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.dadn.R;
 import com.example.dadn.ui.alert.AlertActivity;
 import com.example.dadn.ui.alert.AlertTasks;
+import com.example.dadn.utils.PreferenceUtilities;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -44,11 +45,13 @@ public class MyFirebaseService extends FirebaseMessagingService {
          */
         String alert = remoteMessage.getData().get("alert");
         if(alert.equals("true")){
-            //startActivity(AlertActivity.newIntent(this));
             Log.d(TAG, "onMessageReceived: ok");
+
+
+
         }
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
         sendNotification(remoteMessage);
+
     }
 
     @Override
@@ -61,20 +64,6 @@ public class MyFirebaseService extends FirebaseMessagingService {
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
     }
-
-    /*
-    public void onTokenRefresh() {
-        // Get updated InstanceID token.
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
-
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
-        sendRegistrationToServer(refreshedToken);
-    }
-
-     */
 
 
     public static void clearAllNotifications(Context context) {
@@ -90,6 +79,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
         String body = dataPayload.get("body");
 
 
+        PreferenceUtilities.SetAlertState(this,true);
 
         //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //.setSound(defaultSoundUri)
