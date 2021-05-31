@@ -29,7 +29,7 @@ public  class AlertActivity extends BaseActivity<ActivityAlertBinding, AlertView
 
 
     private ActivityAlertBinding mActivityAlertBinding;
-    //private ActivityAlertBinding mActivityAlertBinding;
+
     public static Intent newIntent(Context context) {
         return new Intent(context, AlertActivity.class);
     }

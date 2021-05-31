@@ -47,12 +47,14 @@ public class MyFirebaseService extends FirebaseMessagingService {
         if(alert.equals("true")){
             Log.d(TAG, "onMessageReceived: ok");
             PreferenceUtilities.SetAlertState(this,true);
-            Log.d(TAG, "onMessageReceived: " + PreferenceUtilities.getAlertState(this));
-
-
-
+            sendNotification(remoteMessage);
         }
-        sendNotification(remoteMessage);
+        else if (alert.equals("completed")){
+            Log.d(TAG, "onMessageReceived: completed");
+            PreferenceUtilities.SetAlertState(this,false);
+            PreferenceUtilities.SetisAlertProcessing(this,false);
+        }
+
 
     }
 

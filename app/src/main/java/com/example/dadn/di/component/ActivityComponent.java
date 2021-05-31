@@ -5,6 +5,7 @@ import com.example.dadn.di.module.ActivityModule;
 import com.example.dadn.di.module.AppModule;
 import com.example.dadn.di.scope.ActivityScope;
 import com.example.dadn.ui.alert.AlertActivity;
+import com.example.dadn.ui.alert.alertprocessing.AlertProcessingActivity;
 import com.example.dadn.ui.login.LoginActivity;
 
 import dagger.Component;
@@ -15,4 +16,6 @@ public interface ActivityComponent {
     void inject(LoginActivity activity);
 
     void inject(AlertActivity activity);
+
+    void inject(AlertProcessingActivity activity);
 }

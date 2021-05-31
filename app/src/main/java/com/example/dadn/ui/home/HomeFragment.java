@@ -63,8 +63,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
         startMqtt();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         prefs.registerOnSharedPreferenceChangeListener(this);
-        mViewModel.setMIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
-        mViewModel.setMAlert(PreferenceUtilities.getAlertState(this.getActivity()));
+        mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
+        mViewModel.setAlertState(PreferenceUtilities.getAlertState(this.getActivity()));
 
     }
 
@@ -123,8 +123,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
     @Override
     public void onIconAlertClick() {
-        Boolean b = mViewModel.getMIsAlertProcessing().get();
-        String a = b.toString();
+        Boolean b = mViewModel.getIsAlertProcessing().get();
+
         if(b){
             Intent intent = new Intent(getContext(), AlertProcessingActivity.class);
             getContext().startActivity(intent);
@@ -143,9 +143,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PreferenceUtilities.KEY_ALERT.equals(key)) {
-            mViewModel.setMAlert(PreferenceUtilities.getAlertState(this.getActivity()));
+            mViewModel.setAlertState(PreferenceUtilities.getAlertState(this.getActivity()));
         } else if (PreferenceUtilities.KEY_IS_ALERT_PROCESSING.equals(key)) {
-            mViewModel.setMIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
+            mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
         }
 
     }

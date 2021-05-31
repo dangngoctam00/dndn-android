@@ -11,6 +11,8 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public abstract class BaseViewModel<N> extends ViewModel {
     private final ObservableBoolean mIsLoading = new ObservableBoolean();
+    private final ObservableBoolean mIsAlertProcessing = new ObservableBoolean();
+    private final ObservableBoolean mAlertState = new ObservableBoolean();
     private final SchedulerProvider mSchedulerProvider;
 
     private CompositeDisposable mCompositeDisposable;
@@ -26,6 +28,26 @@ public abstract class BaseViewModel<N> extends ViewModel {
     protected void onCleared() {
         mCompositeDisposable.dispose();
         super.onCleared();
+    }
+
+
+
+
+
+    public ObservableBoolean getIsAlertProcessing() {
+        return mIsAlertProcessing;
+    }
+
+    public void setIsAlertProcessing(boolean b) {
+        mIsAlertProcessing.set(b);
+    }
+
+    public ObservableBoolean getAlertState() {
+        return mAlertState;
+    }
+
+    public void setAlertState(boolean b) {
+        mAlertState.set(b);
     }
 
     public ObservableBoolean getIsLoading() {

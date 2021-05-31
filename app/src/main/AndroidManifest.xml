@@ -45,6 +45,7 @@
             android:parentActivityName=".ui.main.MainActivity"
             >
         </activity>
+
         <activity
             android:name=".ui.alert.alertprocessing.AlertProcessingActivity"
             >
