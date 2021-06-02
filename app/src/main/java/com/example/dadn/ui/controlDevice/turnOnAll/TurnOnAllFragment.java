@@ -14,6 +14,7 @@ import com.example.dadn.databinding.FragmentTurnOnAllBinding;
 import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.ui.controlDevice.selectDevice.SelectDeviceItem;
+import com.example.dadn.utils.Constants;
 import com.example.dadn.utils.mqtt.MqttService;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -78,11 +79,11 @@ public class TurnOnAllFragment extends BaseFragment<FragmentTurnOnAllBinding, Tu
                 setDeviceItemArrayList();
                 updateDeviceItemArrayList();
                 for (SelectDeviceItem device: deviceItemArrayList) {
-                    String mes = "{id:"+ device.getId() +
-                            ", name:" + device.getName()+
-                            ", data:" + device.getData()+
-                            ", unit:" + device.getUnit()+
-                            "}";
+                    String mes = "{\"id\":\""+ device.getId() +
+                            "\", \"name\":\"" + device.getName()+
+                            "\", \"data\":\"" + device.getData()+
+                            "\", \"unit\":\"" + device.getUnit()+
+                            "\"}";
                     sendDataMqtt(mes);
                 }
                 boolean done = getParentFragmentManager().popBackStackImmediate();
@@ -90,15 +91,10 @@ public class TurnOnAllFragment extends BaseFragment<FragmentTurnOnAllBinding, Tu
         });
     }
     public void setDeviceItemArrayList() {
-        deviceItemArrayList.add(new SelectDeviceItem("1", "RELAY", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("2", "RELAY", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("3", "RELAY", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("4", "RELAY", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("5", "RELAY", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("11", "RELAY", "0", ""));
+
         deviceItemArrayList.add(new SelectDeviceItem("1", "LED", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("2", "LED", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("3", "LED", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("4", "LED", "0", ""));
+
     }
     public void updateDeviceItemArrayList(){
         for (SelectDeviceItem device: deviceItemArrayList) {
@@ -113,7 +109,8 @@ public class TurnOnAllFragment extends BaseFragment<FragmentTurnOnAllBinding, Tu
         byte[] b = data.getBytes(Charset.forName("UTF-8"));
         msg.setPayload(b);
         try {
-            mqttService.mqttAndroidClient.publish("pdt95/feeds/test-relay-device", msg);
+            String topic = Constants.TOPICS[3];
+            mqttService.mqttAndroidClient.publish(topic, msg);
             Log.w("MQTT", "publish: " + msg);
 
         } catch (MqttException e){
