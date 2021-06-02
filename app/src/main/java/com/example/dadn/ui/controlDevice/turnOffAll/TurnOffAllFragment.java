@@ -31,7 +31,7 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
     FragmentTurnOffAllBinding mFragmentTurnOffAllBinding;
     private ArrayList<SelectDeviceItem> deviceItemArrayList = new ArrayList<SelectDeviceItem>();
     MqttService mqttService;
-
+    String[] TOPICS = Constants.TOPICS_PHUONG;
     @Override
     public int getBindingVariable() {
         return BR.viewModel;
@@ -86,7 +86,7 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
                             "\", \"data\":\"" + device.getData()+
                             "\", \"unit\":\"" + device.getUnit()+
                             "\"}";
-                    sendDataMqtt(mes);
+                    sendDataMqtt(mes, device.getName());
                 }
                 boolean done = getParentFragmentManager().popBackStackImmediate();
             }
@@ -103,7 +103,7 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
             device.setData("0");
         }
     }
-    public void sendDataMqtt(String data){
+    public void sendDataMqtt(String data, String name){
         MqttMessage msg = new MqttMessage();
         msg.setId(1);
         msg.setQos(0);
@@ -111,8 +111,14 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
         byte[] b = data.getBytes(Charset.forName("UTF-8"));
         msg.setPayload(b);
         try {
-            String topic = Constants.TOPICS[3];
-            mqttService.mqttAndroidClient.publish(topic, msg);
+            if (name.equals("RELAY")) {
+                String topic = TOPICS[3];
+                mqttService.mqttAndroidClient.publish(topic, msg);
+            }
+            if (name.equals("LED")){
+                String topic = TOPICS[4];
+                mqttService.mqttAndroidClient.publish(topic, msg);
+            }
             Log.w("MQTT", "publish: " + msg);
 
         } catch (MqttException e){

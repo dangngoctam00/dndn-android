@@ -35,6 +35,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     private RecyclerView mRecyclerView;
     private SelectDeviceAdapter mAdapter;
     View viewForSwitch;
+    String[] TOPICS = Constants.TOPICS_PHUONG;
 
     @Override
     public int getBindingVariable() {
@@ -84,7 +85,13 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
                 Log.w("Debug", "on SelectDeviceFragment" + topic + "/:" + mqttMessage.toString());
                 try {
                     JSONObject jsonObject = new JSONObject(mqttMessage.toString());
-                    if (topic.equals(Constants.TOPICS[3])){
+                    if (topic.equals(TOPICS[3])){
+                        String data = jsonObject.getString("data");
+                        String id = jsonObject.getString("id");
+                        String name = jsonObject.getString("name");
+                        updateDeviceItemArrayList(data, id, name);
+                    }
+                    if (topic.equals(TOPICS[4])){
                         String data = jsonObject.getString("data");
                         String id = jsonObject.getString("id");
                         String name = jsonObject.getString("name");

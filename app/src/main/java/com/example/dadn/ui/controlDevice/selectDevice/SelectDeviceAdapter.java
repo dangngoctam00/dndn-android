@@ -32,6 +32,7 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
     private Context context;
     MqttService mqttService;
     View v;
+    String[] TOPICS = Constants.TOPICS_PHUONG;
 
     public void setMqttService(MqttService mqttService){ this.mqttService = mqttService; }
     public SelectDeviceAdapter(Context context) {
@@ -85,14 +86,14 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
                             "\", \"data\":\"" + device.getData()+
                             "\", \"unit\":\"" + device.getUnit()+
                             "\"}";
-                    sendDataMqtt(mes);
+                    sendDataMqtt(mes, device.getName());
 //                    Log.w("Switch", "id: " + switchDevice.getId());
                 }
             });
         }
     }
 
-    public void sendDataMqtt(String data){
+    public void sendDataMqtt(String data, String name){
         MqttMessage msg = new MqttMessage();
         msg.setId(1234);
         msg.setQos(0);
@@ -100,9 +101,14 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
         byte[] b = data.getBytes(Charset.forName("UTF-8"));
         msg.setPayload(b);
         try {
-            String topic = Constants.TOPICS[3];
-            mqttService.mqttAndroidClient.publish(topic, msg);
-
+            if (name.equals("RELAY")) {
+                String topic = TOPICS[3];
+                mqttService.mqttAndroidClient.publish(topic, msg);
+            }
+            if (name.equals("LED")){
+                String topic = TOPICS[4];
+                mqttService.mqttAndroidClient.publish(topic, msg);
+            }
             Log.w("MQTT", "publish: " + msg);
 
         } catch (MqttException e){
@@ -125,7 +131,7 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", topic + "/:" + mqttMessage.toString());
                 JSONObject jsonObject = new JSONObject(mqttMessage.toString());
-                if (topic.equals(Constants.TOPICS[3])){
+                if (topic.equals(TOPICS[3])){
                     String data = jsonObject.getString("data");
                     String id = jsonObject.getString("id");
                     String name = jsonObject.getString("name");
