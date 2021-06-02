@@ -1,6 +1,8 @@
 package com.example.dadn.network;
 
 
+import com.example.dadn.data.dto.AlertReponse;
+import com.example.dadn.data.dto.AlertRequest;
 import com.example.dadn.data.dto.LoginRequest;
 import com.example.dadn.data.dto.LoginResponse;
 import com.example.dadn.data.dto.SpecificationDetailRequest;
@@ -10,6 +12,7 @@ import com.example.dadn.data.dto.SpecificationResponse;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -27,4 +30,7 @@ public interface RetrofitInterface {
 
     @POST("specifications/{id}")
     Observable<String> updateSpecificationDetail(@Path("id") Integer id, @Body SpecificationDetailRequest body);
+
+    @POST("alertprocessing")
+    Call<AlertReponse> requestTask(@Body AlertRequest body);
 }
