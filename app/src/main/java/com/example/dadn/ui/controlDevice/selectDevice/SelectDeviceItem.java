@@ -22,4 +22,6 @@ public class SelectDeviceItem {
     public void setId(String id){this.id = id;}
     public void setData(String data){this.data = data;}
     public void setUnit(String unit){this.unit = unit;}
+
+
 }

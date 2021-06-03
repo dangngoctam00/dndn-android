@@ -8,5 +8,11 @@ public class Constants {
                                                         "dnt00/feeds/bk-iot-light",
                                                         "dnt00/feeds/bk-iot-temp-humid",
                                                         "dnt00/feeds/bk-iot-relay"};
-    public static final String[] TOPICS_PHUONG = new String[] {"pdt95/feeds/test-relay-device-two"};
+    public static final String[] TOPICS_PHUONG = new String[] {"pdt95/feeds/bk-iot-soil",
+            "pdt95/feeds/bk-iot-light",
+            "pdt95/feeds/bk-iot-temp-humid",
+            "pdt95/feeds/bk-iot-relay",
+            "pdt95/feeds/bk-iot-led"};
+    public static final String USERNAME = "dnt00";
+    public static final String LIMIT = "5";
 }

@@ -47,7 +47,6 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
     public SelectDeviceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_device_item, parent, false);
         SelectDeviceViewHolder selectDeviceViewHolder = new SelectDeviceViewHolder(v);
-        //startMqtt();
         return selectDeviceViewHolder;
     }
 
@@ -58,6 +57,12 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
         holder.switchDevice.setChecked(selectDeviceItem.getData().equals("0") ? false : true);
         holder.position = position;
         holder.switchDevice.setId(parseInt(selectDeviceItem.getId()));
+
+        holder.deviceItem.setId(selectDeviceItem.getId());
+        holder.deviceItem.setName(selectDeviceItem.getName());
+        holder.deviceItem.setData(selectDeviceItem.getData());
+        holder.deviceItem.setUnit(selectDeviceItem.getUnit());
+
         Log.w("Switch", "id : "+holder.switchDevice.getId());
     }
 
@@ -71,23 +76,37 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
         public TextView nameDevice;
         public Switch switchDevice;
         public int position;
+        SelectDeviceItem deviceItem = new SelectDeviceItem("", "","","");
 
         public SelectDeviceViewHolder(@NonNull View itemView) {
             super(itemView);
             nameDevice = itemView.findViewById(R.id.nameDevice);
             switchDevice = itemView.findViewById(R.id.switchDevice);
-            switchDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            switchDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    deviceItemArrayList.get(position).setData(isChecked? "1": "0");
+//                    SelectDeviceItem device = deviceItemArrayList.get(position);
+//                    String mes = "{\"id\":\""+ device.getId() +
+//                            "\", \"name\":\"" + device.getName()+
+//                            "\", \"data\":\"" + device.getData()+
+//                            "\", \"unit\":\"" + device.getUnit()+
+//                            "\"}";
+//                    sendDataMqtt(mes, device.getName());
+////                    Log.w("Switch", "id: " + switchDevice.getId());
+//                }
+//            });
+            switchDevice.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    deviceItemArrayList.get(position).setData(isChecked? "1": "0");
-                    SelectDeviceItem device = deviceItemArrayList.get(position);
+                public void onClick(View v) {
+                    deviceItem.setData(deviceItem.getData().equals("0")? "1" : "0");
+                    SelectDeviceItem device = deviceItem;
                     String mes = "{\"id\":\""+ device.getId() +
                             "\", \"name\":\"" + device.getName()+
                             "\", \"data\":\"" + device.getData()+
                             "\", \"unit\":\"" + device.getUnit()+
                             "\"}";
                     sendDataMqtt(mes, device.getName());
-//                    Log.w("Switch", "id: " + switchDevice.getId());
                 }
             });
         }
@@ -115,49 +134,11 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
             Log.w("MQTT", "sendMqtt: cannot send message!", e);
         }
     }
-    private void startMqtt(){
-        MqttCallbackExtended callbackExtended = new MqttCallbackExtended() {
-            @Override
-            public void connectComplete(boolean b, String s) {
 
-            }
-
-            @Override
-            public void connectionLost(Throwable throwable) {
-
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.w("Debug", topic + "/:" + mqttMessage.toString());
-                JSONObject jsonObject = new JSONObject(mqttMessage.toString());
-                if (topic.equals(TOPICS[3])){
-                    String data = jsonObject.getString("data");
-                    String id = jsonObject.getString("id");
-                    String name = jsonObject.getString("name");
-                    updateDeviceItemArrayList(data, id, name);
-                }
-
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
-            }
-        };
-        mqttService = new MqttService(context, callbackExtended);
-
-    }
-    public void updateDeviceItemArrayList(String data, String id, String name){
-        Log.w("Switch", "update finish" + data);
+    public SelectDeviceItem findDeviceById(String id){
         for (SelectDeviceItem device: deviceItemArrayList) {
-            if (device.getName().equals(name) && device.getId().equals(id)){
-                device.setData(data);
-                Switch switchDevice = (Switch) v.findViewById(deviceItemArrayList.indexOf(device));
-                switchDevice.setChecked(data.equals("0") ? false : true);
-                Log.w("Switch", "update finish" + data);
-                break;
-            }
+            if (device.getId().equals(id)) return device;
         }
+        return null;
     }
 }

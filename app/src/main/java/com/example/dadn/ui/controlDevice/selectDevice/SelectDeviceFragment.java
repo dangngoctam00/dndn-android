@@ -18,13 +18,20 @@ import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.utils.Constants;
 import com.example.dadn.utils.mqtt.MqttService;
+import com.google.gson.JsonObject;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static java.lang.Integer.parseInt;
 
@@ -35,7 +42,9 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     private RecyclerView mRecyclerView;
     private SelectDeviceAdapter mAdapter;
     View viewForSwitch;
-    String[] TOPICS = Constants.TOPICS_PHUONG;
+    String[] TOPICS = Constants.TOPICS;
+    String USERNAME = Constants.USERNAME;
+    String LIMIT = Constants.LIMIT;
 
     @Override
     public int getBindingVariable() {
@@ -57,13 +66,15 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
         startMqtt();
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentSelectDeviceBinding = getViewDataBinding();
-        setmRecyclerView(view);
+        setDeviceItemArrayList("bk-iot-relay");
+        setDeviceItemArrayList("bk-iot-led");
         onButtonBack(view);
         viewForSwitch = view;
     }
@@ -82,7 +93,6 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.w("Debug", "on SelectDeviceFragment" + topic + "/:" + mqttMessage.toString());
                 try {
                     JSONObject jsonObject = new JSONObject(mqttMessage.toString());
                     if (topic.equals(TOPICS[3])){
@@ -112,16 +122,51 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended);
 
     }
-    public void setDeviceItemArrayList() {
-        deviceItemArrayList.add(new SelectDeviceItem("11", "RELAY", "0", ""));
+    public void setDeviceItemArrayList(String feed_key) {
+//        deviceItemArrayList.add(new SelectDeviceItem("11", "RELAY", "0", ""));
+//        deviceItemArrayList.add(new SelectDeviceItem("1", "LED", "0", ""));
 
-        deviceItemArrayList.add(new SelectDeviceItem("1", "LED", "0", ""));
+        Call<List<ResultFeedData>> call = RetrofitClient.getInstance().getApi()
+                .getFeedData(USERNAME, feed_key, LIMIT);
+        Log.w("Http Response", feed_key);
+
+        call.enqueue(new Callback<List<ResultFeedData>>() {
+            @Override
+            public void onResponse(Call<List<ResultFeedData>> call, Response<List<ResultFeedData>> response) {
+                List<ResultFeedData> values = response.body();
+
+                for (ResultFeedData value: values) {
+                    Log.w("Http Response", value.getValue());
+                    try {
+                        JSONObject jsonObject = new JSONObject(value.getValue());
+                        if (!inDeviceItemArrayList(jsonObject)){
+                            deviceItemArrayList.add(new SelectDeviceItem(
+                                    jsonObject.getString("id"),
+                                    jsonObject.getString("name"),
+                                    jsonObject.getString("data"),
+                                    jsonObject.getString("unit")
+                            ));
+                            Log.w("array list", "add one " + deviceItemArrayList.toString());
+                        }
+                    } catch (Exception e){
+                        Log.w("Debug http request:/", "json fail "+ e.toString());
+                    }
+                }
+                setmRecyclerView(viewForSwitch);
+            }
+
+            @Override
+            public void onFailure(Call<List<ResultFeedData>> call, Throwable t) {
+                Log.w("Debug:/", "get http request fail" + t.toString());
+
+            }
+        });
     }
     public void setmRecyclerView(@NonNull View view){
         mRecyclerView = view.findViewById(R.id.recyclerView_SelectDeviceFragment);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        setDeviceItemArrayList();
+        Log.w("array: ", "" + deviceItemArrayList.toString());
         mAdapter = new SelectDeviceAdapter(getContext());
         mAdapter.setData(deviceItemArrayList);
         mAdapter.setMqttService(this.mqttService);
@@ -152,6 +197,17 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
             }
         }
 
+    }
+
+    public boolean inDeviceItemArrayList(JSONObject jsonObject) throws JSONException {
+        if (deviceItemArrayList.isEmpty()) return false;
+        for (SelectDeviceItem device: deviceItemArrayList) {
+            if (device.getName().equals(jsonObject.getString("name"))
+                    && device.getId().equals(jsonObject.getString("id"))) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
