@@ -13,6 +13,7 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+
     <style name="TextViewNormal" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/black_effective</item>
         <item name="android:textSize">16sp</item>
@@ -37,6 +38,10 @@
         <item name="colorControlNormal">@color/black_effective</item>
         <item name="colorControlActivated">@color/black_effective</item>
         <item name="colorControlHighlight">@color/black_effective</item>
+    </style>
+
+    <style name="spinnerTheme">
+        <item name="android:textColor">@color/red_dark</item>
     </style>
 
 </resources>
