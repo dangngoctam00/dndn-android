@@ -24,16 +24,21 @@ import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.utils.Constants;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -98,6 +103,9 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         adapter_time_duration.setDropDownViewResource(R.layout.spinner_item_dropdown);
         spinner_time_duration.setAdapter(adapter_time_duration);
 
+        LineChart mLineChart = view.findViewById(R.id.lineChart);
+        mLineChart.setNoDataText("");
+
     }
 
     @Override
@@ -130,7 +138,6 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
 
         String start_time = curr_time.format(c.getTime());
 
-
         Call<List<ResultFeedChart>> call = RetrofitClientChart.getInstance()
                 .getApi().getChartData(USERNAME, feed_key, start_time, end_time);
 
@@ -139,7 +146,11 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
             public void onResponse(Call<List<ResultFeedChart>> call, Response<List<ResultFeedChart>> response) {
                 List<ResultFeedChart> datas = response.body();
                 Log.w("response/", " " + response.toString());
-                analysisData(datas);
+                try {
+                    analysisData(datas);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -151,7 +162,7 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
 
     }
 
-    public void analysisData(List<ResultFeedChart> datas){
+    public void analysisData(List<ResultFeedChart> datas) throws ParseException {
         String CHARTNAME = "";
 
         ArrayList<String> CHARTDATA = new ArrayList<>();
@@ -172,17 +183,27 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         else createChart(CHARTDATA, CHARTTIME, "Độ ẩm đất");
     }
 
-    public void createChartTempHumid(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME){
+    public void createChartTempHumid(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME) throws ParseException {
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
+        mLineChart.setNoDataText("");
         ArrayList tempEntries = new ArrayList<>();
         ArrayList humidEntries = new ArrayList<>();
+        ArrayList<String> dateValue = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date start_time = sdf.parse(CHARTTIME.get(CHARTDATA.size() - 1).replace("T", " ")
+                .replace("Z",""));
 
         for (int i = CHARTDATA.size() - 1; i >= 0; i--){
             String[] value = CHARTDATA.get(i).split("-");
-//            String temp = value[0];
-//            String humid = value[1];
-            tempEntries.add(new Entry(CHARTDATA.size() - i, parseFloat(value[0])));
-            humidEntries.add(new Entry(CHARTDATA.size() - i, parseFloat(value[1])));
+
+            Date next_time = sdf.parse(CHARTTIME.get(i).replace("T", " ")
+                    .replace("Z",""));
+            long diff = (next_time.getTime() - start_time.getTime()) / 1000;
+            if (diff % 86400 == 0) dateValue.add(CHARTTIME.get(i).split("T")[0]);
+
+            tempEntries.add(new Entry(diff, parseFloat(value[0])));
+            humidEntries.add(new Entry(diff, parseFloat(value[1])));
         }
 
         LineData lineData = new LineData();
@@ -194,26 +215,58 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         humidLineDataSet.setColor(Color.parseColor("#fffa5452"));
         lineData.addDataSet(humidLineDataSet);
 
+        XAxis xAxis = mLineChart.getXAxis();
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                if((int)value % 86400 == 0) return dateValue.get((int)(value / 86400));
+                else return "";
+            }
+        };
+        xAxis.setValueFormatter(formatter);
+
         mLineChart.setData(lineData);
         mLineChart.getDescription().setEnabled(false);
-        mLineChart.getXAxis().setDrawLabels(false);
+        mLineChart.getXAxis().setDrawLabels(true);
 
         mLineChart.invalidate();
     }
 
-    public void createChart(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME, String name){
+    public void createChart(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME, String name) throws ParseException {
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
+        mLineChart.setNoDataText("");
         ArrayList lineEntries = new ArrayList<>();
+        final ArrayList<String> dateValue = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date start_time = sdf.parse(CHARTTIME.get(CHARTDATA.size() - 1).replace("T", " ")
+                .replace("Z",""));
 
         for (int i = CHARTDATA.size() - 1; i >= 0; i--){
-            lineEntries.add(new Entry(CHARTDATA.size() - i, parseFloat(CHARTDATA.get(i))));
+            Date next_time = sdf.parse(CHARTTIME.get(i).replace("T", " ")
+                    .replace("Z",""));
+            long diff = (next_time.getTime() - start_time.getTime()) / 1000;
+            if (diff % 86400 == 0) dateValue.add(CHARTTIME.get(i).split("T")[0]);
+
+            lineEntries.add(new Entry(diff, parseFloat(CHARTDATA.get(i))));
         }
 
         LineDataSet dataSet = new LineDataSet(lineEntries, name);
         LineData lineData = new LineData(dataSet);
+
+        XAxis xAxis = mLineChart.getXAxis();
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                if((int)value % 86400 == 0) return dateValue.get((int)(value / 86400));
+                else return "";
+            }
+        };
+        xAxis.setValueFormatter(formatter);
+        Log.w("date value/", dateValue.get(0));
         mLineChart.setData(lineData);
         mLineChart.getDescription().setEnabled(false);
-        mLineChart.getXAxis().setDrawLabels(false);
+        mLineChart.getXAxis().setDrawLabels(true);
 
         mLineChart.invalidate();
     }
