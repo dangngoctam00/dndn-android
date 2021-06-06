@@ -13,6 +13,7 @@ public abstract class BaseViewModel<N> extends ViewModel {
     private final ObservableBoolean mIsLoading = new ObservableBoolean();
     private final ObservableBoolean mIsAlertProcessing = new ObservableBoolean();
     private final ObservableBoolean mAlertState = new ObservableBoolean();
+    private final ObservableBoolean mCannotHandleAlert = new ObservableBoolean();
     private final SchedulerProvider mSchedulerProvider;
 
     private CompositeDisposable mCompositeDisposable;
@@ -31,7 +32,13 @@ public abstract class BaseViewModel<N> extends ViewModel {
     }
 
 
+    public ObservableBoolean getCannotHandleAlert() {
+        return mCannotHandleAlert;
+    }
 
+    public void setCannotHandleAlert(boolean b) {
+        mCannotHandleAlert.set(b);
+    }
 
 
     public ObservableBoolean getIsAlertProcessing() {

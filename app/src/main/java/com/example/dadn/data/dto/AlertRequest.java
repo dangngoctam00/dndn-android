@@ -2,11 +2,11 @@ package com.example.dadn.data.dto;
 
 public class AlertRequest {
     private String id;
-    private String accept;
+    private String action;
 
-    public AlertRequest(String id, String accept) {
+    public AlertRequest(String id, String action) {
         this.id = id;
-        this.accept = accept;
+        this.action = action;
     }
 
     public String getId() {
@@ -17,11 +17,11 @@ public class AlertRequest {
         this.id = id;
     }
 
-    public String getAccept() {
-        return accept;
+    public String getAction() {
+        return action;
     }
 
-    public void setAccept(String accept) {
-        this.accept = accept;
+    public void setAction(String action) {
+        this.action = action;
     }
 }

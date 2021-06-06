@@ -25,18 +25,20 @@ public class AlertTasks {
     synchronized public static void executeTask(Context context, String action) {
         MyFirebaseService.clearAllNotifications(context);
         if (ACTION_ACCEPT.equals(action)) {
-            sendRequest(context, "dadn", "true");
+            sendRequest(context, "dadn", "acceptTask");
+            PreferenceUtilities.SetisAlertProcessing(context,true);
             Log.d("action accept", "ok");
         } else if (ACTION_CANCEL.equals(action)) {
             PreferenceUtilities.SetisAlertProcessing(context,false);
             PreferenceUtilities.SetAlertState(context,false);
-            sendRequest(context, "dadn", "false");
+            PreferenceUtilities.SetcannotHandle(context, false);
+            sendRequest(context, "dadn", "cancelTask");
             Log.d("action reject", "ok");
         }
 
     }
-    synchronized private static void sendRequest(Context context,String id, String accept){
-        AlertRequest payload = new AlertRequest(id, accept);
+    synchronized private static void sendRequest(Context context,String id, String action){
+        AlertRequest payload = new AlertRequest(id, action);
         APIClient.getRetrofit().requestTask(payload).enqueue(new Callback<AlertReponse>() {
             @Override
             public void onResponse(Call<AlertReponse> call, Response<AlertReponse> response) {

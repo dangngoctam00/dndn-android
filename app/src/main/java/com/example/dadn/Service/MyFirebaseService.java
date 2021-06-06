@@ -7,10 +7,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.dadn.R;
 import com.example.dadn.ui.alert.AlertActivity;
@@ -43,16 +49,26 @@ public class MyFirebaseService extends FirebaseMessagingService {
         }
 
          */
+        Log.d(TAG, "onMessageReceived");
         String alert = remoteMessage.getData().get("alert");
-        if(alert.equals("true")){
+        if(alert.equals("alert")){
             Log.d(TAG, "onMessageReceived: ok");
             PreferenceUtilities.SetAlertState(this,true);
             sendNotification(remoteMessage);
         }
         else if (alert.equals("completed")){
             Log.d(TAG, "onMessageReceived: completed");
+            clearAllNotifications(this);
             PreferenceUtilities.SetAlertState(this,false);
             PreferenceUtilities.SetisAlertProcessing(this,false);
+            PreferenceUtilities.SetcannotHandle(this, false);
+        }
+        else if(alert.equals("cannotHandle")){
+            Log.d(TAG, "onMessageReceived: cannotHandle");
+            clearAllNotifications(this);
+            PreferenceUtilities.SetAlertState(this,true);
+            PreferenceUtilities.SetcannotHandle(this, true);
+            sendNotificationCannotHandle(remoteMessage);
         }
 
 
@@ -75,12 +91,53 @@ public class MyFirebaseService extends FirebaseMessagingService {
                 context.getSystemService(context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
+    private void sendNotificationCannotHandle(RemoteMessage remoteMessage){
+        Log.d(TAG, "sendNotification: " + remoteMessage.getData());
+        Map<String, String> dataPayload = remoteMessage.getData();
+        String title = dataPayload.get("title");
+        String body = dataPayload.get("body");
+        String detail = dataPayload.get("detail");
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    getString(R.string.main_notification_channel_name),
+                    NotificationManager.IMPORTANCE_HIGH);
+            mChannel.enableLights(true);
+            mChannel.setVibrationPattern(new long[]{0,1000,500,1000});
+            mChannel.enableVibration(true);
+            mChannel.setLockscreenVisibility(VISIBILITY_PUBLIC);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        SpannableString string = new SpannableString(title);
+        string.setSpan(new StyleSpan(Typeface.BOLD), 0, string.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this ,NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_tomato)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_siren))
+                .setContentTitle(string)
+                .setContentText(body)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setColor(ContextCompat.getColor(this, R.color.red_dark))
+                .setColorized(true)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(detail))
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setContentIntent(contentIntent(this))
+                .addAction(ignoreAction(this, "Đã hiểu"))
+                .setAutoCancel(true);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        }
+        notificationManager.notify(TASK_NOTIFICATION_ID, notificationBuilder.build());
+    }
     private void sendNotification(RemoteMessage remoteMessage) {
         Log.d(TAG, "sendNotification: " + remoteMessage.getData());
         Map<String, String> dataPayload = remoteMessage.getData();
         String title = dataPayload.get("title");
         String body = dataPayload.get("body");
+        String detail = dataPayload.get("detail");
 
 
 
@@ -99,16 +156,22 @@ public class MyFirebaseService extends FirebaseMessagingService {
             mChannel.setLockscreenVisibility(VISIBILITY_PUBLIC);
             notificationManager.createNotificationChannel(mChannel);
         }
+        SpannableString string = new SpannableString(title);
+        string.setSpan(new StyleSpan(Typeface.BOLD), 0, string.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this ,NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_tomato)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
-                .setContentTitle(title)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_siren))
+                .setContentTitle(string)
                 .setContentText(body)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setColor(ContextCompat.getColor(this, R.color.red_dark))
+                .setColorized(true)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(detail))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(contentIntent(this))
                 .addAction(acceptAction(this))
-                .addAction(ignoreAction(this))
+                .addAction(ignoreAction(this, "Hủy bỏ"))
                 .setAutoCancel(true);
 
 
@@ -119,8 +182,10 @@ public class MyFirebaseService extends FirebaseMessagingService {
         notificationManager.notify(TASK_NOTIFICATION_ID, notificationBuilder.build());
     }
 
-    private static NotificationCompat.Action ignoreAction(Context context) {
+    private static NotificationCompat.Action ignoreAction(Context context, String str) {
         Log.d(TAG, "ignoreAction");
+        SpannableString string = new SpannableString(str);
+        string.setSpan(new StyleSpan(Typeface.BOLD), 0, string.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         Intent cancelTaskIntent = new Intent(context, AlertReceiver.class);
         cancelTaskIntent.setAction(AlertTasks.ACTION_CANCEL);
         PendingIntent ignoreReminderPendingIntent = PendingIntent.getBroadcast(
@@ -129,13 +194,15 @@ public class MyFirebaseService extends FirebaseMessagingService {
                 cancelTaskIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action ignoreTaskAction = new NotificationCompat.Action(R.drawable.ic_tomato,
-                "Hủy bỏ",
+                string,
                 ignoreReminderPendingIntent);
 
         return ignoreTaskAction;
     }
 
     private static NotificationCompat.Action acceptAction(Context context) {
+        SpannableString string = new SpannableString("Thực hiện");
+        string.setSpan(new StyleSpan(Typeface.BOLD), 0, string.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         Log.d(TAG, "acceptAction");
         Intent acceptTaskIntent = new Intent(context, AlertReceiver.class);
 
@@ -146,7 +213,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
                 acceptTaskIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationCompat.Action acceptTaskAction = new NotificationCompat.Action(R.drawable.ic_tomato,
-                "Thực hiện",
+                string,
                 incrementWaterPendingIntent);
         return acceptTaskAction;
     }

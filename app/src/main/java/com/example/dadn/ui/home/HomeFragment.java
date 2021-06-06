@@ -65,6 +65,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
         prefs.registerOnSharedPreferenceChangeListener(this);
         mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
         mViewModel.setAlertState(PreferenceUtilities.getAlertState(this.getActivity()));
+        mViewModel.setCannotHandleAlert(PreferenceUtilities.getcannotHandle(this.getActivity()));
 
     }
 
@@ -146,6 +147,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
             mViewModel.setAlertState(PreferenceUtilities.getAlertState(this.getActivity()));
         } else if (PreferenceUtilities.KEY_IS_ALERT_PROCESSING.equals(key)) {
             mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
+        }
+        else if (PreferenceUtilities.KEY_CAN_NOT_HANDLE.equals(key)) {
+            mViewModel.setCannotHandleAlert(PreferenceUtilities.getcannotHandle(this.getActivity()));
         }
 
     }

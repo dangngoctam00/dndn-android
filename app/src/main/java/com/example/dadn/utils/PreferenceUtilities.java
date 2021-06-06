@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 public class PreferenceUtilities {
     public static final String KEY_ALERT = "Alert";
     public static final String KEY_IS_ALERT_PROCESSING = "isAlertProcessing";
+    public static final String KEY_CAN_NOT_HANDLE = "cannotHandle";
     private static final Boolean DEFAULT_BOOLEAN = false;
 
     synchronized public static void SetAlertState(Context context, Boolean i) {
@@ -29,6 +30,18 @@ public class PreferenceUtilities {
     public static Boolean getisAlertProcessing(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Boolean i = prefs.getBoolean(KEY_IS_ALERT_PROCESSING, DEFAULT_BOOLEAN);
+        return i;
+    }
+
+    synchronized public static void SetcannotHandle(Context context, Boolean i) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(KEY_CAN_NOT_HANDLE, i);
+        editor.apply();
+    }
+    public static Boolean getcannotHandle(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Boolean i = prefs.getBoolean(KEY_CAN_NOT_HANDLE, DEFAULT_BOOLEAN);
         return i;
     }
 

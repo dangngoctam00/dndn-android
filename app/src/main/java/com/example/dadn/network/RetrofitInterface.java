@@ -31,6 +31,6 @@ public interface RetrofitInterface {
     @POST("specifications/{id}")
     Observable<String> updateSpecificationDetail(@Path("id") Integer id, @Body SpecificationDetailRequest body);
 
-    @POST("alertprocessing")
+    @POST("reciveresponefromapp")
     Call<AlertReponse> requestTask(@Body AlertRequest body);
 }

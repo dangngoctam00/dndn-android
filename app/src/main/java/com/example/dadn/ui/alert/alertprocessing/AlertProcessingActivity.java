@@ -52,6 +52,7 @@ public  class AlertProcessingActivity extends BaseActivity<ActivityAlertProcessi
         prefs.registerOnSharedPreferenceChangeListener(this);
         mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this));
         mViewModel.setAlertState(PreferenceUtilities.getAlertState(this));
+        mViewModel.setCannotHandleAlert(PreferenceUtilities.getcannotHandle(this));
     }
 
     @Override
@@ -72,6 +73,9 @@ public  class AlertProcessingActivity extends BaseActivity<ActivityAlertProcessi
             mViewModel.setAlertState(PreferenceUtilities.getAlertState(this));
         } else if (PreferenceUtilities.KEY_IS_ALERT_PROCESSING.equals(key)) {
             mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this));
+        }
+        else if (PreferenceUtilities.KEY_CAN_NOT_HANDLE.equals(key)) {
+            mViewModel.setCannotHandleAlert(PreferenceUtilities.getcannotHandle(this));
         }
     }
 }
