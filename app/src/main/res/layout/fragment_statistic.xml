@@ -20,6 +20,21 @@
         android:background="@color/background">
 
 
+        <LinearLayout
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/get_data">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.github.mikephil.charting.charts.LineChart>
+        </LinearLayout>
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/statistic_toolbar"
             android:layout_width="match_parent"
