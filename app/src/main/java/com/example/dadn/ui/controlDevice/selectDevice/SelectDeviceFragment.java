@@ -26,6 +26,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static java.lang.Integer.parseInt;
+
 public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBinding, SelectDeviceViewModel> implements SelectDeviceNavigator{
     FragmentSelectDeviceBinding mFragmentSelectDeviceBinding;
     MqttService mqttService;
@@ -82,7 +84,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
                 Log.w("Debug", "on SelectDeviceFragment" + topic + "/:" + mqttMessage.toString());
                 try {
                     JSONObject jsonObject = new JSONObject(mqttMessage.toString());
-                    if (topic.equals(Constants.TOPICS[0])){
+                    if (topic.equals(Constants.TOPICS[3])){
                         String data = jsonObject.getString("data");
                         String id = jsonObject.getString("id");
                         String name = jsonObject.getString("name");
@@ -104,15 +106,9 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
 
     }
     public void setDeviceItemArrayList() {
-        deviceItemArrayList.add(new SelectDeviceItem("1", "RELAY", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("2", "RELAY", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("3", "RELAY", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("4", "RELAY", "0", ""));
+        deviceItemArrayList.add(new SelectDeviceItem("11", "RELAY", "0", ""));
 
         deviceItemArrayList.add(new SelectDeviceItem("1", "LED", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("2", "LED", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("3", "LED", "0", ""));
-        deviceItemArrayList.add(new SelectDeviceItem("4", "LED", "0", ""));
     }
     public void setmRecyclerView(@NonNull View view){
         mRecyclerView = view.findViewById(R.id.recyclerView_SelectDeviceFragment);
@@ -142,9 +138,9 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         for (SelectDeviceItem device: deviceItemArrayList) {
             if (device.getName().equals(name) & device.getId().equals(id)){
                 device.setData(data);
-                Switch switchDevice = (Switch) viewForSwitch.findViewById(deviceItemArrayList.indexOf(device));
-                switchDevice.setChecked(data.equals("1") ? true : false);
-                Log.w("Switch", "update finish id " + switchDevice.getId() + deviceItemArrayList.indexOf(device));
+                Switch switchDevice = (Switch) viewForSwitch.findViewById(parseInt(device.getId()));
+                switchDevice.setChecked(data.equals("0") ? false : true);
+                Log.w("Switch", "update finish id " + switchDevice.getId());
                 break;
             }
         }

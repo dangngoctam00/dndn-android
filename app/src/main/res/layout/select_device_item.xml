@@ -30,12 +30,13 @@
 
     <Switch
         android:id="@+id/switchDevice"
-        android:layout_width="59dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="230dp"
         android:layout_marginTop="11dp"
-
-        android:layout_marginLeft="230dp" />
-
+        android:foreground="@drawable/track_switch"
+        android:foregroundGravity="top|bottom|clip_horizontal|fill_vertical|right"
+        android:foregroundTint="#573131" />
 
 </androidx.cardview.widget.CardView>
 

@@ -26,6 +26,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import static android.os.SystemClock.sleep;
+import static java.lang.Integer.parseInt;
 
 public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapter.SelectDeviceViewHolder> {
     private Context context;
@@ -55,7 +56,7 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
         holder.nameDevice.setText(selectDeviceItem.getName() + " " + selectDeviceItem.getId());
         holder.switchDevice.setChecked(selectDeviceItem.getData().equals("0") ? false : true);
         holder.position = position;
-        holder.switchDevice.setId(position);
+        holder.switchDevice.setId(parseInt(selectDeviceItem.getId()));
         Log.w("Switch", "id : "+holder.switchDevice.getId());
     }
 
@@ -99,7 +100,8 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
         byte[] b = data.getBytes(Charset.forName("UTF-8"));
         msg.setPayload(b);
         try {
-            mqttService.mqttAndroidClient.publish("pdt95/feeds/test-relay-device-two", msg);
+            String topic = Constants.TOPICS[3];
+            mqttService.mqttAndroidClient.publish(topic, msg);
 
             Log.w("MQTT", "publish: " + msg);
 
@@ -123,7 +125,7 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", topic + "/:" + mqttMessage.toString());
                 JSONObject jsonObject = new JSONObject(mqttMessage.toString());
-                if (topic.equals(Constants.TOPICS[0])){
+                if (topic.equals(Constants.TOPICS[3])){
                     String data = jsonObject.getString("data");
                     String id = jsonObject.getString("id");
                     String name = jsonObject.getString("name");
@@ -146,7 +148,7 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
             if (device.getName().equals(name) && device.getId().equals(id)){
                 device.setData(data);
                 Switch switchDevice = (Switch) v.findViewById(deviceItemArrayList.indexOf(device));
-                switchDevice.setChecked(data.equals(true) ? true : false);
+                switchDevice.setChecked(data.equals("0") ? false : true);
                 Log.w("Switch", "update finish" + data);
                 break;
             }
