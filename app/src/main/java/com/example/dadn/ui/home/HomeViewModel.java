@@ -16,28 +16,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     private String light;
     private String temperature;
     private String air_humidity;
-    /*
-    private final ObservableBoolean mIsAlertProcessing = new ObservableBoolean();
-    private final ObservableBoolean mAlert = new ObservableBoolean();
 
-
-    public ObservableBoolean getMIsAlertProcessing() {
-        return mIsAlertProcessing;
-    }
-
-    public void setMIsAlertProcessing(boolean b) {
-        mIsAlertProcessing.set(b);
-    }
-
-    public ObservableBoolean getMAlert() {
-        return mAlert;
-    }
-
-    public void setMAlert(boolean b) {
-        mAlert.set(b);
-    }
-
-     */
 
 
 
