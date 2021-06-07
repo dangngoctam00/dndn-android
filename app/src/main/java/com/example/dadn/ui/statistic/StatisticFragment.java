@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -44,7 +45,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -188,19 +192,26 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         mLineChart.setNoDataText("");
         ArrayList tempEntries = new ArrayList<>();
         ArrayList humidEntries = new ArrayList<>();
-        ArrayList<String> dateValue = new ArrayList<>();
+        Hashtable<Long, String> dateX = new Hashtable<Long, String>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date start_time = sdf.parse(CHARTTIME.get(CHARTDATA.size() - 1).replace("T", " ")
                 .replace("Z",""));
 
+        long count_date = 0;
         for (int i = CHARTDATA.size() - 1; i >= 0; i--){
             String[] value = CHARTDATA.get(i).split("-");
 
             Date next_time = sdf.parse(CHARTTIME.get(i).replace("T", " ")
                     .replace("Z",""));
             long diff = (next_time.getTime() - start_time.getTime()) / 1000;
-            if (diff % 86400 == 0) dateValue.add(CHARTTIME.get(i).split("T")[0]);
+            long diff_date = TimeUnit.DAYS.convert(diff, TimeUnit.SECONDS);
+
+            if (diff_date == count_date){
+                count_date++;
+                dateX.put(diff, CHARTTIME.get(i).split("T")[0]);
+            }
+            else dateX.put(diff, "");
 
             tempEntries.add(new Entry(diff, parseFloat(value[0])));
             humidEntries.add(new Entry(diff, parseFloat(value[1])));
@@ -219,7 +230,7 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                if((int)value % 86400 == 0) return dateValue.get((int)(value / 86400));
+                if (String.valueOf(dateX.get((long)value)).length() == 10) return String.valueOf(dateX.get((long)value));
                 else return "";
             }
         };
@@ -236,21 +247,28 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
         mLineChart.setNoDataText("");
         ArrayList lineEntries = new ArrayList<>();
-        final ArrayList<String> dateValue = new ArrayList<>();
+        Hashtable<Long, String> dateX = new Hashtable<Long, String>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date start_time = sdf.parse(CHARTTIME.get(CHARTDATA.size() - 1).replace("T", " ")
                 .replace("Z",""));
 
+        long count_date = 0;
         for (int i = CHARTDATA.size() - 1; i >= 0; i--){
             Date next_time = sdf.parse(CHARTTIME.get(i).replace("T", " ")
                     .replace("Z",""));
+
             long diff = (next_time.getTime() - start_time.getTime()) / 1000;
-            if (diff % 86400 == 0) dateValue.add(CHARTTIME.get(i).split("T")[0]);
+            long diff_date = TimeUnit.DAYS.convert(diff, TimeUnit.SECONDS);
+
+            if (diff_date == count_date){
+                count_date++;
+                dateX.put(diff, CHARTTIME.get(i).split("T")[0]);
+            }
+            else dateX.put(diff, "");
 
             lineEntries.add(new Entry(diff, parseFloat(CHARTDATA.get(i))));
         }
-
         LineDataSet dataSet = new LineDataSet(lineEntries, name);
         LineData lineData = new LineData(dataSet);
 
@@ -258,12 +276,12 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                if((int)value % 86400 == 0) return dateValue.get((int)(value / 86400));
+                if (String.valueOf(dateX.get((long)value)).length() == 10) return String.valueOf(dateX.get((long)value));
                 else return "";
             }
         };
         xAxis.setValueFormatter(formatter);
-        Log.w("date value/", dateValue.get(0));
+
         mLineChart.setData(lineData);
         mLineChart.getDescription().setEnabled(false);
         mLineChart.getXAxis().setDrawLabels(true);
