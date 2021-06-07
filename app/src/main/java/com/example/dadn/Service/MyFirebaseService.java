@@ -56,7 +56,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
             PreferenceUtilities.SetAlertState(this,true);
             sendNotification(remoteMessage);
         }
-        else if (alert.equals("completed")){
+        else if (alert.equals("taskCompleted")){
             Log.d(TAG, "onMessageReceived: completed");
             clearAllNotifications(this);
             PreferenceUtilities.SetAlertState(this,false);
