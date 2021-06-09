@@ -22,11 +22,6 @@ public class MqttService {
 
     final String clientId = "ExampleAndroidClient";
 
-    final String username_tam = "dnt00";
-    final String password_tam = "aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH";
-    final String username_phuong = "pdt95";
-    final String password_phuong = "aio_bZKz517UwHOVpuYiCtZgaO17Qxz5";
-
     public MqttService(Context context){
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
@@ -68,8 +63,8 @@ public class MqttService {
         mqttConnectOptions.setAutomaticReconnect(true);
         mqttConnectOptions.setCleanSession(false);
 
-        mqttConnectOptions.setUserName(username_tam);
-        mqttConnectOptions.setPassword(password_tam.toCharArray());
+        mqttConnectOptions.setUserName(Constants.USERNAME);
+        mqttConnectOptions.setPassword(Constants.PASSWORD.toCharArray());
 
         try {
 

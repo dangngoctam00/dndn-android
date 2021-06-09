@@ -6,16 +6,14 @@ import android.os.Bundle;
 
 import android.util.Log;
 
-import android.view.MenuItem;
-
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.dadn.R;
+import com.example.dadn.Service.FireBaseServiceUtils;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
 
@@ -26,13 +24,12 @@ import com.example.dadn.ui.statistic.StatisticFragment;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
-
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
     }
@@ -52,12 +49,25 @@ public class MainActivity extends AppCompatActivity {
                     new HomeFragment()).commit();
         }
 
+        FireBaseServiceUtils.checkToken();
+
+
+
+
+
+        /*
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(
                 task -> Log.d("FCM ", task.getResult())
         );
 
+         */
+
+
+
 
     }
+
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

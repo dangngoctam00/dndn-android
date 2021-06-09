@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -23,13 +23,13 @@
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTop"
             android:theme="@style/LoginTheme">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
 
         <activity
@@ -39,8 +39,38 @@
 
 
         </activity>
+        <activity
+            android:name=".ui.alert.AlertActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.main.MainActivity"
+            >
+        </activity>
+
+        <activity
+            android:name=".ui.alert.alertprocessing.AlertProcessingActivity"
+            >
+        </activity>
+
+        <service android:name=".Service.MyFirebaseService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".Service.AlertReceiver"/>
+
+        <service
+            android:name=".Service.AlertIntentService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <service android:name="org.eclipse.paho.android.service.MqttService"></service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="channelId" />
     </application>
 
 

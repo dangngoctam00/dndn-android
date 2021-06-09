@@ -24,7 +24,6 @@ import javax.inject.Inject;
 
 import dagger.internal.DaggerCollections;
 
-//import javax.inject.Inject;
 
 public abstract class BaseActivity<T extends ViewDataBinding,V extends BaseViewModel> extends AppCompatActivity {
 
