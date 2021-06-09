@@ -27,6 +27,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
                 .observeOn(getSchedulerProvider().io())
                 .subscribe(response -> {
                     setIsLoading(false);
+                    getNavigator().setLogin(true);
                     getNavigator().openMainActivity();
                 }, throwable -> {
                     setIsLoading(false);

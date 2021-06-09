@@ -6,4 +6,6 @@ public interface LoginNavigator {
     void login();
 
     void openMainActivity();
+
+    void setLogin(boolean isLoggedIn);
 }
