@@ -11,6 +11,7 @@ public class Constants {
                                                         USERNAME + "/feeds/bk-iot-temp-humid",
                                                         USERNAME + "/feeds/bk-iot-relay",
                                                         USERNAME + "/feeds/bk-iot-led"};
+    public static final String LIMIT = "5";
     //username: dadn201
     //password: 123456
 }
