@@ -1,6 +1,8 @@
 package com.example.dadn.network;
 
 
+import com.example.dadn.data.dto.AlertActiveRequest;
+import com.example.dadn.data.dto.AlertActiveRespone;
 import com.example.dadn.data.dto.AlertReponse;
 import com.example.dadn.data.dto.AlertRequest;
 import com.example.dadn.data.dto.LoginRequest;
@@ -31,6 +33,12 @@ public interface RetrofitInterface {
     @POST("specifications/{id}")
     Observable<String> updateSpecificationDetail(@Path("id") Integer id, @Body SpecificationDetailRequest body);
 
-    @POST("reciveresponefromapp")
+    @POST("receiveresponefromapp")
     Call<AlertReponse> requestTask(@Body AlertRequest body);
+
+    @POST("activatealert")
+    Call<AlertActiveRespone> postactivateAlert(@Body AlertActiveRequest body);
+
+    @GET("activatealert")
+    Call<AlertActiveRespone> getactivateAlert();
 }

@@ -70,6 +70,11 @@ public class MyFirebaseService extends FirebaseMessagingService {
             PreferenceUtilities.SetcannotHandle(this, true);
             sendNotificationCannotHandle(remoteMessage);
         }
+        else if(alert.equals("processing")){
+            Log.d(TAG, "onMessageReceived: processing");
+            clearAllNotifications(this);
+            PreferenceUtilities.SetisAlertProcessing(this,true);
+        }
 
 
     }

@@ -25,16 +25,18 @@
             android:id="@+id/cardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
             android:layout_marginTop="40dp"
-            app:cardCornerRadius="30dp"
+            app:cardCornerRadius="50dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <ImageView
                 android:id="@+id/img_user"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 app:srcCompat="@drawable/user" />
         </androidx.cardview.widget.CardView>
 
@@ -45,28 +47,19 @@
             android:text="Lê Nguyễn Đồ Án"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-        <TextView
-            android:id="@+id/edit_avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chỉnh sửa ảnh đại diện"
-            android:textColor="#1672EC"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toBottomOf="@+id/user_fullname"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="30dp"/>
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="148dp" />
+            app:layout_constraintGuide_begin="200dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,6 +69,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+
                 android:background="#C4C4C4"/>
             <TextView
                 android:id="@+id/tv_settings_account"
@@ -93,6 +87,24 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:background="#C4C4C4"
+                />
+            <TextView
+                android:id="@+id/tv_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_settings"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:text="Cài đặt"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:onClick="@{() -> viewModel.openSetting2Fragment()}"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="10dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:background="#C4C4C4"/>
             <TextView
                 android:id="@+id/tv_settings_help"
@@ -102,6 +114,7 @@
                 android:drawablePadding="16dp"
                 android:gravity="center_vertical"
                 android:text="Trợ giúp"
+                android:onClick="@{() -> viewModel.openHelpFragment()}"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:paddingHorizontal="30dp"
@@ -120,6 +133,7 @@
                 android:text="Giới thiệu"
                 android:textColor="@color/black"
                 android:textSize="20dp"
+                android:onClick="@{() -> viewModel.openIntroductionFragment()}"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"/>
             <View
