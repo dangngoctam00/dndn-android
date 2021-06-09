@@ -48,6 +48,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_username"
                 style="@style/InputText"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username" />
@@ -68,6 +69,7 @@
                 android:id="@+id/et_password"
                 style="@style/InputText"
                 android:inputType="textPassword"
+                android:imeOptions="actionDone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password" />
