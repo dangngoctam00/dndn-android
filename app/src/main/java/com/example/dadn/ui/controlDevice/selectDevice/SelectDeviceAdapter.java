@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -16,23 +15,19 @@ import com.example.dadn.R;
 import com.example.dadn.utils.Constants;
 import com.example.dadn.utils.mqtt.MqttService;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-import static android.os.SystemClock.sleep;
 import static java.lang.Integer.parseInt;
 
 public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapter.SelectDeviceViewHolder> {
     private Context context;
     MqttService mqttService;
     View v;
-    String[] TOPICS = Constants.TOPICS_PHUONG;
+    String[] TOPICS = Constants.TOPICS;
 
     public void setMqttService(MqttService mqttService){ this.mqttService = mqttService; }
     public SelectDeviceAdapter(Context context) {

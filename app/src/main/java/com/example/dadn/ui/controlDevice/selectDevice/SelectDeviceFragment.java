@@ -18,7 +18,6 @@ import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.utils.Constants;
 import com.example.dadn.utils.mqtt.MqttService;
-import com.google.gson.JsonObject;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -66,7 +65,6 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
         startMqtt();
-
     }
 
     @Override
@@ -134,7 +132,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
             @Override
             public void onResponse(Call<List<ResultFeedData>> call, Response<List<ResultFeedData>> response) {
                 List<ResultFeedData> values = response.body();
-
+                Log.w("respone", response.toString());
                 for (ResultFeedData value: values) {
                     Log.w("Http Response", value.getValue());
                     try {
