@@ -1,12 +1,16 @@
 package com.example.dadn.utils;
 
 public class Constants {
-    public static final String BASE_URL = "http://192.168.1.5:3001/api/";
+    public static final String BASE_URL = "http://192.168.1.16:3000/api/";
     public static final String TOKEN = "token";
     public static final String EMAIL = "email";
-    public static final String[] TOPICS = new String[] {"dnt00/feeds/bk-iot-soil",
-                                                        "dnt00/feeds/bk-iot-light",
-                                                        "dnt00/feeds/bk-iot-temp-humid",
-                                                        "dnt00/feeds/bk-iot-relay"};
-    public static final String[] TOPICS_PHUONG = new String[] {"pdt95/feeds/test-relay-device-two"};
+    public static final String USERNAME = "dadn201";
+    public static final String PASSWORD = "aio_OTtq25sIyD1ME6A2wvhpxrkdZLPk";
+    public static final String[] TOPICS = new String[] {USERNAME + "/feeds/bk-iot-soil",
+                                                        USERNAME + "/feeds/bk-iot-light",
+                                                        USERNAME + "/feeds/bk-iot-temp-humid",
+                                                        USERNAME + "/feeds/bk-iot-relay",
+                                                        USERNAME + "/feeds/bk-iot-led"};
+    //username: dadn201
+    //password: 123456
 }
