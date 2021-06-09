@@ -71,7 +71,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
 
     private void startMqtt() {
-        //mViewModel.setIsLoading(true);
+        mViewModel.setIsLoading(true);
         MqttCallbackExtended callbackExtended = new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
