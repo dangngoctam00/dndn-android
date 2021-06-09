@@ -99,6 +99,7 @@
                 android:text="Cài đặt"
                 android:textColor="@color/black"
                 android:textSize="20dp"
+                android:onClick="@{() -> viewModel.openSetting2Fragment()}"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"/>
             <View
