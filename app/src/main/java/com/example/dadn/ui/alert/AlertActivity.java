@@ -32,12 +32,16 @@ import com.example.dadn.utils.PreferenceUtilities;
 public  class AlertActivity extends BaseActivity<ActivityAlertBinding, AlertViewModel> implements AlertNavigator, SharedPreferences.OnSharedPreferenceChangeListener{
 
 
-
+    String TAG = "AlertActivity";
     private ActivityAlertBinding mActivityAlertBinding;
     TextView mAlertNotice;
     Button mThucHien;
     Button mHuyBo;
     Button mDaHieu;
+    TextView mLight;
+    TextView mSolid;
+    TextView mTemp;
+    TextView mHumid;
     public static Intent newIntent(Context context) {
         return new Intent(context, AlertActivity.class);
     }
@@ -94,12 +98,68 @@ public  class AlertActivity extends BaseActivity<ActivityAlertBinding, AlertView
         mDaHieu = (Button) findViewById(R.id.btn_dahieu);
         mHuyBo = (Button) findViewById(R.id.btn_huybo);
         mThucHien = (Button) findViewById(R.id.btn_thuchien);
+
         mDaHieu.setVisibility(mViewModel.getCannotHandleAlert().get() ? View.VISIBLE : View.GONE);
         mThucHien.setVisibility(mViewModel.getCannotHandleAlert().get() ? View.GONE : View.VISIBLE);
         mHuyBo.setVisibility(mViewModel.getCannotHandleAlert().get() ? View.GONE : View.VISIBLE);
         if(mViewModel.getCannotHandleAlert().get()){
             mAlertNotice.setText("Hiện tại chúng tôi không thể cải thiện tình trạng của khu vườn. \nHãy kiểm tra khu vườn ngay");
         }
+
+        mHumid = (TextView) findViewById(R.id.tv_alert_humid);
+        mSolid = (TextView) findViewById(R.id.tv_alert_solid);
+        mTemp = (TextView) findViewById(R.id.tv_alert_temperature);
+        mLight = (TextView) findViewById(R.id.tv_alert_light);
+
+        String solid = PreferenceUtilities.getSolid(this);
+        String humid = PreferenceUtilities.getHumid(this);
+        String light = PreferenceUtilities.getLight(this);
+        String temp = PreferenceUtilities.getTemp(this);
+        Log.d(TAG, "onCreate: " + "solid " + solid + " humid " + humid + " light " + light + " temp " + temp);
+        if(humid.equals("lower_bound")){
+
+            mHumid.setText("Độ ẩm không khí thấp");
+            mHumid.setVisibility(View.VISIBLE);
+        }
+        else if(humid.equals("upper_bound")){
+
+            mHumid.setText("Độ ẩm không khí cao");
+            mHumid.setVisibility(View.VISIBLE);
+        }
+        else mHumid.setVisibility(View.GONE);
+
+        if(solid.equals("lower_bound")){
+
+            mSolid.setText("Độ ẩm đất thấp");
+            mSolid.setVisibility(View.VISIBLE);
+        }
+        else if(solid.equals("upper_bound")){
+            mSolid.setText("Độ ẩm đất cao");
+            mSolid.setVisibility(View.VISIBLE);
+        }
+        else mSolid.setVisibility(View.GONE);
+
+        if(light.equals("lower_bound")){
+            mLight.setText("Ánh sáng thấp");
+            mLight.setVisibility(View.VISIBLE);
+        }
+        else if(light.equals("upper_bound")){
+            mLight.setText("Ánh sáng cao");
+            mLight.setVisibility(View.VISIBLE);
+        }
+        else mLight.setVisibility(View.GONE);
+
+        if(temp.equals("lower_bound")){
+            mTemp.setText("Nhiệt độ thấp");
+            mTemp.setVisibility(View.VISIBLE);
+        }
+        else if(temp.equals("upper_bound")){
+            mTemp.setText("Nhiệt độ cao");
+            mTemp.setVisibility(View.VISIBLE);
+        }
+        else mTemp.setVisibility(View.GONE);
+
+
     }
     @Override
     protected void onDestroy() {
@@ -123,5 +183,7 @@ public  class AlertActivity extends BaseActivity<ActivityAlertBinding, AlertView
         else if (PreferenceUtilities.KEY_CAN_NOT_HANDLE.equals(key)) {
             mViewModel.setCannotHandleAlert(PreferenceUtilities.getcannotHandle(this));
         }
+
+
     }
 }
