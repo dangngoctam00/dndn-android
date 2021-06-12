@@ -8,4 +8,6 @@ public interface LoginNavigator {
     void openMainActivity();
 
     void setLogin(boolean isLoggedIn);
+
+    void openRegisterActivity();
 }

@@ -12,6 +12,7 @@ import com.example.dadn.databinding.ActivityLoginBinding;
 import com.example.dadn.di.component.ActivityComponent;
 import com.example.dadn.ui.base.BaseActivity;
 import com.example.dadn.ui.main.MainActivity;
+import com.example.dadn.ui.register.RegisterActivity;
 import com.example.dadn.utils.SessionManager;
 
 
@@ -77,6 +78,13 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding ,LoginViewM
     @Override
     public void openMainActivity() {
         Intent intent = MainActivity.newIntent(LoginActivity.this);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void openRegisterActivity() {
+        Intent intent = RegisterActivity.newIntent(LoginActivity.this);
         startActivity(intent);
         finish();
     }
