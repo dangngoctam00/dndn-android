@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class SpecificationDetailResponse {
     @Expose
-    @SerializedName("spec")
-    private String spec;
+    @SerializedName("type")
+    private String type;
 
     @Expose
     @SerializedName("id")
@@ -14,18 +14,18 @@ public class SpecificationDetailResponse {
 
     @Expose
     @SerializedName("lower_bound")
-    private Float lower_bound;
+    private Integer lower_bound;
 
     @Expose
     @SerializedName("upper_bound")
-    private Float upper_bound;
+    private Integer upper_bound;
 
-    public String getSpec() {
-        return spec;
+    public String getType() {
+        return type;
     }
 
-    public void setSpec(String spec) {
-        this.spec = spec;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Integer getId() {
@@ -36,19 +36,20 @@ public class SpecificationDetailResponse {
         this.id = id;
     }
 
-    public Float getLower_bound() {
+    public Integer getLower_bound() {
         return lower_bound;
     }
 
-    public void setLower_bound(Float lower_bound) {
+    public void setLower_bound(Integer lower_bound) {
         this.lower_bound = lower_bound;
     }
 
-    public Float getUpper_bound() {
+    public void setUpper_bound(Integer upper_bound) {
+        this.upper_bound = upper_bound;
+    }
+
+    public Integer getUpper_bound() {
         return upper_bound;
     }
 
-    public void setUpper_bound(Float upper_bound) {
-        this.upper_bound = upper_bound;
-    }
 }

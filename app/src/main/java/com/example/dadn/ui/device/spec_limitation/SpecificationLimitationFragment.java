@@ -110,7 +110,7 @@ public class SpecificationLimitationFragment extends BaseFragment<FragmentSpecif
 
     }
 
-    private int getIdSpecs(int pos) {
-        return mSpecificationsAdapter.getSpecs().get(pos).getId();
+    private String getIdSpecs(int pos) {
+        return mSpecificationsAdapter.getSpecs().get(pos).getType();
     }
 }

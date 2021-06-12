@@ -14,8 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.library.baseAdapters.BR;
 
 import com.example.dadn.R;
-import com.example.dadn.data.dto.SpecificationDetailRequest;
-import com.example.dadn.data.dto.SpecificationDetailResponse;
+import com.example.dadn.data.dto.UpdateSpecificationRequest;
 import com.example.dadn.databinding.FragmentSpecificationLimitationDetailBinding;
 import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.network.APIClient;
@@ -27,10 +26,10 @@ public class SpecificationLimitationDetailFragment extends
 
     FragmentSpecificationLimitationDetailBinding mFragmentSpecificationLimitationDetailBinding;
 
-    public static SpecificationLimitationDetailFragment newInstance(Integer id){
+    public static SpecificationLimitationDetailFragment newInstance(String type){
         SpecificationLimitationDetailFragment fragment= new SpecificationLimitationDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("spec_id", id);
+        bundle.putString("type", type);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -73,15 +72,14 @@ public class SpecificationLimitationDetailFragment extends
 
         Bundle bundle = this.getArguments();
 
-        APIClient.getRetrofit().getSpecificationDetail(bundle.getInt("spec_id"))
+        APIClient.getRetrofit().getSpecificationDetail(bundle.getString("type"))
                 .subscribeOn(mViewModel.getSchedulerProvider().io())
                 .observeOn(mViewModel.getSchedulerProvider().ui())
                 .subscribe(response -> {
                     Log.d("SUCCESS: ", response.toString());
-                    SpecificationDetailResponse res = (SpecificationDetailResponse)response;
-                    spec_detail_title.setText(res.getSpec());
-                    lower_bound.setText(processValue(res.getLower_bound()));
-                    upper_bound.setText(processValue(res.getUpper_bound()));
+                    spec_detail_title.setText(response.get(0).getType());
+                    lower_bound.setText(processValue(response.get(0).getLower_bound()));
+                    upper_bound.setText(processValue(response.get(0).getUpper_bound()));
                     mViewModel.setIsLoading(false);
 
                 }, throwable -> {
@@ -99,38 +97,35 @@ public class SpecificationLimitationDetailFragment extends
     }
 
 
-    private String processValue(Float v) {
+    private String processValue(Integer v) {
         Log.d("PROCESS VALUE", v.toString());
-        if (Math.floor(v) == v) {
-            return v.toString().split("\\.")[0];
-        }
         return v.toString();
     }
 
     @Override
     public void decreaseLowerBound() {
-         Float value = Float.parseFloat(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
+         Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
          value--;
          mFragmentSpecificationLimitationDetailBinding.lowerBound.setText(processValue(value));
     }
 
     @Override
     public void increaseLowerBound() {
-        Float value = Float.parseFloat(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
+        Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
         value++;
         mFragmentSpecificationLimitationDetailBinding.lowerBound.setText(processValue(value));
     }
 
     @Override
     public void decreaseUpperBound() {
-        Float value = Float.parseFloat(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
+        Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
         value--;
         mFragmentSpecificationLimitationDetailBinding.upperBound.setText(processValue(value));
     }
 
     @Override
     public void increaseUpperBound() {
-        Float value = Float.parseFloat(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
+        Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
         value++;
         mFragmentSpecificationLimitationDetailBinding.upperBound.setText(processValue(value));
     }
@@ -138,15 +133,15 @@ public class SpecificationLimitationDetailFragment extends
     @Override
     public void updateLimitation() {
         mViewModel.setIsLoading(true);
-        Float lower_bound = Float.parseFloat(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
-        Float upper_bound = Float.parseFloat(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
+        Integer lower_bound = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
+        Integer upper_bound = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
         Bundle bundle = this.getArguments();
-        Integer id = bundle.getInt("spec_id");
-        SpecificationDetailRequest request = new SpecificationDetailRequest();
-
+        String type = bundle.getString("type");
+        UpdateSpecificationRequest request = new UpdateSpecificationRequest();
+        request.setType(type);
         request.setUpper_bound(upper_bound);
         request.setLower_bound(lower_bound);
-        APIClient.getRetrofit().updateSpecificationDetail(id, request)
+        APIClient.getRetrofit().updateSpecificationDetail(request)
                 .subscribeOn(mViewModel.getSchedulerProvider().io())
                 .observeOn(mViewModel.getSchedulerProvider().ui())
                 .subscribe(response -> {
