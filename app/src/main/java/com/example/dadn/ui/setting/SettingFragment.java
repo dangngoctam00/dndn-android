@@ -1,5 +1,6 @@
 package com.example.dadn.ui.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,14 +12,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dadn.R;
-
 import com.example.dadn.databinding.FragmentSettingBinding;
 import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.base.BaseFragment;
+import com.example.dadn.ui.login.LoginActivity;
+import com.example.dadn.utils.SessionManager;
 
 public class SettingFragment extends BaseFragment<FragmentSettingBinding, SettingViewModel> implements SettingNavigator {
 
     FragmentSettingBinding mFragmentSettingBinding;
+
+    private SessionManager session;
 
     @Override
     public int getBindingVariable() {
@@ -39,6 +43,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding, Settin
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
+        session = new SessionManager(getActivity().getApplicationContext());
     }
 
 
@@ -49,6 +54,13 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding, Settin
         mFragmentSettingBinding = getViewDataBinding();
     }
 
+    @Override
+    public void logout() {
+        session.setLogin(false);
+        Intent intent = LoginActivity.newIntent(getActivity());
+        startActivity(intent);
+    }
+
     public void ReplaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -56,5 +68,4 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding, Settin
         fragmentTransaction.addToBackStack(fragment.toString());
         fragmentTransaction.commit();
     }
-
 }

@@ -6,19 +6,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.databinding.DataBindingUtil;
-
 import com.example.dadn.BR;
 import com.example.dadn.R;
 import com.example.dadn.databinding.ActivityLoginBinding;
 import com.example.dadn.di.component.ActivityComponent;
 import com.example.dadn.ui.base.BaseActivity;
 import com.example.dadn.ui.main.MainActivity;
+import com.example.dadn.ui.register.RegisterActivity;
+import com.example.dadn.utils.SessionManager;
 
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding ,LoginViewModel> implements LoginNavigator {
 
-
+    private SessionManager session;
     private ActivityLoginBinding mActivityLoginBinding;
 
     public static Intent newIntent(Context context) {
@@ -40,6 +40,10 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding ,LoginViewM
         super.onCreate(savedInstanceState);
         mActivityLoginBinding = getViewDataBinding();
         mViewModel.setNavigator(this);
+        session = new SessionManager(getApplicationContext());
+        if (session.isLoggedIn()) {
+            openMainActivity();
+        }
     }
 
     @Override
@@ -76,5 +80,17 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding ,LoginViewM
         Intent intent = MainActivity.newIntent(LoginActivity.this);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void openRegisterActivity() {
+        Intent intent = RegisterActivity.newIntent(LoginActivity.this);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void setLogin(boolean isLoggedIn) {
+        session.setLogin(isLoggedIn);
     }
 }

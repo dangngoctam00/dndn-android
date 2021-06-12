@@ -6,19 +6,19 @@ import com.google.gson.annotations.SerializedName;
 public class SpecificationResponse {
 
     @Expose
-    @SerializedName("spec")
-    private String spec;
+    @SerializedName("type")
+    private String type;
 
     @Expose
     @SerializedName("id")
     private Integer id;
 
-    public String getSpec() {
-        return spec;
+    public String getType() {
+        return type;
     }
 
-    public void setSpec(String spec) {
-        this.spec = spec;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Integer getId() {

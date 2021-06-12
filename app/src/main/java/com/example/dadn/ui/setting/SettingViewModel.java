@@ -11,6 +11,11 @@ public class SettingViewModel extends BaseViewModel<SettingNavigator> {
     public SettingViewModel(SchedulerProvider mSchedulerProvider) {
         super(mSchedulerProvider);
     }
+
+    public void onLogoutClick() {
+        getNavigator().logout();
+    }
+  
     public void openIntroductionFragment(){
         getNavigator().ReplaceFragment(new IntroductionFragment());
     }
@@ -20,5 +25,4 @@ public class SettingViewModel extends BaseViewModel<SettingNavigator> {
     public void openSetting2Fragment(){
         getNavigator().ReplaceFragment(new Setting2Fragment());
     }
-
 }

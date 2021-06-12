@@ -1,7 +1,7 @@
 package com.example.dadn.utils;
 
 public class Constants {
-    public static final String BASE_URL = "http://192.168.1.2:3001/api/";
+    public static final String BASE_URL = "http://192.168.1.16:3001/";
     public static final String TOKEN = "token";
     public static final String EMAIL = "email";
     public static final String USERNAME = "dadn201";

@@ -27,6 +27,10 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
                 .observeOn(getSchedulerProvider().io())
                 .subscribe(response -> {
                     setIsLoading(false);
+                    if (response.getMessage().equals("failed")) {
+                        getNavigator().handleError(new Throwable("failed"));
+                    }
+                    getNavigator().setLogin(true);
                     getNavigator().openMainActivity();
                 }, throwable -> {
                     setIsLoading(false);
@@ -36,5 +40,9 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
 
     public void onServerLoginClick() {
         getNavigator().login();
+    }
+
+    public void onNavigateRegisterClick() {
+        getNavigator().openRegisterActivity();
     }
 }

@@ -9,6 +9,7 @@ import com.example.dadn.ui.alert.AlertViewModel;
 import com.example.dadn.ui.alert.alertprocessing.AlertProcessingViewModel;
 import com.example.dadn.ui.base.BaseActivity;
 import com.example.dadn.ui.login.LoginViewModel;
+import com.example.dadn.ui.register.RegisterViewModel;
 import com.example.dadn.utils.rx.SchedulerProvider;
 
 import dagger.Module;
@@ -42,10 +43,11 @@ public class ActivityModule {
         ViewModelProviderFactory<AlertProcessingViewModel> factory = new ViewModelProviderFactory<>(AlertProcessingViewModel.class, supplier);
         return new ViewModelProvider((ViewModelStoreOwner) activity, factory).get(AlertProcessingViewModel.class);
     }
-//    @Provides
-//    MainViewModel provideMainViewModel(SchedulerProvider schedulerProvider) {
-//        Supplier<MainViewModel> supplier = () -> new MainViewModel( schedulerProvider);
-//        ViewModelProviderFactory<MainViewModel> factory = new ViewModelProviderFactory<>(MainViewModel.class, supplier);
-//        return new ViewModelProvider((ViewModelStoreOwner) activity, factory).get(MainViewModel.class);
-//    }
+
+    @Provides
+    RegisterViewModel provideRegisterViewModel(SchedulerProvider schedulerProvider) {
+        Supplier<RegisterViewModel> supplier = () -> new RegisterViewModel(schedulerProvider);
+        ViewModelProviderFactory<RegisterViewModel> factory = new ViewModelProviderFactory<>(RegisterViewModel.class, supplier);
+        return new ViewModelProvider((ViewModelStoreOwner) activity, factory).get(RegisterViewModel.class);
+    }
 }

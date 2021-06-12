@@ -48,10 +48,10 @@ public class SpecificationsAdapter extends RecyclerView.Adapter<SpecificationsAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get the data model based on position
-        SpecificationResponse spec = specs.get(position);
+        SpecificationResponse type = specs.get(position);
 
         // Set item views based on your views and data model
-        holder.spec_name.setText(spec.getSpec());
+        holder.spec_name.setText(type.getType());
         Log.d(TAG, "onBindViewHolder()");
     }
 
