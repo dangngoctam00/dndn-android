@@ -32,6 +32,7 @@ public class AlertTasks {
             PreferenceUtilities.SetisAlertProcessing(context,false);
             PreferenceUtilities.SetAlertState(context,false);
             PreferenceUtilities.SetcannotHandle(context, false);
+            PreferenceUtilities.resetState(context);
             sendRequest(context, "dadn", "cancelTask");
             Log.d("action reject", "ok");
         }

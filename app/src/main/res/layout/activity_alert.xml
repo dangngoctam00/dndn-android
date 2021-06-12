@@ -48,8 +48,9 @@
             android:orientation="vertical"
             android:paddingLeft="100dp"
             >
+
             <TextView
-                android:id="@+id/tv_alert_temperature_1"
+                android:id="@+id/tv_alert_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/temperature_ic_alert"
@@ -60,14 +61,14 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/tv_alert_humidity_1"
+                android:id="@+id/tv_alert_solid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawableLeft="@drawable/humidity_ic_alert"
                 android:drawablePadding="16dp"
                 android:gravity="center_vertical"
-                android:text="Độ ẩm quá cao"
+                android:text="Độ ẩm đất quá cao"
                 android:textColor="@color/black"
                 android:textSize="16dp" />
             <TextView
@@ -79,6 +80,17 @@
                 android:drawablePadding="16dp"
                 android:gravity="center_vertical"
                 android:text="Ánh sáng quá thấp"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+            <TextView
+                android:id="@+id/tv_alert_humid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_humidity"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:text="Độ ẩm không khí quá thấp"
                 android:textColor="@color/black"
                 android:textSize="16dp" />
         </LinearLayout>

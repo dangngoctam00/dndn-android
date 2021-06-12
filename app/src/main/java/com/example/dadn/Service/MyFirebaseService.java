@@ -49,7 +49,8 @@ public class MyFirebaseService extends FirebaseMessagingService {
         }
 
          */
-        Log.d(TAG, "onMessageReceived");
+
+        Log.d(TAG, "onMessageReceived" + remoteMessage);
         String alert = remoteMessage.getData().get("alert");
         if(alert.equals("alert")){
             Log.d(TAG, "onMessageReceived: ok");
@@ -62,6 +63,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
             PreferenceUtilities.SetAlertState(this,false);
             PreferenceUtilities.SetisAlertProcessing(this,false);
             PreferenceUtilities.SetcannotHandle(this, false);
+            PreferenceUtilities.resetState(this);
         }
         else if(alert.equals("cannotHandle")){
             Log.d(TAG, "onMessageReceived: cannotHandle");
@@ -69,6 +71,24 @@ public class MyFirebaseService extends FirebaseMessagingService {
             PreferenceUtilities.SetAlertState(this,true);
             PreferenceUtilities.SetcannotHandle(this, true);
             sendNotificationCannotHandle(remoteMessage);
+        }
+        else if(alert.equals("processing")){
+            Log.d(TAG, "onMessageReceived: processing");
+            clearAllNotifications(this);
+            PreferenceUtilities.SetisAlertProcessing(this,true);
+        }
+
+        if(alert.equals("alert") || alert.equals("cannotHandle")){
+            PreferenceUtilities.resetState(this);
+            PreferenceUtilities.SetHumid(this,remoteMessage.getData().get("humid"));
+            PreferenceUtilities.SetLight(this, remoteMessage.getData().get("light"));
+            PreferenceUtilities.SetSolid(this, remoteMessage.getData().get("solid"));
+            PreferenceUtilities.SetTemp(this, remoteMessage.getData().get("temp"));
+            String solidQ = PreferenceUtilities.getSolid(this);
+            String humidQ = PreferenceUtilities.getHumid(this);
+            String lightQ = PreferenceUtilities.getLight(this);
+            String tempQ = PreferenceUtilities.getTemp(this);
+
         }
 
 
