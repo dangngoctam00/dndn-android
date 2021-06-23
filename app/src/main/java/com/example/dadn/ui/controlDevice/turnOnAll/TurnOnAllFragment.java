@@ -154,6 +154,7 @@ public class TurnOnAllFragment extends BaseFragment<FragmentTurnOnAllBinding, Tu
                     "\"}";
             sendDataMqtt(mes, device.getName());
         }
+        deviceItemArrayList = new ArrayList<SelectDeviceItem>();
     }
     public void sendDataMqtt(String data, String name){
         MqttMessage msg = new MqttMessage();
