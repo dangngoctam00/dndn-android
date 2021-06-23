@@ -9,4 +9,6 @@ public class StatisticViewModel extends BaseViewModel<StatisticNavigator> {
     public StatisticViewModel(SchedulerProvider mSchedulerProvider) {
         super(mSchedulerProvider);
     }
+
+    public void getData() { getNavigator().get_data(); }
 }

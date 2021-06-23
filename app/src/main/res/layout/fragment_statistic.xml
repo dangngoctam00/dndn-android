@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -15,18 +14,153 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background">
 
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/chart1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="statistic"
-            android:textColor="@color/black_effective"/>
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/get_data">
 
-    </FrameLayout>
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.github.mikephil.charting.charts.LineChart>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/statistic_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:minHeight="?attr/actionBarSize"
+            android:paddingStart="20dp"
+            android:paddingTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title=""
+
+            app:titleTextColor="@color/black_effective">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/toolbarTitle"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="DỮ LIỆU THỐNG KÊ" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <Spinner
+            android:id="@+id/specification_spinner"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="200dp"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/spinner_bg"
+            android:dropDownWidth="200dp"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:paddingRight="14dp"
+            android:popupBackground="@color/teal_700"
+            android:popupElevation="3dp"
+            android:stateListAnimator="@drawable/spinner_sla"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Chọn thông số"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/statistic_toolbar" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:text="Chọn khoảng thời gian"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_time_duration"
+            style="@style/InputText"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="@color/black"
+            android:hint=""
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+        <Spinner
+            android:id="@+id/time_duration_spinner"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="100dp"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/spinner_bg"
+            android:dropDownWidth="100dp"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:paddingRight="14dp"
+            android:popupBackground="@color/teal_700"
+            android:popupElevation="3dp"
+            android:stateListAnimator="@drawable/spinner_sla"
+            app:layout_constraintBottom_toBottomOf="@+id/et_time_duration"
+            app:layout_constraintStart_toEndOf="@+id/et_time_duration"
+            app:layout_constraintTop_toTopOf="@+id/et_time_duration" />
+
+        <Button
+            android:id="@+id/get_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/btn_change"
+            android:onClick="@{() -> viewModel.getData()}"
+            android:paddingLeft="15dp"
+            android:paddingTop="0dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="0dp"
+            android:text="Lấy dữ liệu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_time_duration" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 </layout>
