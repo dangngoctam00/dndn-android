@@ -58,7 +58,7 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
         holder.deviceItem.setData(selectDeviceItem.getData());
         holder.deviceItem.setUnit(selectDeviceItem.getUnit());
 
-        Log.w("Switch", "id : "+holder.switchDevice.getId());
+        Log.w("Switch", "id : "+holder.switchDevice.getId() + "/ " + selectDeviceItem.getData());
     }
 
 

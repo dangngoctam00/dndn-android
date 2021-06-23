@@ -11,7 +11,16 @@ public class Constants {
             USERNAME + "/feeds/bk-iot-temp-humid",
             USERNAME + "/feeds/bk-iot-relay",
             USERNAME + "/feeds/bk-iot-led"};
-    public static final String LIMIT = "5";
+    public static final String[] CONSTRAINT_TOPICS = new String[] {
+            USERNAME + "/feeds/bk-iot-soil",
+            USERNAME + "/feeds/bk-iot-light",
+            USERNAME + "/feeds/bk-iot-temp-humid"
+    };
+    public static final String[] DEVICE_TOPICS = new String[] {
+            USERNAME + "/feeds/bk-iot-relay",
+            USERNAME + "/feeds/bk-iot-led"
+    };
+    public static final String LIMIT = "1";
     //username: dadn201
     //password: 123456
 }

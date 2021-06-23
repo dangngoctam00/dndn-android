@@ -11,13 +11,11 @@ import androidx.databinding.library.baseAdapters.BR;
 
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentTurnOffAllBinding;
-import com.example.dadn.databinding.FragmentTurnOnAllBinding;
 import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.ui.controlDevice.selectDevice.ResultFeedData;
 import com.example.dadn.ui.controlDevice.selectDevice.RetrofitClient;
 import com.example.dadn.ui.controlDevice.selectDevice.SelectDeviceItem;
-import com.example.dadn.ui.controlDevice.turnOnAll.TurnOnAllNavigator;
 import com.example.dadn.utils.Constants;
 import com.example.dadn.utils.mqtt.MqttService;
 
@@ -43,6 +41,7 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
     String[] TOPICS = Constants.TOPICS;
     String USERNAME = Constants.USERNAME;
     String LIMIT = Constants.LIMIT;
+    String TAG = "TurnOffAllFragment TAG";
     @Override
     public int getBindingVariable() {
         return BR.viewModel;
@@ -72,6 +71,19 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
         onButtonCancel(view);
         onButtonConfirm(view);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            mqttService.mqttAndroidClient.unsubscribe(Constants.CONSTRAINT_TOPICS);
+//            mqttService.mqttAndroidClient.disconnect();
+            Log.d(TAG, "Unsubscribe successfully");
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void onButtonCancel(@NonNull View view){
         Button back = (Button) view.findViewById(R.id.cancel_button);
         back.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +116,7 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
             public void onResponse(Call<List<ResultFeedData>> call, Response<List<ResultFeedData>> response) {
                 List<ResultFeedData> values = response.body();
                 for (ResultFeedData value: values) {
-                    Log.w("Http Response", value.getValue());
+                    Log.w(TAG, "Http Response" + value.getValue());
                     try {
                         JSONObject jsonObject = new JSONObject(value.getValue());
                         if (!inDeviceItemArrayList(jsonObject)){
@@ -114,10 +126,10 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
                                     jsonObject.getString("data"),
                                     jsonObject.getString("unit")
                             ));
-                            Log.w("array list", "add one " + deviceItemArrayList.toString());
+                            Log.w(TAG, "array list add one " + deviceItemArrayList.toString());
                         }
                     } catch (Exception e){
-                        Log.w("Debug http request:/", "json fail "+ e.toString());
+                        Log.w(TAG, "Debug http request:/ json fail "+ e.toString());
                     }
                 }
                 updateDeviceItemArrayList();
@@ -125,7 +137,7 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
 
             @Override
             public void onFailure(Call<List<ResultFeedData>> call, Throwable t) {
-                Log.w("Debug:/", "get http request fail" + t.toString());
+                Log.w(TAG, "get http request fail" + t.toString());
             }
         });
 
@@ -156,10 +168,10 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
                 String topic = TOPICS[4];
                 mqttService.mqttAndroidClient.publish(topic, msg);
             }
-            Log.w("MQTT", "publish: " + msg);
+            Log.w(TAG, "publish: " + msg);
 
         } catch (MqttException e){
-            Log.w("MQTT", "sendMqtt: cannot send message!");
+            Log.w(TAG, "sendMqtt: cannot send message!");
         }
     }
     private void startMqtt(){
@@ -186,7 +198,7 @@ public class TurnOffAllFragment extends BaseFragment<FragmentTurnOffAllBinding, 
 
             }
         };
-        mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended);
+        mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended, false);
 
     }
 

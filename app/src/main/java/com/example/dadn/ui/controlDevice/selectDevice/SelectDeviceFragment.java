@@ -21,6 +21,7 @@ import com.example.dadn.utils.mqtt.MqttService;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +45,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     String[] TOPICS = Constants.TOPICS;
     String USERNAME = Constants.USERNAME;
     String LIMIT = Constants.LIMIT;
+    final String TAG = "SelectDeviceFrg TAG";
 
     @Override
     public int getBindingVariable() {
@@ -64,6 +66,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
+        mViewModel.setIsLoading(true);
         startMqtt();
     }
 
@@ -71,10 +74,23 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentSelectDeviceBinding = getViewDataBinding();
+
         setDeviceItemArrayList("bk-iot-relay");
         setDeviceItemArrayList("bk-iot-led");
         onButtonBack(view);
         viewForSwitch = view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            mqttService.mqttAndroidClient.unsubscribe(Constants.CONSTRAINT_TOPICS);
+//            mqttService.mqttAndroidClient.disconnect();
+            Log.d(TAG, "Unsubscribe successfully");
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     private void startMqtt(){
@@ -106,10 +122,8 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
                         updateDeviceItemArrayList(data, id, name);
                     }
                 } catch (Exception e){
-                    Log.w("exception", e.toString());
+                    Log.w(TAG, "exception: " + e.toString());
                 }
-
-
             }
 
             @Override
@@ -117,7 +131,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
 
             }
         };
-        mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended);
+        mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended, Constants.DEVICE_TOPICS);
 
     }
     public void setDeviceItemArrayList(String feed_key) {
@@ -126,13 +140,13 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
 
         Call<List<ResultFeedData>> call = RetrofitClient.getInstance().getApi()
                 .getFeedData(USERNAME, feed_key, LIMIT);
-        Log.w("Http Response", feed_key);
+        Log.w(TAG, "Http Response: " +  feed_key);
 
         call.enqueue(new Callback<List<ResultFeedData>>() {
             @Override
             public void onResponse(Call<List<ResultFeedData>> call, Response<List<ResultFeedData>> response) {
                 List<ResultFeedData> values = response.body();
-                Log.w("respone", response.toString());
+                Log.w(TAG, "response: " + response.toString());
                 for (ResultFeedData value: values) {
                     Log.w("Http Response", value.getValue());
                     try {
@@ -144,18 +158,21 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
                                     jsonObject.getString("data"),
                                     jsonObject.getString("unit")
                             ));
-                            Log.w("array list", "add one " + deviceItemArrayList.toString());
+                            Log.w(TAG, "array list: " + "add one " + deviceItemArrayList.toString());
                         }
                     } catch (Exception e){
-                        Log.w("Debug http request:/", "json fail "+ e.toString());
+                        Log.w(TAG, "Debug http request:/ " + "json fail "+ e.toString());
                     }
                 }
                 setmRecyclerView(viewForSwitch);
+                if (feed_key.equals("bk-iot-led")) {
+                    mViewModel.setIsLoading(false);
+                }
             }
 
             @Override
             public void onFailure(Call<List<ResultFeedData>> call, Throwable t) {
-                Log.w("Debug:/", "get http request fail" + t.toString());
+                Log.w(TAG, "get http request fail" + t.toString());
 
             }
         });
@@ -164,14 +181,12 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         mRecyclerView = view.findViewById(R.id.recyclerView_SelectDeviceFragment);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        Log.w("array: ", "" + deviceItemArrayList.toString());
+        Log.w(TAG, deviceItemArrayList.toString());
         mAdapter = new SelectDeviceAdapter(getContext());
         mAdapter.setData(deviceItemArrayList);
         mAdapter.setMqttService(this.mqttService);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
-
     }
     public void onButtonBack(@NonNull View view){
         Button back = (Button) view.findViewById(R.id.goBack);
@@ -186,11 +201,11 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     }
     public void updateDeviceItemArrayList(String data, String id, String name){
         for (SelectDeviceItem device: deviceItemArrayList) {
-            if (device.getName().equals(name) & device.getId().equals(id)){
+            if (device.getName().equals(name) && device.getId().equals(id)){
                 device.setData(data);
                 Switch switchDevice = (Switch) viewForSwitch.findViewById(parseInt(device.getId()));
                 switchDevice.setChecked(data.equals("0") ? false : true);
-                Log.w("Switch", "update finish id " + switchDevice.getId());
+                Log.w(TAG, "Switch update finish id " + switchDevice.getId());
                 break;
             }
         }
