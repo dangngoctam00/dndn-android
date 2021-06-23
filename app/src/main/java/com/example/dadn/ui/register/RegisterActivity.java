@@ -48,7 +48,7 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding, Regi
     public void handleError(Throwable throwable) {
         this.runOnUiThread(() -> {
             Toast.makeText(RegisterActivity.this,
-                    "Bạn không thể sử dụng tên đăng nhập này.",
+                    throwable.getMessage(),
                     Toast.LENGTH_LONG).show();
         });
         Log.d("LOGIN", "failed: " + throwable.getMessage());

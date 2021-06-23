@@ -17,13 +17,13 @@ import com.example.dadn.di.component.FragmentComponent;
 import com.example.dadn.ui.alert.AlertActivity;
 import com.example.dadn.ui.alert.alertprocessing.AlertProcessingActivity;
 import com.example.dadn.ui.base.BaseFragment;
-import com.example.dadn.ui.main.MainActivity;
+import com.example.dadn.utils.Constants;
 import com.example.dadn.utils.PreferenceUtilities;
 import com.example.dadn.utils.mqtt.MqttService;
-import com.example.dadn.utils.Constants;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 
@@ -31,13 +31,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
     FragmentHomeBinding mFragmentHomeBinding;
     MqttService mqttService;
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        prefs.unregisterOnSharedPreferenceChangeListener(this);
-    }
+    final String TAG = "HomeFragment TAG";
 
     @Override
     public int getBindingVariable() {
@@ -57,7 +51,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("HOME FRAGMENT", "onCreate function");
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
         startMqtt();
@@ -66,7 +59,26 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
         mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
         mViewModel.setAlertState(PreferenceUtilities.getAlertState(this.getActivity()));
         mViewModel.setCannotHandleAlert(PreferenceUtilities.getcannotHandle(this.getActivity()));
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mFragmentHomeBinding = getViewDataBinding();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            mqttService.mqttAndroidClient.unsubscribe(Constants.CONSTRAINT_TOPICS);
+            mqttService.mqttAndroidClient.disconnect();
+            Log.d(TAG, "Unsubscribe successfully");
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
 
 
@@ -86,7 +98,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 mViewModel.setIsLoading(false);
-                Log.w("Debug", topic + "/:" + mqttMessage.toString());
+                Log.w(TAG, "messageArrived to: " + topic + "/:" + mqttMessage.toString());
                 JSONObject jsonObject = new JSONObject(mqttMessage.toString());
                 if (topic.equals(Constants.TOPICS[0])) {
                     String soil = jsonObject.getString("data") + jsonObject.getString("unit");
@@ -111,15 +123,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
             }
         };
-        mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended);
-    }
-
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mFragmentHomeBinding = getViewDataBinding();
+        mqttService = new MqttService(getActivity().getApplicationContext(), callbackExtended, Constants.CONSTRAINT_TOPICS);
     }
 
     @Override

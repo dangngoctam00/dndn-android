@@ -13,15 +13,18 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        android:orientation="vertical">
+        android:background="@color/background">
 
         <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="197dp"
@@ -32,12 +35,13 @@
                 android:textColor="#0E0E0E"
 
                 android:textSize="18sp" />
+
             <Button
                 android:id="@+id/goBack"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
-                android:layout_marginTop="23dp"
                 android:layout_marginStart="22dp"
+                android:layout_marginTop="23dp"
 
                 android:background="@drawable/btn_go_back" />
 
@@ -52,18 +56,36 @@
 
         </RelativeLayout>
 
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/address_looking_up"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
+        </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
 
             android:id="@+id/recyclerView_SelectDeviceFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical">
+            android:layout_marginTop="120dp"
+            android:scrollbars="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
         </androidx.recyclerview.widget.RecyclerView>
-        <!--        </FrameLayout>-->
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

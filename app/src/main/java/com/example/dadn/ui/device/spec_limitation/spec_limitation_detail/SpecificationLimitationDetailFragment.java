@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.library.baseAdapters.BR;
 
 import com.example.dadn.R;
+import com.example.dadn.data.dto.SpecificationDetailResponse;
 import com.example.dadn.data.dto.UpdateSpecificationRequest;
 import com.example.dadn.databinding.FragmentSpecificationLimitationDetailBinding;
 import com.example.dadn.di.component.FragmentComponent;
@@ -77,11 +78,10 @@ public class SpecificationLimitationDetailFragment extends
                 .observeOn(mViewModel.getSchedulerProvider().ui())
                 .subscribe(response -> {
                     Log.d("SUCCESS: ", response.toString());
-                    spec_detail_title.setText(response.get(0).getType());
+                    spec_detail_title.setText(convertTitle(response.get(0)));
                     lower_bound.setText(processValue(response.get(0).getLower_bound()));
                     upper_bound.setText(processValue(response.get(0).getUpper_bound()));
                     mViewModel.setIsLoading(false);
-
                 }, throwable -> {
                     Log.d("ERROR: ", throwable.getMessage());
                     mViewModel.setIsLoading(false);
@@ -94,6 +94,22 @@ public class SpecificationLimitationDetailFragment extends
                 getActivity().onBackPressed();
             }
         });
+    }
+
+    public String convertTitle(SpecificationDetailResponse type) {
+        if (type.getType().equals("light")) {
+            return "ÁNH SÁNG";
+        }
+        else if (type.getType().equals("temperature")){
+            return "NHIỆT ĐỘ";
+        }
+        else if (type.getType().equals("moisture")) {
+            return "ĐỘ ẨM ĐẤT";
+        }
+        else if (type.getType().equals("humidity")) {
+            return "ĐỘ ẨM KHÔNG KHÍ";
+        }
+        return "";
     }
 
 
@@ -145,9 +161,10 @@ public class SpecificationLimitationDetailFragment extends
                 .subscribeOn(mViewModel.getSchedulerProvider().io())
                 .observeOn(mViewModel.getSchedulerProvider().ui())
                 .subscribe(response -> {
-                    Log.d("SUCCESS: ", response.toString());
                     mViewModel.setIsLoading(false);
-                    displaySuccessfulMessage();
+                    Log.d("SUCCESS: ", response.toString());
+//                    displaySuccessfulMessage();
+                    getActivity().onBackPressed();
                 }, throwable -> {
                     Log.d("ERROR: ", throwable.getMessage());
                     mViewModel.setIsLoading(false);

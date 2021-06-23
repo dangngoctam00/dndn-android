@@ -27,11 +27,16 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
                 .observeOn(getSchedulerProvider().io())
                 .subscribe(response -> {
                     setIsLoading(false);
-                    if (response.getMessage().equals("failed")) {
-                        getNavigator().handleError(new Throwable("failed"));
+                    if (response.getCode() == 402) {
+                        getNavigator().handleError(new Throwable("Người dùng không tồn tại!"));
                     }
-                    getNavigator().setLogin(true);
-                    getNavigator().openMainActivity();
+                    else if (response.getCode() != 200) {
+                        getNavigator().handleError(new Throwable("Tên đăng nhập hoặc mật khẩu không đúng!"));
+                    }
+                    else {
+                        getNavigator().setLogin(true);
+                        getNavigator().openMainActivity();
+                    }
                 }, throwable -> {
                     setIsLoading(false);
                     getNavigator().handleError(throwable);

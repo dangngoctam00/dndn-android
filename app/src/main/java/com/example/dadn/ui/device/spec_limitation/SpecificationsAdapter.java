@@ -51,8 +51,24 @@ public class SpecificationsAdapter extends RecyclerView.Adapter<SpecificationsAd
         SpecificationResponse type = specs.get(position);
 
         // Set item views based on your views and data model
-        holder.spec_name.setText(type.getType());
+        holder.spec_name.setText(convertTitle(type));
         Log.d(TAG, "onBindViewHolder()");
+    }
+
+    public String convertTitle(SpecificationResponse type) {
+        if (type.getType().equals("light")) {
+            return "ÁNH SÁNG";
+        }
+        else if (type.getType().equals("temperature")){
+            return "NHIỆT ĐỘ";
+        }
+        else if (type.getType().equals("moisture")) {
+            return "ĐỘ ẨM ĐẤT";
+        }
+        else if (type.getType().equals("humidity")) {
+            return "ĐỘ ẨM KHÔNG KHÍ";
+        }
+        return "";
     }
 
     @Override

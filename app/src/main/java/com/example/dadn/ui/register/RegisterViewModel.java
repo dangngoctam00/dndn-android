@@ -31,10 +31,18 @@ public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
                 .subscribe(response -> {
                     setIsLoading(false);
                     Log.d("response", "register: " + response.toString());
-                    if (response.getMessage().equals("failed")) {
-                        getNavigator().handleError(new Throwable("failed"));
+                    if (response.getMessage().equals("Username existed!")) {
+                        getNavigator().handleError(new Throwable("Bạn không thể sử dụng tên đăng nhập này!"));
                     }
-                    getNavigator().openLoginActivity();
+                    else if (response.getMessage().equals("Password confirm doesn't match!")) {
+                        getNavigator().handleError(new Throwable("Xác nhận mật khẩu không đúng với mật khẩu!"));
+                    }
+                    else if (response.getMessage().equals("failed")) {
+                        getNavigator().handleError(new Throwable("Đăng ký thất bại!"));
+                    }
+                    else if (response.getCode() == 200) {
+                        getNavigator().openLoginActivity();
+                    }
                 }, throwable -> {
                     setIsLoading(false);
                     getNavigator().handleError(throwable);

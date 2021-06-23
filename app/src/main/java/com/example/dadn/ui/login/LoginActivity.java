@@ -56,7 +56,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding ,LoginViewM
     public void handleError(Throwable throwable) {
         this.runOnUiThread(() -> {
             Toast.makeText(LoginActivity.this,
-                        "Username or password is wrong, please try again.",
+                        throwable.getMessage(),
                             Toast.LENGTH_LONG).show();
         });
         Log.d("LOGIN", "failed: " + throwable.getMessage());
