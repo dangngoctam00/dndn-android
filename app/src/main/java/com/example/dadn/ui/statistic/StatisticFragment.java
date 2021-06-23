@@ -148,12 +148,15 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         call.enqueue(new Callback<List<ResultFeedChart>>() {
             @Override
             public void onResponse(Call<List<ResultFeedChart>> call, Response<List<ResultFeedChart>> response) {
-                List<ResultFeedChart> datas = response.body();
                 Log.w("response/", " " + response.toString());
-                try {
-                    analysisData(datas);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if (response.body().isEmpty()) waitFor();
+                else {
+                    List<ResultFeedChart> datas = response.body();
+                    try {
+                        analysisData(datas);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -284,8 +287,14 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
 
         mLineChart.setData(lineData);
         mLineChart.getDescription().setEnabled(false);
-        mLineChart.getXAxis().setDrawLabels(true);
+        mLineChart.getXAxis().setDrawLabels(false);
+        //mLineChart.getLineData().setDrawValues(false);
 
         mLineChart.invalidate();
+    }
+    public void waitFor(){
+        LineChart mLineChart = getView().findViewById(R.id.lineChart);
+        mLineChart.clear();
+        mLineChart.setNoDataText("Không có dữ liệu trong khoảng thời gian này!");
     }
 }
