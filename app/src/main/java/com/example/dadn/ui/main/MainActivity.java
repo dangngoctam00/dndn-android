@@ -3,9 +3,7 @@ package com.example.dadn.ui.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.util.Log;
-
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,13 +14,8 @@ import com.example.dadn.R;
 import com.example.dadn.Service.FireBaseServiceUtils;
 import com.example.dadn.ui.device.DeviceFragment;
 import com.example.dadn.ui.home.HomeFragment;
-
-
-import com.example.dadn.ui.instruction.InstructionFragment;
 import com.example.dadn.ui.setting.SettingFragment;
 import com.example.dadn.ui.statistic.StatisticFragment;
-
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -50,21 +43,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FireBaseServiceUtils.checkToken();
-
-
-
-
-
-        /*
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(
-                task -> Log.d("FCM ", task.getResult())
-        );
-
-         */
-
-
-
-
     }
 
 
@@ -79,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_device:
                         selectedFragment = new DeviceFragment();
-                        break;
-                    case R.id.nav_instruction:
-                        selectedFragment = new InstructionFragment();
                         break;
                     case R.id.nav_setting:
                         selectedFragment = new SettingFragment();

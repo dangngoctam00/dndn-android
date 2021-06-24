@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/tomato_home"
+        android:title="Vườn cà chua" />
+    <item
         android:id="@+id/nav_device"
         android:icon="@drawable/device"
         android:title="Thiết bị" />
@@ -8,14 +12,6 @@
         android:id="@+id/nav_data"
         android:icon="@drawable/data"
         android:title="Dữ liệu" />
-    <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/tomato_home"
-        android:title="Vườn cà chua" />
-    <item
-        android:id="@+id/nav_instruction"
-        android:icon="@drawable/instruction"
-        android:title="Hướng dẫn" />
     <item
         android:id="@+id/nav_setting"
         android:icon="@drawable/setting"

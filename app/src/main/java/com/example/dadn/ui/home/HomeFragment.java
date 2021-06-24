@@ -138,9 +138,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
             Intent intent = new Intent(getContext(), AlertActivity.class);
             getContext().startActivity(intent);
         }
-
-
-
     }
 
 
