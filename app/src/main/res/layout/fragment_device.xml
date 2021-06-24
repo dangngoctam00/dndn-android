@@ -40,7 +40,8 @@
                 android:layout_marginBottom="544dp"
                 android:text="THIẾT BỊ"
                 android:textColor="#0E0E0E"
-                android:textSize="18sp" />
+                android:textStyle="bold"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/controlDevice"
