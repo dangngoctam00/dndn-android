@@ -80,7 +80,7 @@
                 android:gravity="center_vertical"
                 android:text="Thông tin cá nhân"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="@dimen/setting_label"
 
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"/>
@@ -98,7 +98,7 @@
                 android:gravity="center_vertical"
                 android:text="Cài đặt"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="@dimen/setting_label"
                 android:onClick="@{() -> viewModel.openSetting2Fragment()}"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"/>
@@ -116,7 +116,7 @@
                 android:text="Trợ giúp"
                 android:onClick="@{() -> viewModel.openHelpFragment()}"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="@dimen/setting_label"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"/>
             <View
@@ -132,7 +132,7 @@
                 android:gravity="center_vertical"
                 android:text="Giới thiệu"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="@dimen/setting_label"
                 android:onClick="@{() -> viewModel.openIntroductionFragment()}"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"/>
@@ -151,7 +151,7 @@
                 android:gravity="center_vertical"
                 android:text="Đăng xuất"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="@dimen/setting_label"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"/>
             <View
