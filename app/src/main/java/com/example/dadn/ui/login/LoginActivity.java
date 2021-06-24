@@ -64,10 +64,10 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding ,LoginViewM
 
     @Override
     public void login() {
+        hideKeyboard();
         String username = mActivityLoginBinding.etUsername.getText().toString();
         String password = mActivityLoginBinding.etPassword.getText().toString();
         if (mViewModel.isUsernameAndPasswordValid(username, password)) {
-            hideKeyboard();
             mViewModel.login(username, password);
         }
         else {

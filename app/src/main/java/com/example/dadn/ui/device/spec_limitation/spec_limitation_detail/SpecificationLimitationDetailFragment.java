@@ -1,5 +1,6 @@
 package com.example.dadn.ui.device.spec_limitation.spec_limitation_detail;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.library.baseAdapters.BR;
@@ -120,55 +122,88 @@ public class SpecificationLimitationDetailFragment extends
 
     @Override
     public void decreaseLowerBound() {
-         Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
-         value--;
-         mFragmentSpecificationLimitationDetailBinding.lowerBound.setText(processValue(value));
+        try {
+            Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
+            value--;
+            mFragmentSpecificationLimitationDetailBinding.lowerBound.setText(processValue(value));
+        }
+        catch (NumberFormatException e) {
+            displayErrorMessage();
+        }
     }
 
     @Override
     public void increaseLowerBound() {
-        Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
-        value++;
-        mFragmentSpecificationLimitationDetailBinding.lowerBound.setText(processValue(value));
+        try {
+            Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
+            value++;
+            mFragmentSpecificationLimitationDetailBinding.lowerBound.setText(processValue(value));
+        }
+        catch (NumberFormatException e) {
+            displayErrorMessage();
+        }
     }
 
     @Override
     public void decreaseUpperBound() {
-        Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
-        value--;
-        mFragmentSpecificationLimitationDetailBinding.upperBound.setText(processValue(value));
+        try {
+            Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
+            value--;
+            mFragmentSpecificationLimitationDetailBinding.upperBound.setText(processValue(value));
+        }
+        catch (NumberFormatException e) {
+            displayErrorMessage();
+        }
     }
 
     @Override
     public void increaseUpperBound() {
-        Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
-        value++;
-        mFragmentSpecificationLimitationDetailBinding.upperBound.setText(processValue(value));
+        try {
+            Integer value = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
+            value++;
+            mFragmentSpecificationLimitationDetailBinding.upperBound.setText(processValue(value));
+        }
+        catch (NumberFormatException e) {
+            displayErrorMessage();
+        }
+
     }
 
     @Override
     public void updateLimitation() {
+        hideKeyboard();
         mViewModel.setIsLoading(true);
-        Integer lower_bound = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
-        Integer upper_bound = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
-        Bundle bundle = this.getArguments();
-        String type = bundle.getString("type");
-        UpdateSpecificationRequest request = new UpdateSpecificationRequest();
-        request.setType(type);
-        request.setUpper_bound(upper_bound);
-        request.setLower_bound(lower_bound);
-        APIClient.getRetrofit().updateSpecificationDetail(request)
-                .subscribeOn(mViewModel.getSchedulerProvider().io())
-                .observeOn(mViewModel.getSchedulerProvider().ui())
-                .subscribe(response -> {
-                    mViewModel.setIsLoading(false);
-                    Log.d("SUCCESS: ", response.toString());
+        try {
+            Integer lower_bound = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.lowerBound.getText().toString());
+            Integer upper_bound = Integer.parseInt(mFragmentSpecificationLimitationDetailBinding.upperBound.getText().toString());
+            if (lower_bound >= upper_bound) {
+                mViewModel.setIsLoading(false);
+                displayErrorMessage();
+                return;
+            }
+            Bundle bundle = this.getArguments();
+            String type = bundle.getString("type");
+            UpdateSpecificationRequest request = new UpdateSpecificationRequest();
+            request.setType(type);
+            request.setUpper_bound(upper_bound);
+            request.setLower_bound(lower_bound);
+            APIClient.getRetrofit().updateSpecificationDetail(request)
+                    .subscribeOn(mViewModel.getSchedulerProvider().io())
+                    .observeOn(mViewModel.getSchedulerProvider().ui())
+                    .subscribe(response -> {
+                        mViewModel.setIsLoading(false);
+                        Log.d("SUCCESS: ", response.toString());
 //                    displaySuccessfulMessage();
-                    getActivity().onBackPressed();
-                }, throwable -> {
-                    Log.d("ERROR: ", throwable.getMessage());
-                    mViewModel.setIsLoading(false);
-                });
+                        getActivity().onBackPressed();
+                    }, throwable -> {
+                        Log.d("ERROR: ", throwable.getMessage());
+                        mViewModel.setIsLoading(false);
+                    });
+        }
+        catch (NumberFormatException e) {
+            mViewModel.setIsLoading(false);
+            displayErrorMessage();
+        }
     }
 
     public void displaySuccessfulMessage() {
@@ -176,6 +211,20 @@ public class SpecificationLimitationDetailFragment extends
             Toast.makeText(getActivity(),
                     "Thay đổi thành công!",
                     Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    public void displayErrorMessage() {
+        getActivity().runOnUiThread(() -> {
+            new AlertDialog.Builder(getActivity(), R.style.WarningAlertDialogStyle)
+                    .setTitle("")
+                    .setMessage("Thông số không hợp lệ, vui lòng nhập lại.")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).show();
         });
     }
 }
