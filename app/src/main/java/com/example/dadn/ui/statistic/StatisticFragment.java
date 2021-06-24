@@ -46,7 +46,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static java.lang.Float.parseFloat;
-import static java.lang.Float.sum;
 import static java.lang.Integer.parseInt;
 
 
@@ -109,6 +108,8 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
 
     @Override
     public void get_data(){
+        mViewModel.setIsLoading(true);
+        hideKeyboard();
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
         mLineChart.setNoDataText("");
         mLineChart.clear();
@@ -153,6 +154,7 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         call.enqueue(new Callback<List<ResultFeedChart>>() {
             @Override
             public void onResponse(Call<List<ResultFeedChart>> call, Response<List<ResultFeedChart>> response) {
+                mViewModel.setIsLoading(false);
                 Log.w("response/", " " + response.toString());
                 if (response.body().isEmpty()) waitFor();
                 else {
@@ -167,6 +169,7 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
 
             @Override
             public void onFailure(Call<List<ResultFeedChart>> call, Throwable t) {
+                mViewModel.setIsLoading(false);
                 Log.w("Debug chart/", "failure " + t.toString());
 
             }
@@ -304,6 +307,7 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
         mLineChart.clear();
         mLineChart.setNoDataText("Không có dữ liệu trong khoảng thời gian này!");
+        mLineChart.setNoDataTextColor(Color.RED);
     }
 
     public void createChart2(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME, String name)
