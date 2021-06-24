@@ -43,12 +43,12 @@ public interface RetrofitInterface {
     @POST("setConstrain")
     Observable<UpdateSpecificationResponse> updateSpecificationDetail(@Body UpdateSpecificationRequest body);
 
-    @POST("receiveresponefromapp")
+    @POST("api/receiveresponefromapp")
     Call<AlertReponse> requestTask(@Body AlertRequest body);
 
-    @POST("activatealert")
+    @POST("api/activatealert")
     Call<AlertActiveRespone> postactivateAlert(@Body AlertActiveRequest body);
 
-    @GET("activatealert")
+    @GET("api/activatealert")
     Call<AlertActiveRespone> getactivateAlert();
 }

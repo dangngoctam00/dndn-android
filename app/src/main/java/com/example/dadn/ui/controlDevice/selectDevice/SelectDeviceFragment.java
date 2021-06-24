@@ -86,7 +86,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         super.onDestroy();
         try {
             mqttService.mqttAndroidClient.unsubscribe(Constants.CONSTRAINT_TOPICS);
-//            mqttService.mqttAndroidClient.disconnect();
+            mqttService.mqttAndroidClient.disconnect();
             Log.d(TAG, "Unsubscribe successfully");
         } catch (MqttException e) {
             e.printStackTrace();
