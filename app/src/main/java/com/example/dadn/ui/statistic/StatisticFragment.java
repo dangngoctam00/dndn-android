@@ -46,6 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static java.lang.Float.parseFloat;
+import static java.lang.Float.sum;
 import static java.lang.Integer.parseInt;
 
 
@@ -53,6 +54,8 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
 
     FragmentStatisticBinding mFragmentStatisticBinding;
     String USERNAME = Constants.USERNAME;
+    Boolean ISHOUR = false;
+    int DURATION = 1;
 
     @Override
     public int getBindingVariable() {
@@ -100,11 +103,16 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
 
         LineChart mLineChart = view.findViewById(R.id.lineChart);
         mLineChart.setNoDataText("");
+        mLineChart.clear();
 
     }
 
     @Override
     public void get_data(){
+        LineChart mLineChart = getView().findViewById(R.id.lineChart);
+        mLineChart.setNoDataText("");
+        mLineChart.clear();
+
         SimpleDateFormat curr_time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
         String end_time = curr_time.format(new Timestamp(System.currentTimeMillis()));
 
@@ -130,6 +138,12 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         else if (unit.equals("Tuần")) c.add(Calendar.WEEK_OF_YEAR, -parseInt(duration));
         else if (unit.equals("Ngày")) c.add(Calendar.DATE, -parseInt(duration));
         else if (unit.equals("Tháng")) c.add(Calendar.MONTH, -parseInt(duration));
+
+        if (unit.equals("Giờ")) ISHOUR = true;
+        else ISHOUR = false;
+
+        if (unit.equals("Giờ")) DURATION = 1;
+        else DURATION = 1;
 
         String start_time = curr_time.format(c.getTime());
 
@@ -176,12 +190,13 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         } catch (Exception e){
             Log.w("analysis data", "error" + e.toString());
         }
-        if (CHARTNAME.equals("TEMP-HUMID")) createChartTempHumid(CHARTDATA, CHARTTIME);
-        else if (CHARTNAME.equals("LIGHT")) createChart(CHARTDATA, CHARTTIME, "Ánh sáng");
-        else createChart(CHARTDATA, CHARTTIME, "Độ ẩm đất");
+        if (CHARTNAME.equals("TEMP-HUMID")) createChartTempHumid2(CHARTDATA, CHARTTIME);
+        else if (CHARTNAME.equals("LIGHT")) createChart2(CHARTDATA, CHARTTIME, "Ánh sáng");
+        else createChart2(CHARTDATA, CHARTTIME, "Độ ẩm đất");
     }
 
-    public void createChartTempHumid(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME) throws ParseException {
+    public void createChartTempHumid(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME)
+            throws ParseException {
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
         mLineChart.setNoDataText("");
         ArrayList tempEntries = new ArrayList<>();
@@ -237,7 +252,8 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         mLineChart.invalidate();
     }
 
-    public void createChart(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME, String name) throws ParseException {
+    public void createChart(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME, String name)
+            throws ParseException {
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
         mLineChart.setNoDataText("");
         ArrayList lineEntries = new ArrayList<>();
@@ -278,14 +294,207 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
 
         mLineChart.setData(lineData);
         mLineChart.getDescription().setEnabled(false);
-        mLineChart.getXAxis().setDrawLabels(false);
+        mLineChart.getXAxis().setDrawLabels(true);
         //mLineChart.getLineData().setDrawValues(false);
 
         mLineChart.invalidate();
     }
+
     public void waitFor(){
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
         mLineChart.clear();
         mLineChart.setNoDataText("Không có dữ liệu trong khoảng thời gian này!");
+    }
+
+    public void createChart2(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME, String name)
+            throws ParseException {
+        LineChart mLineChart = getView().findViewById(R.id.lineChart);
+        mLineChart.setNoDataText("");
+        ArrayList lineEntries = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdfX = new SimpleDateFormat("HH:mm");
+        if (!ISHOUR) sdfX = new SimpleDateFormat("dd-MM");
+
+        Date start_time = sdf.parse(CHARTTIME.get(CHARTDATA.size() - 1).replace("T", " ")
+                .replace("Z",""));
+
+        long count_data = 0;
+        long diff = 0;
+        float count_entry = 0;
+        float sum_data = 0;
+        ArrayList<String> timeX = new ArrayList<>();
+        Date x = new Date();
+        Calendar c = Calendar.getInstance();
+
+        for (int i = CHARTDATA.size() - 1; i >= 0; i--){
+            Date next_time = sdf.parse(CHARTTIME.get(i).replace("T", " ")
+                    .replace("Z",""));
+            diff = (next_time.getTime() - start_time.getTime()) / 1000;
+            diff = TimeUnit.HOURS.convert(diff, TimeUnit.SECONDS);
+            if (!ISHOUR) diff = TimeUnit.DAYS.convert(diff, TimeUnit.SECONDS);
+
+            sum_data = sum_data + parseFloat(CHARTDATA.get(i));
+//            Log.w("createChart2", " " + diff + " " + sum_data);
+
+            count_data++;
+            x = sdf.parse(CHARTTIME.get(i).replace("T", " ")
+                    .replace("Z", ""));
+            c.setTime(x);
+            c.add(Calendar.HOUR, 7);
+            x = c.getTime();
+
+            if (diff == DURATION && i != 0){
+                start_time = next_time;
+                lineEntries.add(new Entry(count_entry++, sum_data / count_data));
+                count_data = 0;
+                sum_data = 0;
+                timeX.add(sdfX.format(x));
+            }
+            else if (diff > DURATION){
+                sum_data = sum_data - parseFloat(CHARTDATA.get(i));
+                start_time = next_time;
+                count_data--;
+                lineEntries.add(new Entry(count_entry++, sum_data / count_data));
+                count_data = 1;
+                sum_data = parseFloat(CHARTDATA.get(i));
+
+                c.setTime(sdf.parse(CHARTTIME.get(i+1).replace("T", " ")
+                        .replace("Z", "")));
+                c.add(Calendar.HOUR, 7);
+
+                timeX.add(sdfX.format(c.getTime()));
+            }
+            if (i == 0){
+                lineEntries.add(new Entry(count_entry++, sum_data / count_data));
+                timeX.add(sdfX.format(x));
+            }
+        }
+        Log.w("create chart 2", lineEntries.toString());
+        Log.w("create chart 2", "timeX" + timeX.toString());
+
+        LineDataSet dataSet = new LineDataSet(lineEntries, name);
+        LineData lineData = new LineData(dataSet);
+        XAxis xAxis = mLineChart.getXAxis();
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                try {
+                    if (value - (int) value == 0) return timeX.get((int) value);
+                    else return "";
+                } catch (Exception e){
+                    Log.w("createChart2:", "exception xaxis "+e.toString());
+                    return "";
+                }
+            }
+        };
+        xAxis.setValueFormatter(formatter);
+        mLineChart.setData(lineData);
+        mLineChart.getDescription().setEnabled(false);
+        mLineChart.getXAxis().setDrawLabels(true);
+        mLineChart.invalidate();
+    }
+
+    public void createChartTempHumid2(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME)
+            throws ParseException {
+        LineChart mLineChart = getView().findViewById(R.id.lineChart);
+        mLineChart.setNoDataText("");
+        ArrayList tempEntries = new ArrayList<>();
+        ArrayList humidEntries = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdfX = new SimpleDateFormat("HH:mm");
+        if (!ISHOUR) sdfX = new SimpleDateFormat("dd-MM");
+        Date start_time = sdf.parse(CHARTTIME.get(CHARTDATA.size() - 1).replace("T", " ")
+                .replace("Z",""));
+
+        long count_data = 0;
+        long diff = 0;
+        float count_entry = 0;
+        float sum_temp = 0;
+        float sum_hump = 0;
+        ArrayList<String> timeX = new ArrayList<>();
+        Date x = new Date();
+        Calendar c = Calendar.getInstance();
+
+        for (int i = CHARTDATA.size() - 1; i >= 0; i--){
+            String[] value = CHARTDATA.get(i).split("-");
+            Date next_time = sdf.parse(CHARTTIME.get(i).replace("T", " ")
+                    .replace("Z",""));
+            diff = (next_time.getTime() - start_time.getTime()) / 1000;
+            diff = TimeUnit.HOURS.convert(diff, TimeUnit.SECONDS);
+            if (!ISHOUR) diff = TimeUnit.DAYS.convert(diff, TimeUnit.SECONDS);
+
+            sum_temp = sum_temp + parseFloat(value[0]);
+            sum_hump = sum_hump + parseFloat(value[1]);
+
+            count_data++;
+            x = sdf.parse(CHARTTIME.get(i).replace("T", " ")
+                    .replace("Z", ""));
+            c.setTime(x);
+            c.add(Calendar.HOUR, 7);
+            x = c.getTime();
+
+            if (diff == DURATION && i != 0){
+                start_time = next_time;
+                tempEntries.add(new Entry(count_entry, sum_temp / count_data));
+                humidEntries.add(new Entry(count_entry++, sum_hump / count_data));
+                count_data = 0;
+                sum_hump = 0;
+                sum_temp = 0;
+                timeX.add(sdfX.format(x));
+            }
+            else if (diff > DURATION){
+                sum_temp = sum_temp - parseFloat(value[0]);
+                sum_hump = sum_hump - parseFloat(value[1]);
+                start_time = next_time;
+                count_data--;
+                tempEntries.add(new Entry(count_entry, sum_temp / count_data));
+                humidEntries.add(new Entry(count_entry++, sum_hump / count_data));
+                count_data = 1;
+                sum_temp = parseFloat(value[0]);
+                sum_hump = parseFloat(value[1]);
+
+                c.setTime(sdf.parse(CHARTTIME.get(i+1).replace("T", " ")
+                        .replace("Z", "")));
+                c.add(Calendar.HOUR, 7);
+
+                timeX.add(sdfX.format(c.getTime()));
+            }
+            if (i == 0){
+                tempEntries.add(new Entry(count_entry, sum_temp / count_data));
+                humidEntries.add(new Entry(count_entry++, sum_hump / count_data));
+                timeX.add(sdfX.format(x));
+            }
+        }
+        Log.w("create chart 2", "timeX" + timeX.toString());
+
+        LineData lineData = new LineData();
+        LineDataSet tempLineDataSet = new LineDataSet(tempEntries, "Nhiệt độ");
+        tempLineDataSet.setColor(Color.parseColor("#fff9dcd4"));
+        lineData.addDataSet(tempLineDataSet);
+
+        LineDataSet humidLineDataSet = new LineDataSet(humidEntries, "Độ ẩm không khí");
+        humidLineDataSet.setColor(Color.parseColor("#fffa5452"));
+        lineData.addDataSet(humidLineDataSet);
+
+        XAxis xAxis = mLineChart.getXAxis();
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                try {
+                    if (value - (int) value == 0) return timeX.get((int) value);
+                    else return "";
+                } catch (Exception e){
+                    Log.w("createChart2:", "exception xaxis "+e.toString());
+                    return "";
+                }
+            }
+        };
+        xAxis.setValueFormatter(formatter);
+        mLineChart.setData(lineData);
+        mLineChart.getDescription().setEnabled(false);
+        mLineChart.getXAxis().setDrawLabels(true);
+        mLineChart.invalidate();
     }
 }
