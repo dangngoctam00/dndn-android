@@ -13,6 +13,7 @@ import com.example.dadn.data.dto.SpecificationDetailResponse;
 import com.example.dadn.data.dto.SpecificationResponse;
 import com.example.dadn.data.dto.UpdateSpecificationRequest;
 import com.example.dadn.data.dto.UpdateSpecificationResponse;
+import com.example.dadn.ui.statistic.ResultChartDB;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitInterface {
     @Headers("Content-Type: application/json")
@@ -51,4 +53,9 @@ public interface RetrofitInterface {
 
     @GET("api/activatealert")
     Call<AlertActiveRespone> getactivateAlert();
+
+    @GET("statistic/{type}")
+    Observable<List<ResultChartDB>> getStatisticData(@Path("type") String type,
+                                                     @Query("from") String from,
+                                                     @Query("to") String to);
 }

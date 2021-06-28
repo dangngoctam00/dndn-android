@@ -19,6 +19,7 @@ import androidx.databinding.library.baseAdapters.BR;
 import com.example.dadn.R;
 import com.example.dadn.databinding.FragmentStatisticBinding;
 import com.example.dadn.di.component.FragmentComponent;
+import com.example.dadn.network.APIClient;
 import com.example.dadn.ui.base.BaseFragment;
 import com.example.dadn.utils.Constants;
 import com.github.mikephil.charting.charts.LineChart;
@@ -39,8 +40,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,13 +92,13 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         parent.getSupportActionBar().setTitle("");
         mFragmentStatisticBinding.toolbarTitle.setText("THỐNG KÊ DỮ LIỆU");
 
-        String[] specs = new String[] {"Ánh sáng", "Nhiệt độ và " + "Độ ẩm không khí", "Độ ẩm đất"};
+        String[] specs = new String[] {"Ánh sáng", "Nhiệt độ" , "Độ ẩm không khí", "Độ ẩm đất"};
         Spinner spinner = mFragmentStatisticBinding.specificationSpinner;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item_selected, specs);
         adapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
         spinner.setAdapter(adapter);
 
-        String[] time_durations = new String[] {"Giờ", "Ngày", "Tuần", "Tháng"};
+        String[] time_durations = new String[] {"Ngày", "Tuần", "Tháng"};
         Spinner spinner_time_duration = mFragmentStatisticBinding.timeDurationSpinner;
         ArrayAdapter<String> adapter_time_duration = new ArrayAdapter<>(getActivity(), R.layout.spinner_item_selected, time_durations);
         adapter_time_duration.setDropDownViewResource(R.layout.spinner_item_dropdown);
@@ -107,7 +111,7 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
     }
 
     @Override
-    public void get_data(){
+    public void get_data2(){
         mViewModel.setIsLoading(true);
         hideKeyboard();
         LineChart mLineChart = getView().findViewById(R.id.lineChart);
@@ -196,111 +200,6 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         if (CHARTNAME.equals("TEMP-HUMID")) createChartTempHumid2(CHARTDATA, CHARTTIME);
         else if (CHARTNAME.equals("LIGHT")) createChart2(CHARTDATA, CHARTTIME, "Ánh sáng");
         else createChart2(CHARTDATA, CHARTTIME, "Độ ẩm đất");
-    }
-
-    public void createChartTempHumid(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME)
-            throws ParseException {
-        LineChart mLineChart = getView().findViewById(R.id.lineChart);
-        mLineChart.setNoDataText("");
-        ArrayList tempEntries = new ArrayList<>();
-        ArrayList humidEntries = new ArrayList<>();
-        Hashtable<Long, String> dateX = new Hashtable<Long, String>();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date start_time = sdf.parse(CHARTTIME.get(CHARTDATA.size() - 1).replace("T", " ")
-                .replace("Z",""));
-
-        long count_date = 0;
-        for (int i = CHARTDATA.size() - 1; i >= 0; i--){
-            String[] value = CHARTDATA.get(i).split("-");
-
-            Date next_time = sdf.parse(CHARTTIME.get(i).replace("T", " ")
-                    .replace("Z",""));
-            long diff = (next_time.getTime() - start_time.getTime()) / 1000;
-            long diff_date = TimeUnit.DAYS.convert(diff, TimeUnit.SECONDS);
-
-            if (diff_date == count_date){
-                count_date++;
-                dateX.put(diff, CHARTTIME.get(i).split("T")[0]);
-            }
-            else dateX.put(diff, "");
-
-            tempEntries.add(new Entry(diff, parseFloat(value[0])));
-            humidEntries.add(new Entry(diff, parseFloat(value[1])));
-        }
-
-        LineData lineData = new LineData();
-        LineDataSet tempLineDataSet = new LineDataSet(tempEntries, "Nhiệt độ");
-        tempLineDataSet.setColor(Color.parseColor("#fff9dcd4"));
-        lineData.addDataSet(tempLineDataSet);
-
-        LineDataSet humidLineDataSet = new LineDataSet(humidEntries, "Độ ẩm không khí");
-        humidLineDataSet.setColor(Color.parseColor("#fffa5452"));
-        lineData.addDataSet(humidLineDataSet);
-
-        XAxis xAxis = mLineChart.getXAxis();
-        ValueFormatter formatter = new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                if (String.valueOf(dateX.get((long)value)).length() == 10) return String.valueOf(dateX.get((long)value));
-                else return "";
-            }
-        };
-        xAxis.setValueFormatter(formatter);
-
-        mLineChart.setData(lineData);
-        mLineChart.getDescription().setEnabled(false);
-        mLineChart.getXAxis().setDrawLabels(true);
-
-        mLineChart.invalidate();
-    }
-
-    public void createChart(ArrayList<String> CHARTDATA, ArrayList<String> CHARTTIME, String name)
-            throws ParseException {
-        LineChart mLineChart = getView().findViewById(R.id.lineChart);
-        mLineChart.setNoDataText("");
-        ArrayList lineEntries = new ArrayList<>();
-        Hashtable<Long, String> dateX = new Hashtable<Long, String>();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date start_time = sdf.parse(CHARTTIME.get(CHARTDATA.size() - 1).replace("T", " ")
-                .replace("Z",""));
-
-        long count_date = 0;
-        for (int i = CHARTDATA.size() - 1; i >= 0; i--){
-            Date next_time = sdf.parse(CHARTTIME.get(i).replace("T", " ")
-                    .replace("Z",""));
-
-            long diff = (next_time.getTime() - start_time.getTime()) / 1000;
-            long diff_date = TimeUnit.DAYS.convert(diff, TimeUnit.SECONDS);
-
-            if (diff_date == count_date){
-                count_date++;
-                dateX.put(diff, CHARTTIME.get(i).split("T")[0]);
-            }
-            else dateX.put(diff, "");
-
-            lineEntries.add(new Entry(diff, parseFloat(CHARTDATA.get(i))));
-        }
-        LineDataSet dataSet = new LineDataSet(lineEntries, name);
-        LineData lineData = new LineData(dataSet);
-
-        XAxis xAxis = mLineChart.getXAxis();
-        ValueFormatter formatter = new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                if (String.valueOf(dateX.get((long)value)).length() == 10) return String.valueOf(dateX.get((long)value));
-                else return "";
-            }
-        };
-        xAxis.setValueFormatter(formatter);
-
-        mLineChart.setData(lineData);
-        mLineChart.getDescription().setEnabled(false);
-        mLineChart.getXAxis().setDrawLabels(true);
-        //mLineChart.getLineData().setDrawValues(false);
-
-        mLineChart.invalidate();
     }
 
     public void waitFor(){
@@ -499,6 +398,107 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         mLineChart.setData(lineData);
         mLineChart.getDescription().setEnabled(false);
         mLineChart.getXAxis().setDrawLabels(true);
+        mLineChart.invalidate();
+    }
+
+    @Override
+    public void get_data(){
+        mViewModel.setIsLoading(true);
+        hideKeyboard();
+        LineChart mLineChart = getView().findViewById(R.id.lineChart);
+        mLineChart.setNoDataText("");
+        mLineChart.clear();
+
+        SimpleDateFormat curr_time = new SimpleDateFormat("EEE MMM dd yyyy", Locale.ENGLISH);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+        String end_time = curr_time.format(new Date());
+
+        Calendar c = Calendar.getInstance();
+        Date date= new Date();
+        c.setTime(date);
+        c.add(Calendar.HOUR, -7);
+
+        Spinner getUnit = getView().findViewById(R.id.time_duration_spinner);
+        String unit = getUnit.getSelectedItem().toString();
+
+        TextInputEditText getDuration = getView().findViewById(R.id.et_time_duration);
+        String duration = getDuration.getText().toString();
+
+        Spinner getatt = getView().findViewById(R.id.specification_spinner);
+        String att = getatt.getSelectedItem().toString();
+        String type;
+        if (att.equals("Độ ẩm đất")) type = "moisture";
+        else if (att.equals("Ánh sáng")) type = "light";
+        else if (att.equals("Nhiệt độ")) type = "temperature";
+        else type = "humidity";
+
+        if (unit.equals("Giờ")) c.add(Calendar.HOUR, -parseInt(duration));
+        else if (unit.equals("Tuần")) c.add(Calendar.WEEK_OF_YEAR, -parseInt(duration));
+        else if (unit.equals("Ngày")) c.add(Calendar.DATE, -parseInt(duration));
+        else if (unit.equals("Tháng")) c.add(Calendar.MONTH, -parseInt(duration));
+
+        if (unit.equals("Giờ")) ISHOUR = true;
+        else ISHOUR = false;
+
+        if (unit.equals("Giờ")) DURATION = 1;
+        else DURATION = 1;
+
+        String start_time = curr_time.format(c.getTime());
+
+        APIClient.getRetrofit().getStatisticData(type, start_time, end_time)
+                .subscribeOn(mViewModel.getSchedulerProvider().io())
+                .observeOn(mViewModel.getSchedulerProvider().ui())
+                .subscribe(response -> {
+                    Log.d("SUCCESS: ", response.toString());
+                    mViewModel.setIsLoading(false);
+                    if (response.isEmpty()) waitFor();
+                    else draw(response, att);
+
+                }, throwable -> {
+                    Log.d("ERROR: ", throwable.getMessage());
+                    mViewModel.setIsLoading(false);
+                });
+
+    }
+
+    public void draw(List<ResultChartDB> data, String name){
+        LineChart mLineChart = getView().findViewById(R.id.lineChart);
+        mLineChart.setNoDataText("");
+        ArrayList lineEntries = new ArrayList<>();
+
+        float x = 0;
+        for (ResultChartDB datum: data) {
+            lineEntries.add(new Entry(x, datum.getRecord()));
+            x++;
+        }
+        Log.w("draw", lineEntries.toString());
+
+        LineDataSet dataSet = new LineDataSet(lineEntries, name);
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        LineData lineData = new LineData(dataSet);
+        XAxis xAxis = mLineChart.getXAxis();
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                try {
+                    return data.get((int) value).getDate().toString();
+                } catch (Exception e){
+                    Log.w("draw:", "exception xaxis "+e.toString());
+                    return "";
+                }
+            }
+        };
+        xAxis.setValueFormatter(formatter);
+
+        mLineChart.setData(lineData);
+        mLineChart.getDescription().setEnabled(false);
+        mLineChart.getXAxis().setDrawLabels(true);
+        mLineChart.getXAxis().setDrawGridLines(false);
+        mLineChart.setDrawGridBackground(false);
+        mLineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+
+//        mLineChart.getXAxis().setAxisMinimum(data.get(0).getDate());
+//        mLineChart.getXAxis().setAxisMaximum(data.get(data.size() - 1).getDate() + 1);
         mLineChart.invalidate();
     }
 }
