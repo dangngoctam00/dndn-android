@@ -117,7 +117,7 @@ public class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapte
         try {
             if (name.equals("RELAY")) {
                 String topic = TOPICS[3];
-                mqttService.mqttAndroidClient.publish(topic, msg);
+                mqttService.mqttAndroidClient1.publish(topic, msg);
             }
             if (name.equals("LED")){
                 String topic = TOPICS[4];

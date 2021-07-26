@@ -44,6 +44,7 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     View viewForSwitch;
     String[] TOPICS = Constants.TOPICS;
     String USERNAME = Constants.USERNAME;
+    String USERNAME1 = Constants.USERNAME1;
     String LIMIT = Constants.LIMIT;
     final String TAG = "SelectDeviceFrg TAG";
 
@@ -85,8 +86,16 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     public void onDestroy() {
         super.onDestroy();
         try {
-            mqttService.mqttAndroidClient.unsubscribe(Constants.CONSTRAINT_TOPICS);
+            for (String topic : Constants.TOPICS) {
+                if (topic.split("/").equals(Constants.USERNAME)) {
+                    mqttService.mqttAndroidClient.unsubscribe(new String[] {topic});
+                }
+                else {
+                    mqttService.mqttAndroidClient1.unsubscribe(new String[] {topic});
+                }
+            }
             mqttService.mqttAndroidClient.disconnect();
+            mqttService.mqttAndroidClient1.disconnect();
             Log.d(TAG, "Unsubscribe successfully");
         } catch (MqttException e) {
             e.printStackTrace();
@@ -137,9 +146,15 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     public void setDeviceItemArrayList(String feed_key) {
 //        deviceItemArrayList.add(new SelectDeviceItem("11", "RELAY", "0", ""));
 //        deviceItemArrayList.add(new SelectDeviceItem("1", "LED", "0", ""));
-
-        Call<List<ResultFeedData>> call = RetrofitClient.getInstance().getApi()
-                .getFeedData(USERNAME, feed_key, LIMIT);
+        Call<List<ResultFeedData>> call;
+        if (feed_key.equals("bk-iot-led")) {
+            call = RetrofitClient.getInstance().getApi()
+                    .getFeedData(USERNAME, feed_key, LIMIT);
+        }
+        else {
+            call = RetrofitClient.getInstance().getApi()
+                    .getFeedData(USERNAME1, feed_key, LIMIT);
+        }
         Log.w(TAG, "Http Response: " +  feed_key);
 
         call.enqueue(new Callback<List<ResultFeedData>>() {

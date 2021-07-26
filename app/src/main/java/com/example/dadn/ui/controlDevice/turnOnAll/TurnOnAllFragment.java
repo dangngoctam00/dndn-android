@@ -34,6 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.dadn.utils.Constants.USERNAME1;
+
 public class TurnOnAllFragment extends BaseFragment<FragmentTurnOnAllBinding, TurnOnAllViewModel> implements TurnOnAllNavigator{
 
     FragmentTurnOnAllBinding mFragmentTurnOnAllBinding;
@@ -78,13 +80,6 @@ public class TurnOnAllFragment extends BaseFragment<FragmentTurnOnAllBinding, Tu
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            mqttService.mqttAndroidClient.unsubscribe(Constants.DEVICE_TOPICS);
-//            mqttService.mqttAndroidClient.disconnect();
-            Log.d(TAG, "Unsubscribe successfully");
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
     }
 
     public void onButtonCancel(@NonNull View view){
@@ -112,8 +107,15 @@ public class TurnOnAllFragment extends BaseFragment<FragmentTurnOnAllBinding, Tu
     public void setDeviceItemArrayList(String feed_key) {
 //        deviceItemArrayList.add(new SelectDeviceItem("11", "RELAY", "0", ""));
 //        deviceItemArrayList.add(new SelectDeviceItem("1", "LED", "0", ""));
-        Call<List<ResultFeedData>> call = RetrofitClient.getInstance().getApi()
-                .getFeedData(USERNAME, feed_key, LIMIT);
+        Call<List<ResultFeedData>> call;
+        if (feed_key.equals("bk-iot-led")) {
+            call = RetrofitClient.getInstance().getApi()
+                    .getFeedData(USERNAME, feed_key, LIMIT);
+        }
+        else {
+            call = RetrofitClient.getInstance().getApi()
+                    .getFeedData(USERNAME1, feed_key, LIMIT);
+        }
         call.enqueue(new Callback<List<ResultFeedData>>() {
             @Override
             public void onResponse(Call<List<ResultFeedData>> call, Response<List<ResultFeedData>> response) {
@@ -166,7 +168,7 @@ public class TurnOnAllFragment extends BaseFragment<FragmentTurnOnAllBinding, Tu
         try {
             if (name.equals("RELAY")) {
                 String topic = TOPICS[3];
-                mqttService.mqttAndroidClient.publish(topic, msg);
+                mqttService.mqttAndroidClient1.publish(topic, msg);
             }
             if (name.equals("LED")){
                 String topic = TOPICS[4];

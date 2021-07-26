@@ -17,10 +17,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MqttService {
     public MqttAndroidClient mqttAndroidClient;
+    public MqttAndroidClient mqttAndroidClient1;
 
     final String serverUri = "tcp://io.adafruit.com:1883";
 
-    final String clientId = "ExampleAndroidClient";
+    final String clientId = "AndroidClient";
+    final String clientId1 = "AndroidClient1";
 
     final String TAG = "MqttAndroidClient TAG";
 
@@ -53,12 +55,16 @@ public class MqttService {
     public MqttService(Context context, MqttCallbackExtended callbackExtended) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(callbackExtended);
+        mqttAndroidClient1 = new MqttAndroidClient(context, serverUri, clientId1);
+        mqttAndroidClient1.setCallback(callbackExtended);
         connect();
     }
 
     public MqttService(Context context, MqttCallbackExtended callbackExtended, String[] topics) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(callbackExtended);
+        mqttAndroidClient1 = new MqttAndroidClient(context, serverUri, clientId1);
+        mqttAndroidClient1.setCallback(callbackExtended);
         connect(topics);
     }
 
@@ -66,6 +72,8 @@ public class MqttService {
         if (!isSubscribe) {
             mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
             mqttAndroidClient.setCallback(callbackExtended);
+            mqttAndroidClient1 = new MqttAndroidClient(context, serverUri, clientId1);
+            mqttAndroidClient1.setCallback(callbackExtended);
             connectWithoutSubscribe();
         }
     }
@@ -81,6 +89,7 @@ public class MqttService {
 
         mqttConnectOptions.setUserName(Constants.USERNAME);
         mqttConnectOptions.setPassword(Constants.PASSWORD.toCharArray());
+
         if (!mqttAndroidClient.isConnected()) {
             try {
                 mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
@@ -97,11 +106,41 @@ public class MqttService {
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage());
+                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage()
+                                        + "/ " + Constants.USERNAME);
                     }
                 });
+            } catch (MqttException ex) {
+                ex.printStackTrace();
+            }
+        }
 
+        MqttConnectOptions mqttConnectOptions1 = new MqttConnectOptions();
+        mqttConnectOptions1.setAutomaticReconnect(true);
+        mqttConnectOptions1.setCleanSession(true);
 
+        mqttConnectOptions1.setUserName(Constants.USERNAME1);
+        mqttConnectOptions1.setPassword(Constants.PASSWORD1.toCharArray());
+
+        if (!mqttAndroidClient1.isConnected()) {
+            try {
+                mqttAndroidClient1.connect(mqttConnectOptions1, null, new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        Log.w(TAG, "Connect to: " + serverUri + " successful");
+                        DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
+                        disconnectedBufferOptions.setBufferEnabled(true);
+                        disconnectedBufferOptions.setBufferSize(100);
+                        disconnectedBufferOptions.setPersistBuffer(false);
+                        disconnectedBufferOptions.setDeleteOldestMessages(false);
+                        mqttAndroidClient1.setBufferOpts(disconnectedBufferOptions);
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage() + "/ " + Constants.USERNAME1);
+                    }
+                });
             } catch (MqttException ex) {
                 ex.printStackTrace();
             }
@@ -115,6 +154,7 @@ public class MqttService {
 
         mqttConnectOptions.setUserName(Constants.USERNAME);
         mqttConnectOptions.setPassword(Constants.PASSWORD.toCharArray());
+
         if (!mqttAndroidClient.isConnected()) {
             try {
                 mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
@@ -132,7 +172,7 @@ public class MqttService {
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage());
+                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage() + "/ " + Constants.USERNAME);
                     }
                 });
 
@@ -141,6 +181,37 @@ public class MqttService {
                 ex.printStackTrace();
             }
         }
+        MqttConnectOptions mqttConnectOptions1 = new MqttConnectOptions();
+        mqttConnectOptions1.setAutomaticReconnect(true);
+        mqttConnectOptions1.setCleanSession(true);
+
+        mqttConnectOptions1.setUserName(Constants.USERNAME1);
+        mqttConnectOptions1.setPassword(Constants.PASSWORD1.toCharArray());
+        if (!mqttAndroidClient1.isConnected()) {
+            try {
+                mqttAndroidClient1.connect(mqttConnectOptions1, null, new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        Log.w(TAG, "Connect to: " + serverUri + " successful");
+                        DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
+                        disconnectedBufferOptions.setBufferEnabled(true);
+                        disconnectedBufferOptions.setBufferSize(100);
+                        disconnectedBufferOptions.setPersistBuffer(false);
+                        disconnectedBufferOptions.setDeleteOldestMessages(false);
+                        mqttAndroidClient1.setBufferOpts(disconnectedBufferOptions);
+                        subscribeToTopic();
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage() + "/ " + Constants.USERNAME1);
+                    }
+                });
+            } catch (MqttException ex) {
+                ex.printStackTrace();
+            }
+        }
+
     }
 
 
@@ -169,7 +240,41 @@ public class MqttService {
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage());
+                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage() + "/ " + Constants.USERNAME);
+                    }
+                });
+
+
+            } catch (MqttException ex){
+                ex.printStackTrace();
+            }
+        }
+
+        MqttConnectOptions mqttConnectOptions1 = new MqttConnectOptions();
+        mqttConnectOptions1.setAutomaticReconnect(true);
+        mqttConnectOptions1.setCleanSession(true);
+
+        mqttConnectOptions1.setUserName(Constants.USERNAME1);
+        mqttConnectOptions1.setPassword(Constants.PASSWORD1.toCharArray());
+        if (!mqttAndroidClient1.isConnected()) {
+            try {
+
+                mqttAndroidClient1.connect(mqttConnectOptions1, null, new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        Log.w(TAG, "Connect to: " + serverUri + " successful");
+                        DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
+                        disconnectedBufferOptions.setBufferEnabled(true);
+                        disconnectedBufferOptions.setBufferSize(100);
+                        disconnectedBufferOptions.setPersistBuffer(false);
+                        disconnectedBufferOptions.setDeleteOldestMessages(false);
+                        mqttAndroidClient1.setBufferOpts(disconnectedBufferOptions);
+                        subscribeToTopic(topics);
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        Log.w(TAG, "Failed to connect to: " + serverUri + ": " + exception.getMessage() + "/ " + Constants.USERNAME1);
                     }
                 });
 
@@ -184,17 +289,36 @@ public class MqttService {
         Log.d(TAG, "subscribeToTopic with parameter: " + device_topics);
         try {
             for (String topic : device_topics) {
-                mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        Log.w(TAG,"Subscribed / " + topic);
-                    }
+                if (topic.split("/")[0].equals(Constants.USERNAME)) {
+                    if (mqttAndroidClient.isConnected()) {
+                        mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                Log.w(TAG,"Subscribed / " + topic);
+                            }
 
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        Log.w("Mqtt", "Subscribed fail!" + exception.toString());
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                                Log.w("Mqtt", "Subscribed fail!" + exception + " / " + topic);
+                            }
+                        });
                     }
-                });
+                }
+                else {
+                    if (mqttAndroidClient1 != null && mqttAndroidClient1.isConnected()) {
+                        mqttAndroidClient1.subscribe(topic, 0, null, new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                Log.w(TAG,"Subscribed / " + topic);
+                            }
+
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                                Log.w("Mqtt", "Subscribed fail!" + exception + " / " + topic);
+                            }
+                        });
+                    }
+                }
                 // get retained message from Adafruit IO
                 publishDummyMessageToTopic(topic);
             }
@@ -210,17 +334,36 @@ public class MqttService {
         Log.d(TAG, "subscribeToTopic with no parameter: ");
         try {
             for (String topic : Constants.TOPICS) {
-                mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        Log.w(TAG,"Subscribed / " + topic);
-                    }
+                if (topic.split("/")[0].equals(Constants.USERNAME)) {
+                    if (mqttAndroidClient != null && mqttAndroidClient.isConnected()) {
+                        mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                Log.w(TAG,"Subscribed / " + topic);
+                            }
 
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        Log.w(TAG, "Subscribed fail!" + exception.toString());
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                                Log.w(TAG, "Subscribed fail!" + exception);
+                            }
+                        });
                     }
-                });
+                }
+                else {
+                    if (mqttAndroidClient1 != null && mqttAndroidClient1.isConnected()) {
+                        mqttAndroidClient1.subscribe(topic, 0, null, new IMqttActionListener() {
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                Log.w(TAG,"Subscribed / " + topic);
+                            }
+
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                                Log.w(TAG, "Subscribed fail!" + exception + " : " + topic);
+                            }
+                        });
+                    }
+                }
                 // get retained message from Adafruit IO
                 publishDummyMessageToTopic(topic);
             }
@@ -232,6 +375,11 @@ public class MqttService {
     }
 
     private void publishDummyMessageToTopic(String topic) throws MqttException {
-        mqttAndroidClient.publish(topic + "/get", new MqttMessage());
+        if (topic.split("/")[0].equals(Constants.USERNAME)) {
+            mqttAndroidClient.publish(topic + "/get", new MqttMessage());
+        }
+        else {
+            mqttAndroidClient1.publish(topic + "/get", new MqttMessage());
+        }
     }
 }

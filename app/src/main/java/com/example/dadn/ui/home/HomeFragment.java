@@ -71,8 +71,16 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
     public void onDestroy() {
         super.onDestroy();
         try {
-            mqttService.mqttAndroidClient.unsubscribe(Constants.CONSTRAINT_TOPICS);
+            for (String topic : Constants.TOPICS) {
+                if (topic.split("/").equals(Constants.USERNAME)) {
+                    mqttService.mqttAndroidClient.unsubscribe(new String[] {topic});
+                }
+                else {
+                    mqttService.mqttAndroidClient1.unsubscribe(new String[] {topic});
+                }
+            }
             mqttService.mqttAndroidClient.disconnect();
+            mqttService.mqttAndroidClient1.disconnect();
             Log.d(TAG, "Unsubscribe successfully");
         } catch (MqttException e) {
             e.printStackTrace();
