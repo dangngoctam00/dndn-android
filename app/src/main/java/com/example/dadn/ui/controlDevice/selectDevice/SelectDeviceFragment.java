@@ -68,12 +68,12 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
         mViewModel.setIsLoading(true);
-        startMqtt();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        startMqtt();
         mFragmentSelectDeviceBinding = getViewDataBinding();
 
         setDeviceItemArrayList("bk-iot-relay");
@@ -85,21 +85,6 @@ public class SelectDeviceFragment extends BaseFragment<FragmentSelectDeviceBindi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            for (String topic : Constants.TOPICS) {
-                if (topic.split("/").equals(Constants.USERNAME)) {
-                    mqttService.mqttAndroidClient.unsubscribe(new String[] {topic});
-                }
-                else {
-                    mqttService.mqttAndroidClient1.unsubscribe(new String[] {topic});
-                }
-            }
-            mqttService.mqttAndroidClient.disconnect();
-            mqttService.mqttAndroidClient1.disconnect();
-            Log.d(TAG, "Unsubscribe successfully");
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
     }
 
     private void startMqtt(){

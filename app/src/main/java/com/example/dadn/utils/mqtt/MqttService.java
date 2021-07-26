@@ -61,10 +61,10 @@ public class MqttService {
     }
 
     public MqttService(Context context, MqttCallbackExtended callbackExtended, String[] topics) {
-        mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
-        mqttAndroidClient.setCallback(callbackExtended);
-        mqttAndroidClient1 = new MqttAndroidClient(context, serverUri, clientId1);
-        mqttAndroidClient1.setCallback(callbackExtended);
+        this.mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
+        this.mqttAndroidClient.setCallback(callbackExtended);
+        this.mqttAndroidClient1 = new MqttAndroidClient(context, serverUri, clientId1);
+        this.mqttAndroidClient1.setCallback(callbackExtended);
         connect(topics);
     }
 
@@ -222,9 +222,17 @@ public class MqttService {
 
         mqttConnectOptions.setUserName(Constants.USERNAME);
         mqttConnectOptions.setPassword(Constants.PASSWORD.toCharArray());
+
+
+        MqttConnectOptions mqttConnectOptions1 = new MqttConnectOptions();
+        mqttConnectOptions1.setAutomaticReconnect(true);
+        mqttConnectOptions1.setCleanSession(true);
+
+        mqttConnectOptions1.setUserName(Constants.USERNAME1);
+        mqttConnectOptions1.setPassword(Constants.PASSWORD1.toCharArray());
+
         if (!mqttAndroidClient.isConnected()) {
             try {
-
                 mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
@@ -250,12 +258,6 @@ public class MqttService {
             }
         }
 
-        MqttConnectOptions mqttConnectOptions1 = new MqttConnectOptions();
-        mqttConnectOptions1.setAutomaticReconnect(true);
-        mqttConnectOptions1.setCleanSession(true);
-
-        mqttConnectOptions1.setUserName(Constants.USERNAME1);
-        mqttConnectOptions1.setPassword(Constants.PASSWORD1.toCharArray());
         if (!mqttAndroidClient1.isConnected()) {
             try {
 
@@ -376,10 +378,14 @@ public class MqttService {
 
     private void publishDummyMessageToTopic(String topic) throws MqttException {
         if (topic.split("/")[0].equals(Constants.USERNAME)) {
-            mqttAndroidClient.publish(topic + "/get", new MqttMessage());
+            if (mqttAndroidClient != null && mqttAndroidClient.isConnected()) {
+                mqttAndroidClient.publish(topic + "/get", new MqttMessage());
+            }
         }
         else {
-            mqttAndroidClient1.publish(topic + "/get", new MqttMessage());
+            if (mqttAndroidClient1 != null && mqttAndroidClient1.isConnected()) {
+                mqttAndroidClient1.publish(topic + "/get", new MqttMessage());
+            }
         }
     }
 }

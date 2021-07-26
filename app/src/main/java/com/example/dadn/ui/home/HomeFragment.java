@@ -51,9 +51,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("onCreate", "create");
         super.onCreate(savedInstanceState);
         mViewModel.setNavigator(this);
-        startMqtt();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         prefs.registerOnSharedPreferenceChangeListener(this);
         mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this.getActivity()));
@@ -64,27 +64,34 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding ,HomeViewMode
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d("onViewCreated", "create view");
         mFragmentHomeBinding = getViewDataBinding();
+        startMqtt();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            for (String topic : Constants.TOPICS) {
-                if (topic.split("/").equals(Constants.USERNAME)) {
-                    mqttService.mqttAndroidClient.unsubscribe(new String[] {topic});
-                }
-                else {
-                    mqttService.mqttAndroidClient1.unsubscribe(new String[] {topic});
-                }
-            }
-            mqttService.mqttAndroidClient.disconnect();
-            mqttService.mqttAndroidClient1.disconnect();
-            Log.d(TAG, "Unsubscribe successfully");
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+        Log.d("onDestroy", "destroy");
+//        try {
+//            for (String topic : Constants.TOPICS) {
+//                if (topic.split("/").equals(Constants.USERNAME)) {
+//                    if (mqttService.mqttAndroidClient != null) {
+//                        mqttService.mqttAndroidClient.unsubscribe(new String[] {topic});
+//                    }
+//                }
+//                else {
+//                    if (mqttService.mqttAndroidClient1 != null) {
+//                        mqttService.mqttAndroidClient1.unsubscribe(new String[] {topic});
+//                    }
+//                }
+//            }
+//            mqttService.mqttAndroidClient.disconnect();
+//            mqttService.mqttAndroidClient1.disconnect();
+//            Log.d(TAG, "Unsubscribe successfully");
+//        } catch (MqttException e) {
+//            e.printStackTrace();
+//        }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
