@@ -16,19 +16,19 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MqttService {
-    public MqttAndroidClient mqttAndroidClient;
+    public MqttAndroidClient mqttAndroidClient3;
     public MqttAndroidClient mqttAndroidClient1;
 
     final String serverUri = "tcp://io.adafruit.com:1883";
 
-    final String clientId = "AndroidClient";
-    final String clientId1 = "AndroidClient1";
+    final String clientId2 = "dnt";
+    final String clientId1 = "QIUIQoqqw";
 
     final String TAG = "MqttAndroidClient TAG";
 
     public MqttService(Context context){
-        mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
-        mqttAndroidClient.setCallback(new MqttCallbackExtended() {
+        mqttAndroidClient3 = new MqttAndroidClient(context, serverUri, clientId2);
+        mqttAndroidClient3.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
                 Log.w("mqtt", s);
@@ -53,16 +53,16 @@ public class MqttService {
     }
 
     public MqttService(Context context, MqttCallbackExtended callbackExtended) {
-        mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
-        mqttAndroidClient.setCallback(callbackExtended);
+        mqttAndroidClient3 = new MqttAndroidClient(context, serverUri, clientId2);
+        mqttAndroidClient3.setCallback(callbackExtended);
         mqttAndroidClient1 = new MqttAndroidClient(context, serverUri, clientId1);
         mqttAndroidClient1.setCallback(callbackExtended);
         connect();
     }
 
     public MqttService(Context context, MqttCallbackExtended callbackExtended, String[] topics) {
-        this.mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
-        this.mqttAndroidClient.setCallback(callbackExtended);
+        this.mqttAndroidClient3 = new MqttAndroidClient(context, serverUri, clientId2);
+        this.mqttAndroidClient3.setCallback(callbackExtended);
         this.mqttAndroidClient1 = new MqttAndroidClient(context, serverUri, clientId1);
         this.mqttAndroidClient1.setCallback(callbackExtended);
         connect(topics);
@@ -70,8 +70,8 @@ public class MqttService {
 
     public MqttService(Context context, MqttCallbackExtended callbackExtended, boolean isSubscribe) {
         if (!isSubscribe) {
-            mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
-            mqttAndroidClient.setCallback(callbackExtended);
+            mqttAndroidClient3 = new MqttAndroidClient(context, serverUri, clientId2);
+            mqttAndroidClient3.setCallback(callbackExtended);
             mqttAndroidClient1 = new MqttAndroidClient(context, serverUri, clientId1);
             mqttAndroidClient1.setCallback(callbackExtended);
             connectWithoutSubscribe();
@@ -79,7 +79,7 @@ public class MqttService {
     }
 
     public void setCallback(MqttCallbackExtended callback) {
-        mqttAndroidClient.setCallback(callback);
+        mqttAndroidClient3.setCallback(callback);
     }
 
     public void connectWithoutSubscribe() {
@@ -90,9 +90,9 @@ public class MqttService {
         mqttConnectOptions.setUserName(Constants.USERNAME);
         mqttConnectOptions.setPassword(Constants.PASSWORD.toCharArray());
 
-        if (!mqttAndroidClient.isConnected()) {
+        if (!mqttAndroidClient3.isConnected()) {
             try {
-                mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+                mqttAndroidClient3.connect(mqttConnectOptions, null, new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         Log.w(TAG, "Connect to: " + serverUri + " successful");
@@ -101,7 +101,7 @@ public class MqttService {
                         disconnectedBufferOptions.setBufferSize(100);
                         disconnectedBufferOptions.setPersistBuffer(false);
                         disconnectedBufferOptions.setDeleteOldestMessages(false);
-                        mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+                        mqttAndroidClient3.setBufferOpts(disconnectedBufferOptions);
                     }
 
                     @Override
@@ -148,16 +148,16 @@ public class MqttService {
     }
 
     public void connect() {
-        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-        mqttConnectOptions.setAutomaticReconnect(true);
-        mqttConnectOptions.setCleanSession(true);
+        MqttConnectOptions mqttConnectOptions10 = new MqttConnectOptions();
+        mqttConnectOptions10.setAutomaticReconnect(false);
+        mqttConnectOptions10.setCleanSession(true);
 
-        mqttConnectOptions.setUserName(Constants.USERNAME);
-        mqttConnectOptions.setPassword(Constants.PASSWORD.toCharArray());
+        mqttConnectOptions10.setUserName(Constants.USERNAME);
+        mqttConnectOptions10.setPassword(Constants.PASSWORD.toCharArray());
 
-        if (!mqttAndroidClient.isConnected()) {
+        if (!mqttAndroidClient3.isConnected()) {
             try {
-                mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+                mqttAndroidClient3.connect(mqttConnectOptions10, null, new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         Log.w(TAG, "Connect to: " + serverUri + " successful");
@@ -166,7 +166,7 @@ public class MqttService {
                         disconnectedBufferOptions.setBufferSize(100);
                         disconnectedBufferOptions.setPersistBuffer(false);
                         disconnectedBufferOptions.setDeleteOldestMessages(false);
-                        mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+                        mqttAndroidClient3.setBufferOpts(disconnectedBufferOptions);
                         subscribeToTopic();
                     }
 
@@ -231,9 +231,9 @@ public class MqttService {
         mqttConnectOptions1.setUserName(Constants.USERNAME1);
         mqttConnectOptions1.setPassword(Constants.PASSWORD1.toCharArray());
 
-        if (!mqttAndroidClient.isConnected()) {
+        if (!mqttAndroidClient3.isConnected()) {
             try {
-                mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+                mqttAndroidClient3.connect(mqttConnectOptions, null, new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         Log.w(TAG, "Connect to: " + serverUri + " successful");
@@ -242,7 +242,7 @@ public class MqttService {
                         disconnectedBufferOptions.setBufferSize(100);
                         disconnectedBufferOptions.setPersistBuffer(false);
                         disconnectedBufferOptions.setDeleteOldestMessages(false);
-                        mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
+                        mqttAndroidClient3.setBufferOpts(disconnectedBufferOptions);
                         subscribeToTopic(topics);
                     }
 
@@ -292,8 +292,8 @@ public class MqttService {
         try {
             for (String topic : device_topics) {
                 if (topic.split("/")[0].equals(Constants.USERNAME)) {
-                    if (mqttAndroidClient.isConnected()) {
-                        mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
+                    if (mqttAndroidClient3.isConnected()) {
+                        mqttAndroidClient3.subscribe(topic, 0, null, new IMqttActionListener() {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w(TAG,"Subscribed / " + topic);
@@ -337,8 +337,8 @@ public class MqttService {
         try {
             for (String topic : Constants.TOPICS) {
                 if (topic.split("/")[0].equals(Constants.USERNAME)) {
-                    if (mqttAndroidClient != null && mqttAndroidClient.isConnected()) {
-                        mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
+                    if (mqttAndroidClient3 != null && mqttAndroidClient3.isConnected()) {
+                        mqttAndroidClient3.subscribe(topic, 0, null, new IMqttActionListener() {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 Log.w(TAG,"Subscribed / " + topic);
@@ -378,8 +378,8 @@ public class MqttService {
 
     private void publishDummyMessageToTopic(String topic) throws MqttException {
         if (topic.split("/")[0].equals(Constants.USERNAME)) {
-            if (mqttAndroidClient != null && mqttAndroidClient.isConnected()) {
-                mqttAndroidClient.publish(topic + "/get", new MqttMessage());
+            if (mqttAndroidClient3 != null && mqttAndroidClient3.isConnected()) {
+                mqttAndroidClient3.publish(topic + "/get", new MqttMessage());
             }
         }
         else {

@@ -99,6 +99,7 @@ public class StatisticFragment extends BaseFragment<FragmentStatisticBinding, St
         spinner.setAdapter(adapter);
 
         String[] time_durations = new String[] {"Ngày", "Tuần", "Tháng"};
+//        String[] time_durations = new String[] {"Ngày"};
         Spinner spinner_time_duration = mFragmentStatisticBinding.timeDurationSpinner;
         ArrayAdapter<String> adapter_time_duration = new ArrayAdapter<>(getActivity(), R.layout.spinner_item_selected, time_durations);
         adapter_time_duration.setDropDownViewResource(R.layout.spinner_item_dropdown);

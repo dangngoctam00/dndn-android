@@ -179,6 +179,9 @@ public  class AlertActivity extends BaseActivity<ActivityAlertBinding, AlertView
             mViewModel.setAlertState(PreferenceUtilities.getAlertState(this));
         } else if (PreferenceUtilities.KEY_IS_ALERT_PROCESSING.equals(key)) {
             mViewModel.setIsAlertProcessing(PreferenceUtilities.getisAlertProcessing(this));
+            Intent intent = new Intent(AlertActivity.this, AlertProcessingActivity.class);
+            startActivity(intent);
+            finish();
         }
         else if (PreferenceUtilities.KEY_CAN_NOT_HANDLE.equals(key)) {
             mViewModel.setCannotHandleAlert(PreferenceUtilities.getcannotHandle(this));

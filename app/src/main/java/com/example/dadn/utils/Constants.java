@@ -4,11 +4,16 @@ public class Constants {
     public static final String BASE_URL = "http://192.168.1.10:3001/";
     public static final String TOKEN = "token";
     public static final String EMAIL = "email";
-//    public static final String USERNAME = "dadn201";
-    public static final String USERNAME = "dnt00";
-    public static final String PASSWORD = "aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH";
-    public static final String USERNAME1 = "dadn201";
-    public static final String PASSWORD1 = "aio_OTtq25sIyD1ME6A2wvhpxrkdZLPk";
+
+//    public static final String USERNAME = "dnt00";
+//    public static final String PASSWORD = "aio_ALzQ68XDjPTHvKSSBM4o6czsJ1PH";
+//    public static final String USERNAME1 = "dadn201";
+//    public static final String PASSWORD1 = "aio_OTtq25sIyD1ME6A2wvhpxrkdZLPk";
+    public static final String USERNAME = "CSE_BBC";
+    public static final String PASSWORD = "";
+    public static final String USERNAME1 = "CSE_BBC1";
+    public static final String PASSWORD1 = "";
+
     public static final String[] TOPICS = new String[] {
             USERNAME + "/feeds/bk-iot-soil",
             USERNAME1 + "/feeds/bk-iot-light",

@@ -3,7 +3,7 @@ package com.example.dadn.ui.statistic;
 public class ResultChartDB {
     private Integer date;
 
-    private Integer record;
+    private Float record;
 
     public Integer getDate() {
         return date;
@@ -13,11 +13,11 @@ public class ResultChartDB {
         this.date = date;
     }
 
-    public Integer getRecord() {
+    public Float getRecord() {
         return record;
     }
 
-    public void setRecord(Integer record) {
+    public void setRecord(Float record) {
         this.record = record;
     }
 }
